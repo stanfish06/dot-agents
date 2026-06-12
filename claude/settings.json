@@ -1,5 +1,31 @@
 {
   "model": "opus",
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/dot-agents/claude-notify.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/dot-agents/claude-stop-summary.sh",
+            "async": true,
+            "timeout": 300
+          }
+        ]
+      }
+    ]
+  },
   "enabledPlugins": {
     "codex@openai-codex": true,
     "github@claude-plugins-official": true,

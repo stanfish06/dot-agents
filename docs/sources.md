@@ -57,9 +57,19 @@ Imported from `obra/superpowers`:
 - Session-start hook bootstrap and cross-platform hook runner under `hooks/`.
 - Hook JSON examples for Claude and Cursor under `hooks/`.
 
+Imported from `stanfish06/my-configs`:
+
+- Claude notification and stop-summary hook behavior from
+  `claude/settings.json` and `claude/stop-summary.sh`.
+- Codex stop-summary hook behavior from `codex/hooks.json` and
+  `codex/stop-summary-claude.sh`.
+- Pi agent theme from `pi-agent/mypi.json`, installed as
+  `~/.pi/agent/themes/mypi.json`.
+
 Intentionally excluded:
 
 - `~/.claude.json`, because it is app state with account/cache/project metadata.
 - `~/.codex/auth.json`, OAuth/auth files, and credential-like state.
+- `~/.pi/agent/auth.json`, Pi sessions, and Pi-installed skills.
 - histories, sessions, logs, shell snapshots, browser/computer-use state,
   generated images, plugin caches, SQLite databases, and temp folders.

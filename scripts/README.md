@@ -18,9 +18,10 @@ Useful options:
 ./scripts/install.sh --skip-config
 ./scripts/install.sh --skip-claude
 ./scripts/install.sh --skip-codex
+./scripts/install.sh --skip-pi
 ```
 
 The installer initializes the `skills/` submodule, delegates skill installation
-to `skills/install-skills.sh`, then symlinks selected Claude and Codex config
-into `~/.claude` and `~/.codex`. Existing non-matching targets are moved to a
+to `skills/install-skills.sh`, then symlinks selected Claude, Codex, and Pi
+agent config into their homes. Existing non-matching targets are moved to a
 timestamped `.backup-...` path unless `--force` is passed.
