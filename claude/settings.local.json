@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat ~/.claude/plugins/marketplaces/claude-plugins-official/plugins/skill-creator/skills/*.md)",
+      "Bash(cat ~/.claude/plugins/marketplaces/claude-plugins-official/plugins/example-plugin/skills/*/SKILL.md)",
+      "Bash(cat ~/.claude/plugins/marketplaces/claude-plugins-official/plugins/plugin-dev/skills/*/SKILL.md)",
+      "Bash(mkdir -p ~/.claude/plugins/marketplaces/claude-plugins-official/plugins/my-skills/.claude-plugin)",
+      "Bash(mkdir -p ~/.claude/plugins/marketplaces/claude-plugins-official/plugins/my-skills/skills/grocery-price-compare)",
+      "mcp__plugin_nteract_notebook__list_active_notebooks",
+      "mcp__plugin_nteract_notebook__connect_notebook",
+      "mcp__plugin_nteract_notebook__get_all_cells",
+      "mcp__plugin_nteract_notebook__manage_dependencies",
+      "mcp__plugin_nteract_notebook__create_cell",
+      "mcp__plugin_nteract_notebook__execute_cell",
+      "mcp__plugin_nteract_notebook__restart_kernel",
+      "mcp__plugin_nteract_notebook__interrupt_kernel",
+      "Bash(curl *)",
+      "mcp__plugin_nteract_notebook__get_cell",
+      "mcp__plugin_nteract_notebook__save_notebook",
+      "mcp__plugin_nteract_notebook__set_cell"
+    ]
+  }
+}

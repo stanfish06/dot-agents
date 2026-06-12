@@ -1,0 +1,48 @@
+.DS_Store
+*.log
+*.tmp
+
+# Secrets and auth state
+.claude.json
+claude/.claude.json
+**/auth.json
+**/oauth*.json
+**/*credentials*.json
+
+# Runtime histories and sessions
+**/history.jsonl
+**/session_index.jsonl
+**/sessions/
+**/session-env/
+**/shell_snapshots/
+**/shell-snapshots/
+**/file-history/
+**/projects/
+
+# Caches, temp folders, generated state
+**/cache/
+**/.cache/
+**/.simplify-ignore-cache/
+**/sdd-cache/
+**/tmp/
+**/.tmp/
+**/paste-cache/
+**/generated_images/
+**/telemetry/
+**/browser/
+**/computer-use/
+**/node_repl/active_execs/
+
+# Local databases and app state
+**/*.sqlite
+**/*.sqlite-shm
+**/*.sqlite-wal
+**/sqlite/
+**/logs_*.sqlite*
+**/state_*.sqlite*
+**/goals_*.sqlite*
+**/memories_*.sqlite*
+
+# Local graph/query artifacts
+graphify-out/
+**/graphify-out/
