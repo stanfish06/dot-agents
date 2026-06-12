@@ -46,6 +46,7 @@ conversationDetailMode = "STEPS_COMMANDS"
 appearanceTheme = "dark"
 
 [features]
+hooks = true
 js_repl = false
 memories = true
 

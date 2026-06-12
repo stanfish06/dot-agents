@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.codex/hooks/dot-agents/codex-stop-summary.sh",
+            "timeout": 300,
+            "statusMessage": "Generating stop summary"
+          }
+        ]
+      }
+    ]
+  }
+}

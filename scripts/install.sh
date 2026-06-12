@@ -9,6 +9,7 @@ SKIP_SKILLS=0
 SKIP_CONFIG=0
 SKIP_CLAUDE=0
 SKIP_CODEX=0
+SKIP_PI=0
 FORCE=0
 ALLOW_DIRTY_SKILLS=0
 
@@ -21,9 +22,10 @@ Install this dot-agents checkout into the current user's agent homes.
 Options:
   --dry-run             Print actions without changing files.
   --skip-skills         Do not run skills/install-skills.sh.
-  --skip-config         Do not symlink Claude/Codex config.
+  --skip-config         Do not symlink Claude/Codex/Pi config.
   --skip-claude         Do not symlink Claude config.
   --skip-codex          Do not symlink Codex config.
+  --skip-pi             Do not symlink Pi agent config.
   --force               Replace existing non-matching targets without backups.
   --allow-dirty-skills  Run skills/install-skills.sh even if the submodule is dirty.
   -h, --help            Show this help.
@@ -32,7 +34,7 @@ Default behavior:
   - Initialize the skills submodule.
   - Run skills/install-skills.sh, which delegates skill installation to Vercel's
     skills CLI and installs graphify.
-  - Symlink selected Claude and Codex config paths into ~/.claude and ~/.codex.
+  - Symlink selected Claude, Codex, and Pi config paths into their agent homes.
   - Move any existing non-matching target to TARGET.backup-<timestamp>.
 EOF
 }
@@ -44,6 +46,7 @@ while [ "$#" -gt 0 ]; do
     --skip-config) SKIP_CONFIG=1 ;;
     --skip-claude) SKIP_CLAUDE=1 ;;
     --skip-codex) SKIP_CODEX=1 ;;
+    --skip-pi) SKIP_PI=1 ;;
     --force) FORCE=1 ;;
     --allow-dirty-skills) ALLOW_DIRTY_SKILLS=1 ;;
     -h|--help) usage; exit 0 ;;
@@ -160,8 +163,15 @@ install_codex() {
   log "==> Codex"
   install_link "$ROOT/codex/AGENTS.md" "$HOME/.codex/AGENTS.md"
   install_link "$ROOT/codex/config.toml" "$HOME/.codex/config.toml"
+  install_link "$ROOT/codex/hooks.json" "$HOME/.codex/hooks.json"
   install_link "$ROOT/codex/rules/default.rules" "$HOME/.codex/rules/default.rules"
   install_link "$ROOT/codex/skills/hatch-pet" "$HOME/.codex/skills/hatch-pet"
+  install_link "$ROOT/hooks" "$HOME/.codex/hooks/dot-agents"
+}
+
+install_pi() {
+  log "==> Pi"
+  install_link "$ROOT/pi-agent/themes/mypi.json" "$HOME/.pi/agent/themes/mypi.json"
 }
 
 main() {
@@ -186,6 +196,12 @@ main() {
     install_codex
   else
     log "Skip: Codex"
+  fi
+
+  if [ "$SKIP_PI" -eq 0 ]; then
+    install_pi
+  else
+    log "Skip: Pi"
   fi
 }
 
