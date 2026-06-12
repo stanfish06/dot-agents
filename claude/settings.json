@@ -19,8 +19,8 @@
           {
             "type": "command",
             "command": "bash ~/.claude/hooks/dot-agents/claude-stop-summary.sh",
-            "async": true,
-            "timeout": 300
+            "timeout": 300,
+            "async": true
           }
         ]
       }
@@ -30,7 +30,8 @@
     "codex@openai-codex": true,
     "github@claude-plugins-official": true,
     "wix@claude-plugins-official": true,
-    "lua-lsp@claude-plugins-official": true
+    "lua-lsp@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "openai-codex": {
@@ -40,7 +41,7 @@
       }
     }
   },
-  "effortLevel": "xhigh",
+  "effortLevel": "high",
   "switchModelsOnFlag": false,
   "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": true
 }
