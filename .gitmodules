@@ -1,3 +1,6 @@
 [submodule "skills"]
 	path = skills
 	url = https://github.com/stanfish06/my-skills.git
+[submodule "prompts/system-prompts-and-models-of-ai-tools"]
+	path = prompts/system-prompts-and-models-of-ai-tools
+	url = https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools.git
