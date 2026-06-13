@@ -1,6 +1,16 @@
 {
   "model": "opus",
   "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/dot-agents/skill-check-reminder.sh"
+          }
+        ]
+      }
+    ],
     "Notification": [
       {
         "matcher": "",
