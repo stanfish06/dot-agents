@@ -1,5 +1,18 @@
 {
   "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.codex/hooks/dot-agents/codex-skill-check-reminder.sh",
+            "timeout": 30,
+            "statusMessage": "Reminding Codex to check skills"
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "matcher": "",
