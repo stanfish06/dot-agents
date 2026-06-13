@@ -14,6 +14,8 @@ Opt-in lifecycle hooks for agent harnesses.
   passes. See `SIMPLIFY-IGNORE.md`.
 - `skill-check-reminder.sh` re-injects the skill-first workflow reminder on
   every Claude `UserPromptSubmit`.
+- `codex-skill-check-reminder.sh` re-injects the skill-first workflow reminder
+  on every Codex `UserPromptSubmit`.
 - `claude-notify.sh` and `claude-stop-summary.sh` preserve the notification and
   stop-summary hooks from `stanfish06/my-configs`.
 - `codex-stop-summary.sh` preserves the Codex stop-summary notification hook
