@@ -23,7 +23,7 @@ work. If a relevant skill exists for the task category, invoke it; a verbal
 4. If native matching is unclear, query the vault instead of guessing:
    ```bash
    cd ~/.agents/skills
-   rg -li "<concept>|<synonym>" *.md
+   rg -li "<concept>|<synonym>" -g '*.md' .
    obsidian-cli search query="<concept>" limit=8
    graphify query "Which skills cover <task>?" --graph graphify-out/graph.json --budget 1500
    ```
