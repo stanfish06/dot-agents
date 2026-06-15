@@ -17,6 +17,8 @@ artifacts stay out of git.
 - `codex/` - selected files from `~/.codex`: global instructions, config, default
   rules, hooks, and the `hatch-pet` skill.
 - `pi-agent/` - selected Pi agent config, currently the `mypi` theme.
+- `prompts/` - reusable system prompts and live prompt templates for agent
+  slash-command surfaces.
 - `hooks/` - opt-in Claude hook scripts and hook JSON examples.
 - `scripts/` - reserved for install, refresh, and validation helpers.
 - `docs/sources.md` - notes from the reference repos and the local import.
@@ -39,8 +41,9 @@ repo also tracks harness configuration around them.
 
 The installer is symlink-first for agent config. It initializes the `skills/`
 submodule, delegates skill installation to `skills/install-skills.sh`, then links
-the selected Claude, Codex, and Pi config into their agent homes. Existing
-non-matching files are moved aside to timestamped backups.
+the selected Claude, Codex, and Pi config into their agent homes. It also links
+`prompts/live-prompts/*.md` into each agent's live prompt or command directory.
+Existing non-matching files are moved aside to timestamped backups.
 
 Preview changes without touching your home directory:
 

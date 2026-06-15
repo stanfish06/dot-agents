@@ -10,6 +10,7 @@ SKIP_CONFIG=0
 SKIP_CLAUDE=0
 SKIP_CODEX=0
 SKIP_PI=0
+SKIP_PROMPTS=0
 FORCE=0
 ALLOW_DIRTY_SKILLS=0
 
@@ -26,6 +27,7 @@ Options:
   --skip-claude         Do not symlink Claude config.
   --skip-codex          Do not symlink Codex config.
   --skip-pi             Do not symlink Pi agent config.
+  --skip-prompts        Do not symlink prompts/live-prompts/*.md.
   --force               Replace existing non-matching targets without backups.
   --allow-dirty-skills  Run skills/install-skills.sh even if the submodule is dirty.
   -h, --help            Show this help.
@@ -35,6 +37,7 @@ Default behavior:
   - Run skills/install-skills.sh, which delegates skill installation to Vercel's
     skills CLI and installs graphify.
   - Symlink selected Claude, Codex, and Pi config paths into their agent homes.
+  - Symlink live prompts into each agent's prompt/command directory.
   - Move any existing non-matching target to TARGET.backup-<timestamp>.
 EOF
 }
@@ -47,6 +50,7 @@ while [ "$#" -gt 0 ]; do
     --skip-claude) SKIP_CLAUDE=1 ;;
     --skip-codex) SKIP_CODEX=1 ;;
     --skip-pi) SKIP_PI=1 ;;
+    --skip-prompts) SKIP_PROMPTS=1 ;;
     --force) FORCE=1 ;;
     --allow-dirty-skills) ALLOW_DIRTY_SKILLS=1 ;;
     -h|--help) usage; exit 0 ;;
@@ -122,6 +126,29 @@ install_link() {
   run ln -s "$source" "$target"
 }
 
+install_live_prompts() {
+  local agent="$1"
+  local target_dir="$2"
+  local source_dir="$ROOT/prompts/live-prompts"
+  local found=0
+  local source
+
+  if [ ! -d "$source_dir" ]; then
+    log "Skip: $agent live prompts (missing $source_dir)"
+    return 0
+  fi
+
+  for source in "$source_dir"/*.md; do
+    [ -e "$source" ] || continue
+    found=1
+    install_link "$source" "$target_dir/$(basename "$source")"
+  done
+
+  if [ "$found" -eq 0 ]; then
+    log "Skip: $agent live prompts (no .md files)"
+  fi
+}
+
 skills_tree_dirty() {
   ! git -C "$ROOT/skills" diff --quiet ||
     ! git -C "$ROOT/skills" diff --cached --quiet ||
@@ -152,6 +179,9 @@ install_claude() {
   install_link "$ROOT/claude/commands/agent-skills" "$HOME/.claude/commands/agent-skills"
   install_link "$ROOT/claude/skills/graphify" "$HOME/.claude/skills/graphify"
   install_link "$ROOT/hooks" "$HOME/.claude/hooks/dot-agents"
+  if [ "$SKIP_PROMPTS" -eq 0 ]; then
+    install_live_prompts "Claude" "$HOME/.claude/commands"
+  fi
 
   install_link "$ROOT/agents/code-reviewer.md" "$HOME/.claude/agents/code-reviewer.md"
   install_link "$ROOT/agents/security-auditor.md" "$HOME/.claude/agents/security-auditor.md"
@@ -167,11 +197,17 @@ install_codex() {
   install_link "$ROOT/codex/rules/default.rules" "$HOME/.codex/rules/default.rules"
   install_link "$ROOT/codex/skills/hatch-pet" "$HOME/.codex/skills/hatch-pet"
   install_link "$ROOT/hooks" "$HOME/.codex/hooks/dot-agents"
+  if [ "$SKIP_PROMPTS" -eq 0 ]; then
+    install_live_prompts "Codex" "$HOME/.codex/prompts"
+  fi
 }
 
 install_pi() {
   log "==> Pi"
   install_link "$ROOT/pi-agent/themes/mypi.json" "$HOME/.pi/agent/themes/mypi.json"
+  if [ "$SKIP_PROMPTS" -eq 0 ]; then
+    install_live_prompts "Pi" "$HOME/.pi/agent/prompts"
+  fi
 }
 
 main() {
