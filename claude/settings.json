@@ -51,7 +51,7 @@
       }
     }
   },
-  "effortLevel": "high",
+  "effortLevel": "xhigh",
   "switchModelsOnFlag": false,
   "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": true
 }
