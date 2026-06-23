@@ -17,6 +17,10 @@ artifacts stay out of git.
 - `codex/` - selected files from `~/.codex`: global instructions, config, default
   rules, hooks, and the `hatch-pet` skill.
 - `pi-agent/` - selected Pi agent config, currently the `mypi` theme.
+- `opencode/` - selected opencode config: global `AGENTS.md` operating guide,
+  `opencode.jsonc`, `tui.json` + `themes/mypi.json` (the Pi theme ported to
+  opencode's theme format). opencode auto-loads skills from `~/.agents/skills/`
+  and `~/.claude/skills/`, so no separate skill wiring is needed.
 - `prompts/` - reusable system prompts and live prompt templates for agent
   slash-command surfaces.
 - `hooks/` - opt-in Claude hook scripts and hook JSON examples.
@@ -41,8 +45,8 @@ repo also tracks harness configuration around them.
 
 The installer is symlink-first for agent config. It initializes the `skills/`
 submodule, delegates skill installation to `skills/install-skills.sh`, then links
-the selected Claude, Codex, and Pi config into their agent homes. It also links
-`prompts/live-prompts/*.md` into each agent's live prompt or command directory.
+the selected Claude, Codex, Pi, and opencode config into their agent homes. It also
+links `prompts/live-prompts/*.md` into each agent's live prompt or command directory.
 Existing non-matching files are moved aside to timestamped backups.
 
 Preview changes without touching your home directory:
@@ -80,6 +84,10 @@ rsync -a ~/.codex/hooks.json codex/
 rsync -a ~/.codex/rules/default.rules codex/rules/
 rsync -a ~/.codex/skills/hatch-pet codex/skills/
 rsync -a ~/.pi/agent/themes/mypi.json pi-agent/themes/
+rsync -a ~/.config/opencode/AGENTS.md opencode/
+rsync -a ~/.config/opencode/opencode.jsonc opencode/
+rsync -a ~/.config/opencode/tui.json opencode/
+rsync -a ~/.config/opencode/themes/mypi.json opencode/themes/
 ```
 
 Do not import `auth.json`, `.claude.json`, histories, sessions, plugin caches,
