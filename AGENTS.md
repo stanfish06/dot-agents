@@ -30,4 +30,8 @@ state.
   `~/.claude/skills/graphify`.
 - Codex source: `~/.codex/AGENTS.md`, `~/.codex/config.toml`,
   `~/.codex/rules/default.rules`, and `~/.codex/skills/hatch-pet`.
+- opencode source: `~/.config/opencode/AGENTS.md` and
+  `~/.config/opencode/opencode.jsonc`. opencode auto-loads skills from
+  `~/.agents/skills/` and `~/.claude/skills/`, so no separate skill wiring
+  is needed.
 - Skills source: `https://github.com/stanfish06/my-skills.git`.
