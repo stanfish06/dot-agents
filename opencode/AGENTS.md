@@ -60,6 +60,18 @@ skill.
   before relying on remembered APIs.
 - For creating or editing skills, use `skill-builder` or `writing-skills`.
 
+## Context hygiene
+
+- For context-heavy work — sweeping many files, reading logs or
+  transcripts, multi-repo exploration, or broad searches where you only
+  need the conclusion — proactively propose or use subagent fan-out (the
+  `dispatching-parallel-agents` / `subagent-driven-development` skills)
+  instead of reading everything inline, so the main thread's context
+  stays clean. Raise the option before the heavy reading, not after.
+- When a session has clearly drifted across unrelated tasks or piled up
+  stale context, say so and suggest starting fresh with a tight handoff.
+  The `/context-check` live prompt runs this assessment on demand.
+
 ## Establishing context
 
 - **Read a dependency's real code** instead of guessing its API:
