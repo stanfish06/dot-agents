@@ -218,6 +218,8 @@ install_opencode() {
   log "==> opencode"
   install_link "$ROOT/opencode/AGENTS.md" "$HOME/.config/opencode/AGENTS.md"
   install_link "$ROOT/opencode/opencode.jsonc" "$HOME/.config/opencode/opencode.jsonc"
+  install_link "$ROOT/opencode/tui.json" "$HOME/.config/opencode/tui.json"
+  install_link "$ROOT/opencode/themes/mypi.json" "$HOME/.config/opencode/themes/mypi.json"
   install_link "$ROOT/agents/code-reviewer.md" "$HOME/.config/opencode/agent/code-reviewer.md"
   install_link "$ROOT/agents/security-auditor.md" "$HOME/.config/opencode/agent/security-auditor.md"
   install_link "$ROOT/agents/test-engineer.md" "$HOME/.config/opencode/agent/test-engineer.md"

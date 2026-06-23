@@ -17,8 +17,9 @@ artifacts stay out of git.
 - `codex/` - selected files from `~/.codex`: global instructions, config, default
   rules, hooks, and the `hatch-pet` skill.
 - `pi-agent/` - selected Pi agent config, currently the `mypi` theme.
-- `opencode/` - selected opencode config: global `AGENTS.md` operating guide
-  and `opencode.jsonc`. opencode auto-loads skills from `~/.agents/skills/`
+- `opencode/` - selected opencode config: global `AGENTS.md` operating guide,
+  `opencode.jsonc`, `tui.json` + `themes/mypi.json` (the Pi theme ported to
+  opencode's theme format). opencode auto-loads skills from `~/.agents/skills/`
   and `~/.claude/skills/`, so no separate skill wiring is needed.
 - `prompts/` - reusable system prompts and live prompt templates for agent
   slash-command surfaces.
