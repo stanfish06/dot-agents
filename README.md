@@ -86,6 +86,8 @@ rsync -a ~/.codex/skills/hatch-pet codex/skills/
 rsync -a ~/.pi/agent/themes/mypi.json pi-agent/themes/
 rsync -a ~/.config/opencode/AGENTS.md opencode/
 rsync -a ~/.config/opencode/opencode.jsonc opencode/
+rsync -a ~/.config/opencode/tui.json opencode/
+rsync -a ~/.config/opencode/themes/mypi.json opencode/themes/
 ```
 
 Do not import `auth.json`, `.claude.json`, histories, sessions, plugin caches,
