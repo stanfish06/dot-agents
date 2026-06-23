@@ -71,6 +71,13 @@ as repo-managed scripts. They send a simple desktop notification by default; set
 `DOT_AGENTS_STOP_SUMMARY_WITH_CLAUDE=1` to let them ask Claude for a short stop
 summary before notifying.
 
+`prompts/system-prompts/deer-flow/` holds portable prompt templates extracted from
+[bytedance/deer-flow](https://github.com/bytedance/deer-flow) 2.0 (MIT) — the
+lead-agent system prompt, a subagent orchestration prompt, and structured
+memory-management prompts. The deer-flow `skills/public` set is being imported
+separately into the `stanfish06/my-skills` vault rather than here, per the
+skills-go-in-the-submodule rule.
+
 ## Refresh From Home
 
 The current import was intentionally narrow. To refresh it, copy only the same
