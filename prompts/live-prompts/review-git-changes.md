@@ -1,7 +1,7 @@
 ---
 description: Review git/github changes
 ---
-# Skills to use
+# Skills to use if available
 - gh-cli
 - git-workflow-and-version
 - caveman
