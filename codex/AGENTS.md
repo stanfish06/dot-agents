@@ -149,6 +149,19 @@ Know these by name so you reach for them automatically.
 
 ---
 
+## Context hygiene
+
+- For context-heavy work — sweeping many files, reading logs or transcripts, multi-repo
+  exploration, or broad searches where you only need the conclusion — proactively propose or
+  use subagent fan-out (`subagent-driven-development` / `dispatching-parallel-agents`) instead
+  of reading everything inline, so the main thread's context stays clean. Raise the option
+  before the heavy reading, not after.
+- When a session has clearly drifted across unrelated tasks or piled up stale context, say so
+  and suggest starting fresh with a tight handoff. The `/prompts:context-check` live prompt
+  runs this assessment on demand.
+
+---
+
 ## Maintaining this library
 
 - Skills are managed by the Vercel `skills` CLI; folders live at the repo root and are never

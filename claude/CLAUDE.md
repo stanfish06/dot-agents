@@ -47,6 +47,18 @@ work. If a relevant skill exists for the task category, invoke it; a verbal
   relying on remembered APIs.
 - For creating or editing skills, use `skill-builder` or `writing-skills`.
 
+## Context hygiene
+
+- For context-heavy work - sweeping many files, reading logs or transcripts,
+  multi-repo exploration, or broad searches where you only need the conclusion -
+  proactively propose or use subagent fan-out (the `Explore` agent or the
+  `dispatching-parallel-agents` skill) instead of reading everything inline, so
+  the main thread's context stays clean. Raise the option before the heavy
+  reading, not after.
+- When a session has clearly drifted across unrelated tasks or piled up stale
+  context, say so and suggest starting fresh with a tight handoff. The
+  `/context-check` live prompt runs this assessment on demand.
+
 ## graphify
 
 - **graphify** (`~/.claude/skills/graphify/SKILL.md`) - any input to knowledge graph. Trigger: `/graphify`
