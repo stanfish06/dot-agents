@@ -9,9 +9,6 @@ trust_level = "trusted"
 [projects."/Users/stan/Git/research-agent"]
 trust_level = "trusted"
 
-[projects."/Users/stan/Documents/Codex/2026-06-25/in"]
-trust_level = "trusted"
-
 [plugins."github@openai-curated"]
 enabled = true
 
@@ -87,9 +84,3 @@ generate_memories = true
 use_memories = true
 
 [hooks.state]
-
-[hooks.state."/Users/stan/.codex/hooks.json:user_prompt_submit:0:0"]
-trusted_hash = "sha256:805a129190757052d03eb77831ae71e778ca623ea7ad3d301be3d684b0ec1767"
-
-[hooks.state."/Users/stan/.codex/hooks.json:stop:0:0"]
-trusted_hash = "sha256:039b108bcf52155e98abddef5fdafe827cc7f1ec9214d5a0a880b0d65ada6dc6"
