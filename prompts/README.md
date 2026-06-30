@@ -37,13 +37,18 @@ references rather than something we run verbatim:
 
 ## Live prompts
 
-Put reusable during-session prompts in `live-prompts/*.md`. Run
-`scripts/install.sh` to symlink each file into the agent-specific live prompt
+Reusable during-session workflows live canonically as skills under
+`skills/<name>/SKILL.md`. The matching files in `live-prompts/*.md` are thin
+compatibility adapters that invoke those skills. Run `scripts/install.sh` to
+install the skills and symlink each adapter into the agent-specific live prompt
 surface:
 
 - Pi: `~/.pi/agent/prompts/<name>.md`, invoked as `/<name>`.
 - Claude: `~/.claude/commands/<name>.md`, invoked as `/<name>`.
-- Codex: `~/.codex/prompts/<name>.md`, invoked as `/prompts:<name>`.
+- opencode: `~/.config/opencode/command/<name>.md`, invoked as `/<name>`.
+- Codex desktop: the installed skills appear in the `/` menu.
+- Codex CLI/IDE: `~/.codex/prompts/<name>.md`, invoked as
+  `/prompts:<name>`.
 
 For Pi you can still pass a prompt directory explicitly:
 
@@ -51,6 +56,7 @@ For Pi you can still pass a prompt directory explicitly:
 pi --prompt-template prompts/live-prompts
 ```
 
-Codex custom prompts are deprecated but still useful for small personal slash
-shortcuts. Use skills instead when a workflow should be shareable, implicitly
-invoked, or supported by references/scripts.
+Codex custom prompts are deprecated, so the desktop app uses the skill directly
+while the CLI/IDE adapter preserves the older shortcut. Because every live
+prompt now depends on its matching skill, use `--skip-skills` only when those
+skills were installed previously.

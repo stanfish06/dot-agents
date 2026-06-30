@@ -23,7 +23,7 @@ Install this dot-agents checkout into the current user's agent homes.
 
 Options:
   --dry-run             Print actions without changing files.
-  --skip-skills         Do not run skills/install-skills.sh.
+  --skip-skills         Do not install skills; live prompt adapters require a prior skill install.
   --skip-config         Do not symlink Claude/Codex/Pi config.
   --skip-claude         Do not symlink Claude config.
   --skip-codex          Do not symlink Codex config.
@@ -40,7 +40,7 @@ Default behavior:
     skills CLI and installs graphify.
   - Symlink selected Claude, Codex, Pi, and opencode config paths into
     their agent homes.
-  - Symlink live prompts into each agent's prompt/command directory.
+  - Symlink skill-backed live prompt adapters into each agent's prompt/command directory.
   - Move any existing non-matching target to TARGET.backup-<timestamp>.
 EOF
 }

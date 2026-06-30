@@ -21,8 +21,8 @@ artifacts stay out of git.
   `opencode.jsonc`, `tui.json` + `themes/mypi.json` (the Pi theme ported to
   opencode's theme format). opencode auto-loads skills from `~/.agents/skills/`
   and `~/.claude/skills/`, so no separate skill wiring is needed.
-- `prompts/` - reusable system prompts and live prompt templates for agent
-  slash-command surfaces.
+- `prompts/` - reusable system prompts and compatibility adapters for live
+  workflow command surfaces.
 - `hooks/` - opt-in Claude hook scripts and hook JSON examples.
 - `scripts/` - reserved for install, refresh, and validation helpers.
 - `docs/sources.md` - notes from the reference repos and the local import.
@@ -45,9 +45,10 @@ repo also tracks harness configuration around them.
 
 The installer is symlink-first for agent config. It initializes the `skills/`
 submodule, delegates skill installation to `skills/install-skills.sh`, then links
-the selected Claude, Codex, Pi, and opencode config into their agent homes. It also
-links `prompts/live-prompts/*.md` into each agent's live prompt or command directory.
-Existing non-matching files are moved aside to timestamped backups.
+the selected Claude, Codex, Pi, and opencode config into their agent homes. It
+also exposes live workflows through native commands on Claude, Pi, opencode,
+and Codex CLI/IDE, and through the Codex desktop `/` skill menu. Existing
+non-matching files are moved aside to timestamped backups.
 
 Preview changes without touching your home directory:
 
