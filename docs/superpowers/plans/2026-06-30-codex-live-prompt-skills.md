@@ -53,7 +53,7 @@ Create `skills/check-repo-status/SKILL.md`:
 ```markdown
 ---
 name: check-repo-status
-description: Build a concise, read-only startup briefing for the current repository. Use only when the user explicitly invokes this skill to inspect repository state, recent activity, and relevant GitHub work.
+description: Use when the user explicitly asks for a concise, read-only startup briefing covering repository state, recent activity, and relevant GitHub work.
 ---
 
 # Skills to use if available
@@ -95,7 +95,7 @@ Create `skills/context-check/SKILL.md`:
 ```markdown
 ---
 name: context-check
-description: Gut-check the current conversation for task mixing, stale context, and whether the next step should continue, start fresh, or be delegated. Use only when the user explicitly invokes this skill.
+description: Use when the user explicitly asks whether the current conversation has mixed tasks, accumulated stale context, or should continue, start fresh, or delegate its next step.
 ---
 
 # Skills to use if available
@@ -150,7 +150,7 @@ Create `skills/review-git-changes/SKILL.md`:
 ```markdown
 ---
 name: review-git-changes
-description: Review local Git changes and related GitHub issues or pull requests for bugs, security problems, regressions, and coordination gaps. Use only when the user explicitly invokes this skill.
+description: Use when the user explicitly asks to review local Git changes and related GitHub issues or pull requests for bugs, security problems, regressions, and coordination gaps.
 ---
 
 # Skills to use if available
@@ -286,7 +286,8 @@ navigation.
 
 - [ ] **Step 1: Write the validator before changing the prompt bodies**
 
-Create `scripts/validate-live-prompts.sh`:
+Create `scripts/validate-live-prompts.sh`. It accepts optional prompt names so
+each skill can be tested before moving to the next one:
 
 ```bash
 #!/usr/bin/env bash
@@ -296,14 +297,30 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROMPT_DIR="$ROOT/prompts/live-prompts"
 SKILL_DIR="$ROOT/skills"
 
-found=0
-for prompt in "$PROMPT_DIR"/*.md; do
-  [ -e "$prompt" ] || continue
-  found=1
-  name="$(basename "$prompt" .md)"
+names=()
+if [ "$#" -gt 0 ]; then
+  names=("$@")
+else
+  for prompt in "$PROMPT_DIR"/*.md; do
+    [ -e "$prompt" ] || continue
+    names+=("$(basename "$prompt" .md)")
+  done
+fi
+
+[ "${#names[@]}" -gt 0 ] || {
+  echo "ERROR: no live prompts found in $PROMPT_DIR" >&2
+  exit 1
+}
+
+for name in "${names[@]}"; do
+  prompt="$PROMPT_DIR/$name.md"
   skill="$SKILL_DIR/$name/SKILL.md"
   metadata="$SKILL_DIR/$name/agents/openai.yaml"
 
+  [ -f "$prompt" ] || {
+    echo "ERROR: missing live prompt: $prompt" >&2
+    exit 1
+  }
   [ -f "$skill" ] || {
     echo "ERROR: missing canonical skill: $skill" >&2
     exit 1
@@ -326,21 +343,21 @@ for prompt in "$PROMPT_DIR"/*.md; do
   }
 done
 
-[ "$found" -eq 1 ] || {
-  echo "ERROR: no live prompts found in $PROMPT_DIR" >&2
-  exit 1
-}
-
-echo "OK: all live prompts map to explicit-only skills"
+echo "OK: selected live prompts map to explicit-only skills"
 ```
 
-- [ ] **Step 2: Run the validator and confirm it fails against the embedded prompts**
+- [ ] **Step 2: Run the validator and confirm each missing skill fails before creation**
 
 ```bash
-bash scripts/validate-live-prompts.sh
+for name in check-repo-status context-check review-git-changes; do
+  if bash scripts/validate-live-prompts.sh "$name"; then
+    echo "ERROR: expected missing skill failure for $name" >&2
+    exit 1
+  fi
+done
 ```
 
-Expected: failure containing `prompt does not invoke canonical skill`.
+Expected: each invocation fails with `missing canonical skill`.
 
 - [ ] **Step 3: Replace each embedded workflow with a thin adapter**
 
@@ -375,7 +392,7 @@ bash -n scripts/validate-live-prompts.sh
 Expected:
 
 ```text
-OK: all live prompts map to explicit-only skills
+OK: selected live prompts map to explicit-only skills
 ```
 
 - [ ] **Step 5: Commit the adapters and validator**
