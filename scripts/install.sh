@@ -202,7 +202,30 @@ install_codex() {
   install_link "$ROOT/codex/skills/hatch-pet" "$HOME/.codex/skills/hatch-pet"
   install_link "$ROOT/hooks" "$HOME/.codex/hooks/dot-agents"
   if [ "$SKIP_PROMPTS" -eq 0 ]; then
-    install_live_prompts "Codex" "$HOME/.codex/prompts"
+    install_codex_skill_prompts
+  fi
+}
+
+install_codex_skill_prompts() {
+  local source_dir="$ROOT/prompts/live-prompts"
+  local skills_dir="$HOME/.codex/skills"
+  local found=0
+  local source stem
+
+  if [ ! -d "$source_dir" ]; then
+    log "Skip: Codex live prompts (missing $source_dir)"
+    return 0
+  fi
+
+  for source in "$source_dir"/*.md; do
+    [ -e "$source" ] || continue
+    found=1
+    stem="$(basename "$source" .md)"
+    install_link "$source" "$skills_dir/$stem/SKILL.md"
+  done
+
+  if [ "$found" -eq 0 ]; then
+    log "Skip: Codex live prompts (no .md files)"
   fi
 }
 
