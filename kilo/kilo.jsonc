@@ -1,0 +1,52 @@
+{
+  "$schema": "https://app.kilo.ai/config.json",
+
+  // Route everything through OpenRouter. The built-in Kilo provider and every
+  // other auto-detected provider are hidden so the model picker only shows
+  // OpenRouter models. Remove this block to mix providers.
+  "enabled_providers": ["openrouter"],
+
+  // Default model, in `provider/model` form. The model id is the OpenRouter
+  // slug (the same one shown at https://openrouter.ai/models). Verify/update
+  // the slug before first run — OpenRouter retires and renames slugs over time.
+  "model": "openrouter/anthropic/claude-sonnet-4.5",
+
+  // Lighter model used for background tasks (title/summary generation).
+  "small_model": "openrouter/anthropic/claude-3.5-haiku",
+
+  "provider": {
+    "openrouter": {
+      // Kilo reads the API key from the first of these env vars that is set.
+      // Export it in your shell profile:  export OPENROUTER_API_KEY="sk-or-..."
+      // Never put the key inline here — this file is checked into git.
+      "env": ["OPENROUTER_API_KEY"],
+
+      "models": {
+        // Per-model options. Anything under `options` is forwarded verbatim to
+        // the OpenRouter AI SDK as `providerOptions.openrouter`, so any field
+        // from the OpenRouter docs (transforms, provider routing, etc.) works.
+        "anthropic/claude-sonnet-4.5": {
+          "options": {
+            // Drop the middle of over-long prompts instead of failing.
+            "transforms": ["middle-out"],
+            // Route to the cheapest qualifying backend and reject
+            // data-collecting providers. See:
+            // https://openrouter.ai/docs/features/provider-routing
+            "provider": {
+              "sort": "price",
+              "data_collection": "deny"
+            }
+          }
+        },
+        "anthropic/claude-3.5-haiku": {
+          "options": {
+            "provider": {
+              "sort": "price",
+              "data_collection": "deny"
+            }
+          }
+        }
+      }
+    }
+  }
+}

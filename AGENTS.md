@@ -34,4 +34,6 @@ state.
   `~/.config/opencode/opencode.jsonc`. opencode auto-loads skills from
   `~/.agents/skills/` and `~/.claude/skills/`, so no separate skill wiring
   is needed.
+- Kilo Code source: `~/.config/kilo/kilo.jsonc`, wired for the OpenRouter
+  provider (BYOK). The API key is read from the `OPENROUTER_API_KEY` env var.
 - Skills source: `https://github.com/stanfish06/my-skills.git`.

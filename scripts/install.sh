@@ -11,6 +11,7 @@ SKIP_CLAUDE=0
 SKIP_CODEX=0
 SKIP_PI=0
 SKIP_OPENCODE=0
+SKIP_KILO=0
 SKIP_PROMPTS=0
 FORCE=0
 ALLOW_DIRTY_SKILLS=0
@@ -29,6 +30,7 @@ Options:
   --skip-codex          Do not symlink Codex config.
   --skip-pi             Do not symlink Pi agent config.
   --skip-opencode       Do not symlink opencode config.
+  --skip-kilo           Do not symlink Kilo Code config.
   --skip-prompts        Do not symlink prompts/live-prompts/*.md.
   --force               Replace existing non-matching targets without backups.
   --allow-dirty-skills  Run skills/install-skills.sh even if the submodule is dirty.
@@ -54,6 +56,7 @@ while [ "$#" -gt 0 ]; do
     --skip-codex) SKIP_CODEX=1 ;;
     --skip-pi) SKIP_PI=1 ;;
     --skip-opencode) SKIP_OPENCODE=1 ;;
+    --skip-kilo) SKIP_KILO=1 ;;
     --skip-prompts) SKIP_PROMPTS=1 ;;
     --force) FORCE=1 ;;
     --allow-dirty-skills) ALLOW_DIRTY_SKILLS=1 ;;
@@ -252,6 +255,11 @@ install_opencode() {
   fi
 }
 
+install_kilo() {
+  log "==> Kilo Code"
+  install_link "$ROOT/kilo/kilo.jsonc" "$HOME/.config/kilo/kilo.jsonc"
+}
+
 main() {
   if [ "$SKIP_SKILLS" -eq 0 ]; then
     install_skills
@@ -286,6 +294,12 @@ main() {
     install_opencode
   else
     log "Skip: opencode"
+  fi
+
+  if [ "$SKIP_KILO" -eq 0 ]; then
+    install_kilo
+  else
+    log "Skip: Kilo Code"
   fi
 }
 

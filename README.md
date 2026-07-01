@@ -21,6 +21,8 @@ artifacts stay out of git.
   `opencode.jsonc`, `tui.json` + `themes/mypi.json` (the Pi theme ported to
   opencode's theme format). opencode auto-loads skills from `~/.agents/skills/`
   and `~/.claude/skills/`, so no separate skill wiring is needed.
+- `kilo/` - Kilo Code config: `kilo.jsonc` wired for OpenRouter (BYOK). The
+  API key is read from the `OPENROUTER_API_KEY` env var, never committed.
 - `prompts/` - reusable system prompts and live prompt templates for agent
   slash-command surfaces.
 - `hooks/` - opt-in Claude hook scripts and hook JSON examples.
@@ -45,9 +47,10 @@ repo also tracks harness configuration around them.
 
 The installer is symlink-first for agent config. It initializes the `skills/`
 submodule, delegates skill installation to `skills/install-skills.sh`, then links
-the selected Claude, Codex, Pi, and opencode config into their agent homes. It also
-links `prompts/live-prompts/*.md` into each agent's live prompt or command directory.
-Existing non-matching files are moved aside to timestamped backups.
+the selected Claude, Codex, Pi, opencode, and Kilo Code config into their agent
+homes. It also links `prompts/live-prompts/*.md` into each agent's live prompt or
+command directory. Existing non-matching files are moved aside to timestamped
+backups.
 
 Preview changes without touching your home directory:
 
@@ -95,8 +98,9 @@ rsync -a ~/.config/opencode/AGENTS.md opencode/
 rsync -a ~/.config/opencode/opencode.jsonc opencode/
 rsync -a ~/.config/opencode/tui.json opencode/
 rsync -a ~/.config/opencode/themes/mypi.json opencode/themes/
+rsync -a ~/.config/kilo/kilo.jsonc kilo/
 ```
 
 Do not import `auth.json`, `.claude.json`, histories, sessions, plugin caches,
-SQLite state, generated images, browser state, Pi auth/session state, or
-temporary folders.
+SQLite state, generated images, browser state, Pi auth/session state, Kilo
+credentials, or temporary folders.

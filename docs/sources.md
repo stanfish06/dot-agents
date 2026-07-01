@@ -66,10 +66,22 @@ Imported from `stanfish06/my-configs`:
 - Pi agent theme from `pi-agent/mypi.json`, installed as
   `~/.pi/agent/themes/mypi.json`.
 
+Imported from Kilo Code docs (https://kilocode.ai/docs):
+
+- `kilo/kilo.jsonc` — global Kilo Code config wired for the OpenRouter
+  provider (BYOK). The provider is enabled via `enabled_providers`, the API
+  key is read from the `OPENROUTER_API_KEY` env var (never committed), and
+  per-model `options` are forwarded to OpenRouter as
+  `providerOptions.openrouter` (transforms + provider routing). Installed as
+  `~/.config/kilo/kilo.jsonc`.
+
 Intentionally excluded:
 
 - `~/.claude.json`, because it is app state with account/cache/project metadata.
 - `~/.codex/auth.json`, OAuth/auth files, and credential-like state.
 - `~/.pi/agent/auth.json`, Pi sessions, and Pi-installed skills.
+- `~/.config/kilo/` credentials, Kilo account/session state, and any
+  `provider.*.options.apiKey` values. The OpenRouter key lives in the
+  `OPENROUTER_API_KEY` env var.
 - histories, sessions, logs, shell snapshots, browser/computer-use state,
   generated images, plugin caches, SQLite databases, and temp folders.
