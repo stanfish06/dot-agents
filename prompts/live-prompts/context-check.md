@@ -1,4 +1,5 @@
 ---
+name: context-check
 description: Gut-check the current session context for task mixing, staleness, and whether to delegate or start fresh
 ---
 

@@ -1,4 +1,5 @@
 ---
+name: check-repo-status
 description: Check repo status and build brief startup context
 ---
 

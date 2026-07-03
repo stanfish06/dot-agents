@@ -1,4 +1,5 @@
 ---
+name: review-git-changes
 description: Review git/github changes
 ---
 # Skills to use if available
