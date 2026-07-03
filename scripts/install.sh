@@ -210,21 +210,24 @@ install_codex() {
 }
 
 install_codex_skill_prompts() {
-  local source_dir="$ROOT/prompts/live-prompts"
+  local prompt_dir="$ROOT/prompts/live-prompts"
+  local skill_source_dir="$ROOT/codex/skills/live-prompts"
   local skills_dir="$HOME/.codex/skills"
   local found=0
-  local source stem
+  local source skill_source stem
 
-  if [ ! -d "$source_dir" ]; then
-    log "Skip: Codex live prompts (missing $source_dir)"
+  if [ ! -d "$prompt_dir" ]; then
+    log "Skip: Codex live prompts (missing $prompt_dir)"
     return 0
   fi
 
-  for source in "$source_dir"/*.md; do
+  for source in "$prompt_dir"/*.md; do
     [ -e "$source" ] || continue
     found=1
     stem="$(basename "$source" .md)"
-    install_link "$source" "$skills_dir/$stem/SKILL.md"
+    skill_source="$skill_source_dir/$stem"
+    [ -d "$skill_source" ] || die "missing Codex live prompt skill: $skill_source"
+    install_link "$skill_source" "$skills_dir/$stem"
   done
 
   if [ "$found" -eq 0 ]; then
