@@ -31,7 +31,7 @@ Options:
   --skip-pi             Do not symlink Pi agent config.
   --skip-opencode       Do not symlink opencode config.
   --skip-kilo           Do not symlink Kilo Code config.
-  --skip-prompts        Do not symlink prompts/live-prompts/*.md.
+  --skip-prompts        Do not install prompts/live-prompts/*.md.
   --force               Replace existing non-matching targets without backups.
   --allow-dirty-skills  Run skills/install-skills.sh even if the submodule is dirty.
   -h, --help            Show this help.
@@ -42,7 +42,7 @@ Default behavior:
     skills CLI and installs graphify.
   - Symlink selected Claude, Codex, Pi, and opencode config paths into
     their agent homes.
-  - Symlink live prompts into each agent's prompt/command directory.
+  - Install live prompts into each agent's native prompt/command surface.
   - Move any existing non-matching target to TARGET.backup-<timestamp>.
 EOF
 }
@@ -133,6 +133,58 @@ install_link() {
   run ln -s "$source" "$target"
 }
 
+install_copy() {
+  local source="$1"
+  local target="$2"
+
+  [ -f "$source" ] && [ ! -L "$source" ] ||
+    die "copy source must be a regular file: $source"
+  ensure_parent_dir "$target"
+
+  if [ -f "$target" ] && [ ! -L "$target" ] && cmp -s "$source" "$target"; then
+    log "OK: $target matches $source"
+    return 0
+  fi
+
+  if [ -e "$target" ] || [ -L "$target" ]; then
+    if [ "$FORCE" -eq 1 ]; then
+      log "Replace: $target"
+      run rm -rf "$target"
+    else
+      local backup
+      backup="$(backup_name_for "$target")"
+      log "Backup: $target -> $backup"
+      run mv "$target" "$backup"
+    fi
+  fi
+
+  log "Copy: $source -> $target"
+  run cp "$source" "$target"
+}
+
+ensure_real_dir() {
+  local target="$1"
+
+  if [ -d "$target" ] && [ ! -L "$target" ]; then
+    return 0
+  fi
+
+  if [ -e "$target" ] || [ -L "$target" ]; then
+    if [ "$FORCE" -eq 1 ]; then
+      log "Replace: $target"
+      run rm -rf "$target"
+    else
+      local backup
+      backup="$(backup_name_for "$target")"
+      log "Backup: $target -> $backup"
+      run mv "$target" "$backup"
+    fi
+  fi
+
+  log "Directory: $target"
+  run mkdir -p "$target"
+}
+
 install_live_prompts() {
   local agent="$1"
   local target_dir="$2"
@@ -211,10 +263,9 @@ install_codex() {
 
 install_codex_skill_prompts() {
   local prompt_dir="$ROOT/prompts/live-prompts"
-  local skill_source_dir="$ROOT/codex/skills/live-prompts"
   local skills_dir="$HOME/.codex/skills"
   local found=0
-  local source skill_source stem
+  local source stem target_dir
 
   if [ ! -d "$prompt_dir" ]; then
     log "Skip: Codex live prompts (missing $prompt_dir)"
@@ -225,9 +276,9 @@ install_codex_skill_prompts() {
     [ -e "$source" ] || continue
     found=1
     stem="$(basename "$source" .md)"
-    skill_source="$skill_source_dir/$stem"
-    [ -d "$skill_source" ] || die "missing Codex live prompt skill: $skill_source"
-    install_link "$skill_source" "$skills_dir/$stem"
+    target_dir="$skills_dir/$stem"
+    ensure_real_dir "$target_dir"
+    install_copy "$source" "$target_dir/SKILL.md"
   done
 
   if [ "$found" -eq 0 ]; then

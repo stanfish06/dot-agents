@@ -37,10 +37,9 @@ references rather than something we run verbatim:
 
 ## Live prompts
 
-Live prompts are also valid Codex skills. Their canonical Markdown lives at
-`codex/skills/live-prompts/<name>/SKILL.md`; `live-prompts/<name>.md` is a
-compatibility symlink to the same file so every agent uses one unchanged prompt
-body.
+The regular Markdown files in `live-prompts/` are the canonical source for
+every agent. Each file is also a valid Codex skill and must include both `name`
+and `description` in its YAML frontmatter.
 
 Run `scripts/install.sh` to expose each prompt through the agent's native
 surface:
@@ -48,12 +47,13 @@ surface:
 - Pi: `~/.pi/agent/prompts/<name>.md`, invoked as `/<name>`.
 - Claude: `~/.claude/commands/<name>.md`, invoked as `/<name>`.
 - opencode: `~/.config/opencode/command/<name>.md`, invoked as `/<name>`.
-- Codex: `~/.codex/skills/<name>/`, invoked with `$<name>` or selected from the
-  `/` menu.
+- Codex: a regular copy at `~/.codex/skills/<name>/SKILL.md`, invoked with
+  `$<name>` or selected from the `/` menu.
 
-Codex must receive a symlink to the whole skill directory. It does not discover
-a real directory containing a symlinked `SKILL.md`. Each canonical `SKILL.md`
-must include both `name` and `description` in its YAML frontmatter.
+Claude, Pi, and opencode receive symlinks to the canonical files. Codex receives
+regular installed copies because its skill loader does not discover a symlinked
+`SKILL.md`. Rerun `scripts/install.sh` after editing a live prompt to refresh
+the Codex copies.
 
 For Pi you can still pass a prompt directory explicitly:
 
@@ -61,12 +61,9 @@ For Pi you can still pass a prompt directory explicitly:
 pi --prompt-template prompts/live-prompts
 ```
 
-To add a live prompt, create its canonical Codex skill first, then add the flat
-compatibility link:
+To add a live prompt, create one canonical file and rerun the installer:
 
 ```bash
-mkdir -p codex/skills/live-prompts/<name>
-# Write codex/skills/live-prompts/<name>/SKILL.md.
-ln -s ../../codex/skills/live-prompts/<name>/SKILL.md \
-  prompts/live-prompts/<name>.md
+# Write prompts/live-prompts/<name>.md with name and description frontmatter.
+scripts/install.sh
 ```
