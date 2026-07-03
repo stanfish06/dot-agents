@@ -37,13 +37,23 @@ references rather than something we run verbatim:
 
 ## Live prompts
 
-Put reusable during-session prompts in `live-prompts/*.md`. Run
-`scripts/install.sh` to symlink each file into the agent-specific live prompt
+The regular Markdown files in `live-prompts/` are the canonical source for
+every agent. Each file is also a valid Codex skill and must include both `name`
+and `description` in its YAML frontmatter.
+
+Run `scripts/install.sh` to expose each prompt through the agent's native
 surface:
 
 - Pi: `~/.pi/agent/prompts/<name>.md`, invoked as `/<name>`.
 - Claude: `~/.claude/commands/<name>.md`, invoked as `/<name>`.
-- Codex: `~/.codex/prompts/<name>.md`, invoked as `/prompts:<name>`.
+- opencode: `~/.config/opencode/command/<name>.md`, invoked as `/<name>`.
+- Codex: a regular copy at `~/.codex/skills/<name>/SKILL.md`, invoked with
+  `$<name>` or selected from the `/` menu.
+
+Claude, Pi, and opencode receive symlinks to the canonical files. Codex receives
+regular installed copies because its skill loader does not discover a symlinked
+`SKILL.md`. Rerun `scripts/install.sh` after editing a live prompt to refresh
+the Codex copies.
 
 For Pi you can still pass a prompt directory explicitly:
 
@@ -51,6 +61,9 @@ For Pi you can still pass a prompt directory explicitly:
 pi --prompt-template prompts/live-prompts
 ```
 
-Codex custom prompts are deprecated but still useful for small personal slash
-shortcuts. Use skills instead when a workflow should be shareable, implicitly
-invoked, or supported by references/scripts.
+To add a live prompt, create one canonical file and rerun the installer:
+
+```bash
+# Write prompts/live-prompts/<name>.md with name and description frontmatter.
+scripts/install.sh
+```

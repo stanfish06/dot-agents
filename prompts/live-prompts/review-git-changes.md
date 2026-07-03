@@ -1,4 +1,5 @@
 ---
+name: review-git-changes
 description: Review git/github changes
 ---
 # Skills to use if available
@@ -18,7 +19,7 @@ description: Review git/github changes
     - Need change to issue status?
     - Need create sub-issues?
     - Need to add some comments?
-        - if there are old comments, summarize them 
+        - if there are old comments, summarize them
 - Briefly screen through open PRs and answer
     - Are these local changes related to certain prs?
         - if so, are there redundant local/remote changes?
