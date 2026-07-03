@@ -37,13 +37,23 @@ references rather than something we run verbatim:
 
 ## Live prompts
 
-Put reusable during-session prompts in `live-prompts/*.md`. Run
-`scripts/install.sh` to symlink each file into the agent-specific live prompt
+Live prompts are also valid Codex skills. Their canonical Markdown lives at
+`codex/skills/live-prompts/<name>/SKILL.md`; `live-prompts/<name>.md` is a
+compatibility symlink to the same file so every agent uses one unchanged prompt
+body.
+
+Run `scripts/install.sh` to expose each prompt through the agent's native
 surface:
 
 - Pi: `~/.pi/agent/prompts/<name>.md`, invoked as `/<name>`.
 - Claude: `~/.claude/commands/<name>.md`, invoked as `/<name>`.
-- Codex: `~/.codex/prompts/<name>.md`, invoked as `/prompts:<name>`.
+- opencode: `~/.config/opencode/command/<name>.md`, invoked as `/<name>`.
+- Codex: `~/.codex/skills/<name>/`, invoked with `$<name>` or selected from the
+  `/` menu.
+
+Codex must receive a symlink to the whole skill directory. It does not discover
+a real directory containing a symlinked `SKILL.md`. Each canonical `SKILL.md`
+must include both `name` and `description` in its YAML frontmatter.
 
 For Pi you can still pass a prompt directory explicitly:
 
@@ -51,6 +61,12 @@ For Pi you can still pass a prompt directory explicitly:
 pi --prompt-template prompts/live-prompts
 ```
 
-Codex custom prompts are deprecated but still useful for small personal slash
-shortcuts. Use skills instead when a workflow should be shareable, implicitly
-invoked, or supported by references/scripts.
+To add a live prompt, create its canonical Codex skill first, then add the flat
+compatibility link:
+
+```bash
+mkdir -p codex/skills/live-prompts/<name>
+# Write codex/skills/live-prompts/<name>/SKILL.md.
+ln -s ../../codex/skills/live-prompts/<name>/SKILL.md \
+  prompts/live-prompts/<name>.md
+```
