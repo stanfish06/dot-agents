@@ -27,6 +27,8 @@ artifacts stay out of git.
   slash-command surfaces.
 - `hooks/` - opt-in Claude hook scripts and hook JSON examples.
 - `scripts/` - reserved for install, refresh, and validation helpers.
+- `spec/` - notes and future harness experiments for spec-driven development
+  (catalog of mainstream SDD tools, local templates later). See `spec/README.md`.
 - `docs/sources.md` - notes from the reference repos and the local import.
 
 ## First Checkout

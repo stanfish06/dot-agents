@@ -21,6 +21,9 @@ state.
   unless the file is meant to guide this repository itself.
 - Put future lifecycle hook experiments under `hooks/`.
 - Put refresh/install/validation helpers under `scripts/`.
+- Put spec-driven development notes, templates, and SDD harness experiments
+  under `spec/` (see `spec/README.md`). Do not force third-party SDD products
+  into every agent home by default.
 - Update `README.md` when the layout changes.
 - After changing the submodule, verify with `git submodule status`.
 
