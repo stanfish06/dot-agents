@@ -37,3 +37,19 @@ state.
 - Kilo Code source: `~/.config/kilo/kilo.jsonc`, wired for the OpenRouter
   provider (BYOK). The API key is read from the `OPENROUTER_API_KEY` env var.
 - Skills source: `https://github.com/stanfish06/my-skills.git`.
+
+## Office Files
+
+- For any task involving Word (`.docx`), Excel (`.xlsx`/`.csv`), or PowerPoint
+  (`.pptx`) files, check and invoke the OfficeCLI skills before acting. Use
+  `officecli-docx`, `officecli-xlsx`, or `officecli-pptx` for format-specific
+  work and `officecli` for general or cross-format work.
+- Load the matching specialized skill when applicable:
+  `officecli-academic-paper`, `officecli-data-dashboard`,
+  `officecli-financial-model`, `officecli-pitch-deck`,
+  `officecli-word-form`, `morph-ppt`, or `morph-ppt-3d`. Scene-layer skills
+  inherit their base OfficeCLI skill, so read both when the specialized skill
+  says to do so.
+- Follow the selected skill's help-first and delivery/visual-validation rules.
+  Use `officecli help` when command syntax or properties are uncertain instead
+  of guessing.

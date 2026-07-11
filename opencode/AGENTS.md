@@ -59,6 +59,13 @@ skill.
 - For unfamiliar dependencies, use `opensrc` or source-grounding skills
   before relying on remembered APIs.
 - For creating or editing skills, use `skill-builder` or `writing-skills`.
+- For any Word (`.docx`), Excel (`.xlsx`/`.csv`), or PowerPoint (`.pptx`) task,
+  invoke `officecli-docx`, `officecli-xlsx`, or `officecli-pptx` before acting;
+  use `officecli` for general or cross-format work. Also load the matching
+  specialized skill for academic papers, dashboards, financial models, pitch
+  decks, fillable Word forms, or Morph presentations. Follow its inherited
+  base-skill, help-first, and delivery/visual-validation requirements, and run
+  `officecli help` instead of guessing syntax or properties.
 
 ## Context hygiene
 
