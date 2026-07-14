@@ -41,7 +41,7 @@ Imported from Codex:
 
 Added as a submodule:
 
-- `skills/` -> `https://github.com/stanfish06/my-skills.git`
+- `skills/` -> `git@github.com:stanfish06/skillquarium.git`
 
 Imported from `addyosmani/agent-skills`:
 

@@ -16,7 +16,7 @@ state.
 
 - Do not commit auth material, local histories, sessions, logs, caches, generated
   images, SQLite state, browser state, or app telemetry.
-- Keep the `skills/` directory as a submodule for `stanfish06/my-skills`.
+- Keep the `skills/` directory as a submodule for `stanfish06/skillquarium`.
 - Put agent-specific configuration under that agent's folder, not at the root,
   unless the file is meant to guide this repository itself.
 - Put future lifecycle hook experiments under `hooks/`.
@@ -39,7 +39,7 @@ state.
   is needed.
 - Kilo Code source: `~/.config/kilo/kilo.jsonc`, wired for the OpenRouter
   provider (BYOK). The API key is read from the `OPENROUTER_API_KEY` env var.
-- Skills source: `https://github.com/stanfish06/my-skills.git`.
+- Skills source: `git@github.com:stanfish06/skillquarium.git`.
 
 ## Office Files
 

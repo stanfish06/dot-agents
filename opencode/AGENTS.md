@@ -6,7 +6,7 @@ skills from three locations:
 - `~/.config/opencode/skills/` — opencode-native global skills
 - `~/.claude/skills/` — shared Claude Code skills
 - `~/.agents/skills/` — the central skill vault (symlinked from the
-  `stanfish06/my-skills` repo, 390+ skills)
+  `stanfish06/skillquarium` repo, 390+ skills)
 
 A *skill* is a folder with a `SKILL.md` holding battle-tested instructions
 for a specific tool, library, or workflow. **Using a relevant skill is

@@ -9,7 +9,7 @@ artifacts stay out of git.
 
 ## Layout
 
-- `skills/` - submodule for `stanfish06/my-skills`, the reusable skill vault.
+- `skills/` - submodule for `stanfish06/skillquarium`, the reusable skill vault.
 - `agents/` - reusable specialist personas imported from production agent packs.
 - `claude/` - selected files from `~/.claude`: global instructions, settings, and
   the standalone `graphify` skill, plus optional slash commands under
@@ -80,7 +80,7 @@ summary before notifying.
 [bytedance/deer-flow](https://github.com/bytedance/deer-flow) 2.0 (MIT) — the
 lead-agent system prompt, a subagent orchestration prompt, and structured
 memory-management prompts. The deer-flow `skills/public` set is being imported
-separately into the `stanfish06/my-skills` vault rather than here, per the
+separately into the `stanfish06/skillquarium` vault rather than here, per the
 skills-go-in-the-submodule rule.
 
 ## Refresh From Home
