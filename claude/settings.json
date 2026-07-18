@@ -1,5 +1,5 @@
 {
-  "model": "claude-fable-5[1m]",
+  "model": "opus",
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -54,5 +54,6 @@
   },
   "effortLevel": "xhigh",
   "switchModelsOnFlag": false,
-  "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": true
+  "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": true,
+  "enableWorkflows": true
 }
