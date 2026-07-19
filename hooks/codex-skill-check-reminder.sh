@@ -3,11 +3,11 @@
 #
 # The skill-first guidance lives in AGENTS.md, but static instructions can be
 # easy to gloss over on a task that looks small or familiar. This hook fires on
-# each Codex user prompt so the skill check stays salient. For UserPromptSubmit,
-# plain text on stdout is added as extra developer context.
+# each Codex user prompt so the skill check stays salient. UserPromptSubmit
+# context is returned using Codex's structured hook output contract.
 set -euo pipefail
 
-cat <<'EOF'
+message="$(cat <<'EOF'
 [skill-first reminder] Before substantive work (coding, debugging, code/PR
 review, docs, repo maintenance, data analysis, scientific workflows, browser
 automation, external-tool work), run the SKILL CHECK FIRST: inspect the
@@ -17,3 +17,11 @@ SKILL.md before acting. State the outcome at the top of your reply -
 skill found`. Do not skip this because the task looks small, simple, or
 familiar. Skip only for truly trivial chat or a one-line factual answer.
 EOF
+)"
+
+jq -n --arg additional_context "$message" '{
+  hookSpecificOutput: {
+    hookEventName: "UserPromptSubmit",
+    additionalContext: $additional_context
+  }
+}'
