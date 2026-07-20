@@ -54,6 +54,16 @@ homes. It also links `prompts/live-prompts/*.md` into each agent's live prompt o
 command directory. Existing non-matching files are moved aside to timestamped
 backups.
 
+The skills installer skips the optional `gstack` and `career-ops` extras by
+default. Select either or both through the parent installer:
+
+```bash
+./scripts/install.sh --extras gstack
+./scripts/install.sh --extras career
+./scripts/install.sh --extras gstack career
+./scripts/install.sh --extras all
+```
+
 Preview changes without touching your home directory:
 
 ```bash

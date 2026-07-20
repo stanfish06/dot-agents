@@ -15,6 +15,13 @@ SKIP_KILO=0
 SKIP_PROMPTS=0
 FORCE=0
 ALLOW_DIRTY_SKILLS=0
+EXTRA_GSTACK=0
+EXTRA_CAREER=0
+
+die() {
+  echo "ERROR: $*" >&2
+  exit 1
+}
 
 usage() {
   cat <<'EOF'
@@ -32,6 +39,9 @@ Options:
   --skip-opencode       Do not symlink opencode config.
   --skip-kilo           Do not symlink Kilo Code config.
   --skip-prompts        Do not install prompts/live-prompts/*.md.
+  --extras <name>...    Install optional skill extras.
+                        Names: gstack, career (alias: career-ops), all
+  --extras=<csv>        Comma-separated form (e.g. --extras=gstack,career).
   --force               Replace existing non-matching targets without backups.
   --allow-dirty-skills  Run skills/install-skills.sh even if the submodule is dirty.
   -h, --help            Show this help.
@@ -39,12 +49,38 @@ Options:
 Default behavior:
   - Initialize the skills submodule.
   - Run skills/install-skills.sh, which delegates skill installation to Vercel's
-    skills CLI and installs graphify.
+    skills CLI and installs graphify. gstack and career-ops are skipped unless
+    selected with --extras.
   - Symlink selected Claude, Codex, Pi, and opencode config paths into
     their agent homes.
   - Install live prompts into each agent's native prompt/command surface.
   - Move any existing non-matching target to TARGET.backup-<timestamp>.
 EOF
+}
+
+enable_extra() {
+  local name="${1//[[:space:]]/}"
+
+  [ -n "$name" ] || return 0
+  case "$name" in
+    gstack) EXTRA_GSTACK=1 ;;
+    career|career-ops) EXTRA_CAREER=1 ;;
+    all)
+      EXTRA_GSTACK=1
+      EXTRA_CAREER=1
+      ;;
+    *) die "unknown extra '$name' (expected: gstack, career, all)" ;;
+  esac
+}
+
+enable_extras_csv() {
+  local csv="${1//,/ }"
+  local name
+
+  # shellcheck disable=SC2086
+  for name in $csv; do
+    enable_extra "$name"
+  done
 }
 
 while [ "$#" -gt 0 ]; do
@@ -58,6 +94,23 @@ while [ "$#" -gt 0 ]; do
     --skip-opencode) SKIP_OPENCODE=1 ;;
     --skip-kilo) SKIP_KILO=1 ;;
     --skip-prompts) SKIP_PROMPTS=1 ;;
+    --extras)
+      shift
+      if [ "$#" -eq 0 ] || [[ "$1" == -* ]]; then
+        die "--extras requires at least one name (gstack, career, all)"
+      fi
+      while [ "$#" -gt 0 ] && [[ "$1" != -* ]]; do
+        enable_extras_csv "$1"
+        shift
+      done
+      continue
+      ;;
+    --extras=*)
+      value="${1#--extras=}"
+      [ -n "$value" ] ||
+        die "--extras= requires at least one name (gstack, career, all)"
+      enable_extras_csv "$value"
+      ;;
     --force) FORCE=1 ;;
     --allow-dirty-skills) ALLOW_DIRTY_SKILLS=1 ;;
     -h|--help) usage; exit 0 ;;
@@ -78,11 +131,6 @@ run() {
   else
     "$@"
   fi
-}
-
-die() {
-  echo "ERROR: $*" >&2
-  exit 1
 }
 
 backup_name_for() {
@@ -215,11 +263,19 @@ skills_tree_dirty() {
 }
 
 install_skills() {
+  local install_args=()
+
+  if [ "$EXTRA_GSTACK" -eq 1 ] || [ "$EXTRA_CAREER" -eq 1 ]; then
+    install_args+=(--extras)
+    [ "$EXTRA_GSTACK" -eq 0 ] || install_args+=(gstack)
+    [ "$EXTRA_CAREER" -eq 0 ] || install_args+=(career)
+  fi
+
   log "==> Skills"
   run git -C "$ROOT" submodule update --init --recursive skills
 
   if [ "$DRY_RUN" -eq 1 ]; then
-    run bash "$ROOT/skills/install-skills.sh"
+    run bash "$ROOT/skills/install-skills.sh" "${install_args[@]}"
     return 0
   fi
 
@@ -227,7 +283,7 @@ install_skills() {
     die "skills submodule has uncommitted changes; commit/stash them or rerun with --skip-skills/--allow-dirty-skills"
   fi
 
-  bash "$ROOT/skills/install-skills.sh"
+  bash "$ROOT/skills/install-skills.sh" "${install_args[@]}"
 }
 
 install_claude() {
