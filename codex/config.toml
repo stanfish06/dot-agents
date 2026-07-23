@@ -1,5 +1,5 @@
-model = "gpt-5.5"
-model_reasoning_effort = "xhigh"
+model = "gpt-5.6-sol"
+model_reasoning_effort = "high"
 notify = ["/Users/stan/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]
 service_tier = "default"
 
@@ -7,6 +7,39 @@ service_tier = "default"
 trust_level = "trusted"
 
 [projects."/Users/stan/Git/research-agent"]
+trust_level = "trusted"
+
+[projects."/Users/stan/Documents/Codex/2026-07-21/i"]
+trust_level = "trusted"
+
+[projects."/Users/stan/Documents/Codex/2026-07-22/i-h"]
+trust_level = "trusted"
+
+[projects."/Users/stan/Documents/Codex/2026-07-22/can"]
+trust_level = "trusted"
+
+[projects."/Users/stan/Documents/Codex/2026-07-22/cou"]
+trust_level = "trusted"
+
+[projects."/Users/stan/Documents/Codex/2026-07-22/so"]
+trust_level = "trusted"
+
+[projects."/Users/stan/Git/nixos"]
+trust_level = "trusted"
+
+[projects."/Users/stan/Documents/Codex/2026-07-23/ca"]
+trust_level = "trusted"
+
+[projects."/Users/stan/.agents/skills"]
+trust_level = "trusted"
+
+[projects."/Users/stan/Documents/Codex/2026-07-23/is"]
+trust_level = "trusted"
+
+[projects."/Users/stan/Git/scloop"]
+trust_level = "trusted"
+
+[projects."/Users/stan/Documents/Codex/2026-07-23/is-bcl-file-only-for-entire"]
 trust_level = "trusted"
 
 [plugins."github@openai-curated"]
@@ -27,17 +60,23 @@ enabled = true
 [plugins."presentations@openai-primary-runtime"]
 enabled = true
 
-[plugins."browser@openai-bundled"]
-enabled = true
-
 [plugins."pdf@openai-primary-runtime"]
 enabled = true
 
 [plugins."template-creator@openai-primary-runtime"]
 enabled = true
 
+[plugins."sites@openai-bundled"]
+enabled = true
+
+[plugins."visualize@openai-bundled"]
+enabled = true
+
+[plugins."browser@openai-bundled"]
+enabled = true
+
 [marketplaces.openai-bundled]
-last_updated = "2026-06-25T10:30:40Z"
+last_updated = "2026-07-23T11:12:49Z"
 source_type = "local"
 source = "/Users/stan/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
@@ -54,6 +93,7 @@ ambient-suggestions-enabled = false
 selected-avatar-id = "custom:codec"
 conversationDetailMode = "STEPS_COMMANDS"
 appearanceTheme = "dark"
+followUpQueueMode = "queue"
 
 [features]
 hooks = true
@@ -62,25 +102,37 @@ memories = true
 
 [mcp_servers.node_repl]
 args = []
-command = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node_repl"
+command = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl"
 startup_timeout_sec = 120
 
 [mcp_servers.node_repl.env]
 NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
-NODE_REPL_NODE_MODULE_DIRS = "/Applications/Codex.app/Contents/Resources/cua_node/lib/node_modules"
-NODE_REPL_NODE_PATH = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node"
+NODE_REPL_NODE_MODULE_DIRS = "/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
+NODE_REPL_NODE_PATH = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node"
 NODE_REPL_TRUSTED_CODE_PATHS = "/Users/stan/.codex"
 CODEX_HOME = "/Users/stan/.codex"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "5504c0782b5c86b7dd08314045b9843e973a230e1be8f7e2e0ba3716fc63c55e"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "6d25aa7656feac858f3a3bdaea5bcbab0dbfd426c9de8e6931ce90c399ee8e4f,d0b55a8f9e8e7e9c88421416ea4ce9542c302abf43aa7fc871be4553ea70dd26"
 BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
+NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = "Control desktop apps on macOS through Computer Use."
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.616.81150"
-CODEX_CLI_PATH = "/Applications/Codex.app/Contents/Resources/codex"
+BROWSER_USE_CODEX_APP_VERSION = "26.715.72359"
+CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
+
+[mcp_servers.computer-use]
+command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"
+args = ["mcp"]
+cwd = "."
+enabled = false
 
 [memories]
 generate_memories = true
 use_memories = true
 
 [hooks.state]
+
+[shell_environment_policy.set]
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "6d25aa7656feac858f3a3bdaea5bcbab0dbfd426c9de8e6931ce90c399ee8e4f,d0b55a8f9e8e7e9c88421416ea4ce9542c302abf43aa7fc871be4553ea70dd26"
+NODE_REPL_TRUSTED_CODE_PATHS = "/Users/stan/.codex"
