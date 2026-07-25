@@ -20,6 +20,10 @@ Opt-in lifecycle hooks for agent harnesses.
   stop-summary hooks from `stanfish06/my-configs`.
 - `codex-stop-summary.sh` preserves the Codex stop-summary notification hook
   from `stanfish06/my-configs`.
+- `nvim-notify.sh` forwards Claude `Stop` and `Notification` events to the nvim
+  notifier at `$XDG_CONFIG_HOME/nvim/scripts/agent-notify.sh`, so an agent in a
+  `:terminal` buffer reports on screen. The receiving half lives in the nvim
+  config rather than this repo, so the hook no-ops where it is absent.
 
 Do not enable both session-start bootstraps unless you intentionally want both
 meta-skill introductions in every session. Keep hook caches out of git:
@@ -27,7 +31,10 @@ meta-skill introductions in every session. Keep hook caches out of git:
 
 The stop-summary hooks send a simple desktop notification by default. Set
 `DOT_AGENTS_STOP_SUMMARY_WITH_CLAUDE=1` to let the hook call `claude -p` for a
-short summary before notifying.
+short summary before notifying. That nested session fires its own `Stop` hooks,
+so `nvim-notify.sh` skips any invocation carrying
+`DOT_AGENTS_STOP_SUMMARY_ACTIVE=1`. Export `DOT_AGENTS_NVIM_NOTIFY=0` around
+other scripted `claude -p` calls to keep them from notifying too.
 
 ## Path Notes
 

@@ -21,6 +21,12 @@
           {
             "type": "command",
             "command": "bash ~/.claude/hooks/dot-agents/claude-notify.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/dot-agents/nvim-notify.sh claude attention",
+            "timeout": 20,
+            "async": true
           }
         ]
       }
@@ -33,6 +39,12 @@
             "type": "command",
             "command": "bash ~/.claude/hooks/dot-agents/claude-stop-summary.sh",
             "timeout": 300,
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/dot-agents/nvim-notify.sh claude stop",
+            "timeout": 20,
             "async": true
           }
         ]
@@ -57,8 +69,8 @@
     }
   },
   "effortLevel": "xhigh",
+  "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
   "switchModelsOnFlag": false,
-  "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": true,
-  "skipDangerousModePermissionPrompt": true
+  "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": true
 }

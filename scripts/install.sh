@@ -307,6 +307,7 @@ install_claude() {
 install_codex() {
   log "==> Codex"
   install_link "$ROOT/codex/AGENTS.md" "$HOME/.codex/AGENTS.md"
+  install_link "$ROOT/codex/notify-dispatch.sh" "$HOME/.codex/notify-dispatch.sh"
   install_link "$ROOT/codex/config.toml" "$HOME/.codex/config.toml"
   install_link "$ROOT/codex/hooks.json" "$HOME/.codex/hooks.json"
   install_link "$ROOT/codex/rules/default.rules" "$HOME/.codex/rules/default.rules"
