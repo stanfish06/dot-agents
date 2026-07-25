@@ -10,6 +10,8 @@ artifacts stay out of git.
 ## Layout
 
 - `skills/` - submodule for `stanfish06/skillquarium`, the reusable skill vault.
+- `.github/` - Dependabot and validation automation for advancing the `skills`
+  submodule pin.
 - `agents/` - reusable specialist personas imported from production agent packs.
 - `claude/` - selected files from `~/.claude`: global instructions, settings, and
   the standalone `graphify` skill, plus optional slash commands under
@@ -40,6 +42,27 @@ git submodule update --init --recursive
 The `skills/` submodule is intentionally separate from the agent-specific config
 folders. Agent harnesses can symlink or install skills from that vault while this
 repo also tracks harness configuration around them.
+
+## Automatic Skills Updates
+
+The `skills/` submodule tracks the `master` branch of
+`stanfish06/skillquarium`. Dependabot checks it daily and opens an update pull
+request when the recorded commit is behind. A narrowly scoped workflow verifies
+that the pull request changes only the `skills` gitlink, checks the submodule and
+installer contract, and merges it when those checks pass.
+
+After pulling this repository, update the local checkout to its newly recorded
+pin:
+
+```bash
+git pull --recurse-submodules
+```
+
+To fetch the current upstream head before Dependabot advances the remote pin:
+
+```bash
+git submodule update --init --remote --checkout skills
+```
 
 ## Install
 

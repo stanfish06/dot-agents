@@ -1,6 +1,7 @@
 [submodule "skills"]
 	path = skills
 	url = git@github.com:stanfish06/skillquarium.git
+	branch = master
 [submodule "prompts/system-prompts-and-models-of-ai-tools"]
 	path = prompts/system-prompts/system-prompts-and-models-of-ai-tools
 	url = https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools.git

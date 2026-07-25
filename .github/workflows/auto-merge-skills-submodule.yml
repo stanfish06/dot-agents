@@ -1,0 +1,66 @@
+name: Auto-merge skills submodule updates
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - skills
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: dependabot-skills-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  validate-and-merge:
+    if: >-
+      github.event.pull_request.user.login == 'dependabot[bot]' &&
+      github.repository == 'stanfish06/dot-agents'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Verify that only the skills gitlink changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          mapfile -t changed_files < <(
+            gh api \
+              "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/files" \
+              --paginate \
+              --jq '.[].filename'
+          )
+
+          if (( ${#changed_files[@]} != 1 )) || [[ "${changed_files[0]}" != "skills" ]]; then
+            printf 'Expected only the skills gitlink to change; got:\n' >&2
+            printf '  %s\n' "${changed_files[@]}" >&2
+            exit 1
+          fi
+
+      - name: Check out the proposed pin
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+          submodules: recursive
+
+      - name: Validate the skills pin and installer contract
+        run: |
+          recorded_sha="$(git ls-tree HEAD skills | awk '{print $3}')"
+          checked_out_sha="$(git -C skills rev-parse HEAD)"
+
+          test "$recorded_sha" = "$checked_out_sha"
+          git submodule status --recursive
+          bash -n scripts/install.sh
+          bash -n skills/install-skills.sh
+          bash scripts/test-install.sh
+
+      - name: Merge the validated update
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: gh pr merge --merge --delete-branch "$PR_URL"
