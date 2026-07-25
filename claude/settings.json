@@ -1,5 +1,8 @@
 {
-  "model": "opus",
+  "permissions": {
+    "defaultMode": "bypassPermissions"
+  },
+  "model": "opus[1m]",
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -36,6 +39,7 @@
       }
     ]
   },
+  "enableWorkflows": true,
   "enabledPlugins": {
     "codex@openai-codex": true,
     "github@claude-plugins-official": true,
@@ -53,7 +57,8 @@
     }
   },
   "effortLevel": "xhigh",
+  "skipWorkflowUsageWarning": true,
   "switchModelsOnFlag": false,
   "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": true,
-  "enableWorkflows": true
+  "skipDangerousModePermissionPrompt": true
 }
