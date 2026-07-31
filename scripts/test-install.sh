@@ -69,4 +69,6 @@ codex_output="$(
 assert_contains "$codex_output" \
   "Symlink: $test_home/.codex/notify-dispatch.sh -> $ROOT/codex/notify-dispatch.sh"
 
+bash "$ROOT/scripts/test-amux-hooks.sh"
+
 echo "PASS: scripts/install.sh extras and Codex notifier wiring"

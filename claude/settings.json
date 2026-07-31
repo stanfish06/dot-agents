@@ -10,6 +10,35 @@
           {
             "type": "command",
             "command": "bash ~/.claude/hooks/dot-agents/skill-check-reminder.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh busy claude",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh busy claude",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh exit claude",
+            "timeout": 10
           }
         ]
       }
@@ -27,6 +56,11 @@
             "command": "bash ~/.claude/hooks/dot-agents/nvim-notify.sh claude attention",
             "timeout": 20,
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh notify claude",
+            "timeout": 10
           }
         ]
       }
@@ -46,6 +80,11 @@
             "command": "bash ~/.claude/hooks/dot-agents/nvim-notify.sh claude stop",
             "timeout": 20,
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh stop claude",
+            "timeout": 10
           }
         ]
       }
@@ -58,7 +97,8 @@
     "wix@claude-plugins-official": true,
     "lua-lsp@claude-plugins-official": true,
     "pyright-lsp@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true
+    "typescript-lsp@claude-plugins-official": true,
+    "notion@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "openai-codex": {
@@ -68,7 +108,7 @@
       }
     }
   },
-  "effortLevel": "xhigh",
+  "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
   "switchModelsOnFlag": false,

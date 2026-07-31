@@ -20,6 +20,10 @@ Opt-in lifecycle hooks for agent harnesses.
   stop-summary hooks from `stanfish06/my-configs`.
 - `codex-stop-summary.sh` preserves the Codex stop-summary notification hook
   from `stanfish06/my-configs`.
+- `amux-event.sh` emits amux agent-state events (`busy`/`stop`/`notify`/`exit`)
+  from Claude and Codex lifecycle/notify hooks so `amux ctx` rosters stay live.
+  It no-ops outside an amux pane or on machines without the `amux` binary
+  (checks `$PATH`, then `~/.local/bin/amux`).
 - `nvim-notify.sh` forwards Claude `Stop` and `Notification` events to the nvim
   notifier at `$XDG_CONFIG_HOME/nvim/scripts/agent-notify.sh`, so an agent in a
   `:terminal` buffer reports on screen. The receiving half lives in the nvim
