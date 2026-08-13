@@ -1,65 +1,55 @@
-# Claude operating guide
+## Behaviors
 
-You have access to a large personal skill library in `~/.claude/skills/`, mostly
-symlinked from `~/.agents/skills/`. A skill is a directory with `SKILL.md` that
-contains reusable instructions for a specific tool, library, domain, or workflow.
+- The user drives direction and decisions; do not dominate the discussion or expand scope unprompted. When intent is unclear, ask rather than assume.
+- Push back when you disagree or see a risk: state your reasoning directly instead of just going along. Do not manufacture objections when there is no real concern.
+- Once direction is set, proceed without checking in at every step; bring questions back to the user at genuine decision points.
 
-## Skill-first workflow
+## Dev
 
-Before starting any substantive task, actively check whether a relevant skill
-exists. Do not rely only on memory or improvisation when a skill might cover the
-work. If a relevant skill exists for the task category, invoke it; a verbal
-`Skill check` line is not a substitute for using the skill.
+- build tools you should prioritize when starting new projects:
+    - js/ts: `bun` and `pnpm`
+    - python: `uv`
+    - dev env: `mise` and `nix` flake
 
-1. Use Claude Code's native skill list first. Match the user's task to available
-   skill names and descriptions, then invoke the best matching skill. Do not
-   bypass invocation merely because the task looks small, simple, or familiar.
-2. At the start of your response or first status update, state the outcome:
-   `Using skill: <name>` / `Using skills: <names>` / `Skill check: no matching
-   skill found`. Only say `Skill check: no matching skill found` after you have
-   failed to identify a relevant skill.
-3. If a skill is chosen, follow its full `SKILL.md` instructions before acting.
-   If multiple skills apply, use the smallest useful set and say the order.
-4. If native matching is unclear, query the vault instead of guessing:
-   ```bash
-   cd ~/.agents/skills
-   rg -li "<concept>|<synonym>" -g '*.md' .
-   obsidian-cli search query="<concept>" limit=8
-   graphify query "Which skills cover <task>?" --graph graphify-out/graph.json --budget 1500
-   ```
-5. Skip the skill check only for truly trivial chat or one-line factual tasks.
-   Coding, debugging, review, documentation, repo maintenance, data analysis,
-   scientific workflows, browser automation, and external-tool work are not
-   trivial. For those categories, if a relevant skill exists, use it even for a
-   tiny diff, a short question, or a quick sanity check.
-6. If no skill fits, say so briefly and continue with the best available method.
+- language specific requirements:
+    - typing and validation should be the default
+        - for python, try to use `pydantic` for standard types and objects, and specify dtype when dealing with numpy
+        - ts should be preferred over js for most of the projects, try to use `zod` for runtime schema validation, and avoid `any`
 
-## Common skill triggers
+- coding in general
+    - avoid excessive comments/docstrings
+        - it is good to put comments/docstrings at the beginning of functions, classes, if/else, and loops
+        - it is not so good to write journaling-style comments everywhere
+        - good comments should help people understand the flow of the program, so do not comment like if you are doing note taking
+    - balance depth and breadth
+        - it is often easy to expand quickly while ignoring the depth and cross-module relationships between existing modules
+        - if you want to add something new, think if it can be built on top of what's existing; do not introduce many new classes and helper functions unless necessary
+        - prefer fixing the design over patching around it
+    - run formatter and linter if available
 
-- For bug reports, failed tests, surprising behavior, or root-cause work, use
-  `systematic-debugging`.
-- For code or PR review, use `code-review-and-quality`, `check-pr`, or
-  `greploop` as appropriate.
-- For implementation work, consider `brainstorming`, `writing-plans`,
-  `test-driven-development`, and `verification-before-completion`.
-- For unfamiliar repositories or documentation sets, use `graphify`.
-- For unfamiliar dependencies, use `opensrc` or source-grounding skills before
-  relying on remembered APIs.
-- For creating or editing skills, use `skill-builder` or `writing-skills`.
+- other useful tools to use if available:
+    - `rg`: ripgrep for fast pattern search
+    - `fd`: an alternative to find
+    - `worktrunk`: for git worktree management
+    - `opensrc`: vercel cli to fetch source code; source code is often better context than human-written docs
+
+- regarding tests
+    - tests are good and most medium-to-large tasks should have tests
+    - when exploring or doing small draft tasks, tests can slow down the process and limit the creativity.
+    - judge when to be test-driven based on the scale of the task or ask user if tests should be added first.
+
+## Skills
+
+You have access to a large personal skill library in `~/.claude/skills/`, mostly symlinked from `~/.agents/skills/`. If native skill matching is unclear, query the vault instead of guessing:
+
+```bash
+cd ~/.agents/skills
+rg -li "<concept>|<synonym>" -g '*.md' .
+obsidian-cli search query="<concept>" limit=8
+graphify query "Which skills cover <task>?" --graph graphify-out/graph.json --budget 1500
+```
 
 ## Context hygiene
 
-- For context-heavy work - sweeping many files, reading logs or transcripts,
-  multi-repo exploration, or broad searches where you only need the conclusion -
-  proactively propose or use subagent fan-out (the `Explore` agent or the
-  `dispatching-parallel-agents` skill) instead of reading everything inline, so
-  the main thread's context stays clean. Raise the option before the heavy
-  reading, not after.
-- When a session has clearly drifted across unrelated tasks or piled up stale
-  context, say so and suggest starting fresh with a tight handoff. The
-  `/context-check` live prompt runs this assessment on demand.
-
-## graphify
-
-- **graphify** (`~/.claude/skills/graphify/SKILL.md`) - any input to knowledge graph. Trigger: `/graphify`
-When the user types `/graphify`, invoke the Skill tool with `skill: "graphify"` before doing anything else.
+- For context-heavy work - sweeping many files, reading logs or transcripts, or broad searches where only the conclusion matters - propose or use subagent fan-out (the `Explore` agent or the `dispatching-parallel-agents` skill) instead of reading everything inline. Raise the option before the heavy reading, not after.
+- When a session has drifted across unrelated tasks or piled up stale context, say so and suggest starting fresh with a tight handoff; `/context-check` runs this assessment on demand.
