@@ -40,7 +40,7 @@
 
 ## Skills
 
-You have access to a large personal skill library. opencode auto-loads skills from `~/.config/opencode/skills/`, `~/.claude/skills/`, and `~/.agents/skills/`. Match the task against your native skill mechanism first and read the chosen skill's `SKILL.md` before acting. If native matching is unclear, query the vault instead of guessing:
+You have access to a large personal skill library in `~/.kilo/skills/`, mostly symlinked from `~/.agents/skills/`. Kilo also auto-loads `~/.agents/skills/` and `~/.claude/skills/` unless `KILO_DISABLE_EXTERNAL_SKILLS` is set. Match the task against your native skill mechanism first and read the chosen skill's `SKILL.md` before acting. If native matching is unclear, query the vault instead of guessing:
 
 ```bash
 cd ~/.agents/skills
@@ -53,5 +53,5 @@ To browse by domain, see `index.md` and `maps/` in the vault.
 
 ## Context hygiene
 
-- For context-heavy work - sweeping many files, reading logs or transcripts, or broad searches where only the conclusion matters - propose or use subagent fan-out (`dispatching-parallel-agents` / `subagent-driven-development`) instead of reading everything inline. Raise the option before the heavy reading, not after.
-- When a session has drifted across unrelated tasks or piled up stale context, say so and suggest starting fresh with a tight handoff; `/context-check` runs this assessment on demand.
+- For context-heavy work - sweeping many files, reading logs or transcripts, or broad searches where only the conclusion matters - propose or use subagent fan-out (`dispatching-parallel-agents`) instead of reading everything inline. Raise the option before the heavy reading, not after.
+- When a session has drifted across unrelated tasks or piled up stale context, say so and suggest starting fresh with a tight handoff.

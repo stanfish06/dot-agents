@@ -69,6 +69,20 @@ codex_output="$(
 assert_contains "$codex_output" \
   "Symlink: $test_home/.codex/notify-dispatch.sh -> $ROOT/codex/notify-dispatch.sh"
 
+pi_kilo_output="$(
+  HOME="$test_home" bash "$ROOT/scripts/install.sh" \
+    --dry-run \
+    --skip-skills \
+    --skip-claude \
+    --skip-codex \
+    --skip-opencode \
+    --skip-prompts
+)"
+assert_contains "$pi_kilo_output" \
+  "Symlink: $test_home/.pi/agent/AGENTS.md -> $ROOT/pi-agent/AGENTS.md"
+assert_contains "$pi_kilo_output" \
+  "Symlink: $test_home/.config/kilo/AGENTS.md -> $ROOT/kilo/AGENTS.md"
+
 bash "$ROOT/scripts/test-amux-hooks.sh"
 
 echo "PASS: scripts/install.sh extras and Codex notifier wiring"

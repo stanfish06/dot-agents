@@ -345,6 +345,7 @@ install_codex_skill_prompts() {
 
 install_pi() {
   log "==> Pi"
+  install_link "$ROOT/pi-agent/AGENTS.md" "$HOME/.pi/agent/AGENTS.md"
   install_link "$ROOT/pi-agent/themes/mypi.json" "$HOME/.pi/agent/themes/mypi.json"
   if [ "$SKIP_PROMPTS" -eq 0 ]; then
     install_live_prompts "Pi" "$HOME/.pi/agent/prompts"
@@ -368,6 +369,7 @@ install_opencode() {
 
 install_kilo() {
   log "==> Kilo Code"
+  install_link "$ROOT/kilo/AGENTS.md" "$HOME/.config/kilo/AGENTS.md"
   install_link "$ROOT/kilo/kilo.jsonc" "$HOME/.config/kilo/kilo.jsonc"
 }
 

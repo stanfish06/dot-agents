@@ -63,8 +63,14 @@ Imported from `stanfish06/my-configs`:
   `claude/settings.json` and `claude/stop-summary.sh`.
 - Codex stop-summary hook behavior from `codex/hooks.json` and
   `codex/stop-summary-claude.sh`.
-- Pi agent theme from `pi-agent/mypi.json`, installed as
+- Pi agent theme from `pi-agent/themes/mypi.json`, installed as
   `~/.pi/agent/themes/mypi.json`.
+
+Added for Pi:
+
+- `pi-agent/AGENTS.md` — global instructions installed as
+  `~/.pi/agent/AGENTS.md`. Pi loads this at startup along with parent and
+  project `AGENTS.md` / `CLAUDE.md` files.
 
 Imported from Kilo Code docs (https://kilocode.ai/docs):
 
@@ -74,6 +80,8 @@ Imported from Kilo Code docs (https://kilocode.ai/docs):
   per-model `options` are forwarded to OpenRouter as
   `providerOptions.openrouter` (transforms + provider routing). Installed as
   `~/.config/kilo/kilo.jsonc`.
+- `kilo/AGENTS.md` — global instructions installed as
+  `~/.config/kilo/AGENTS.md`.
 
 Intentionally excluded:
 

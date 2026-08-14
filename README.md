@@ -18,13 +18,15 @@ artifacts stay out of git.
   `claude/commands/`.
 - `codex/` - selected files from `~/.codex`: global instructions, config, default
   rules, hooks, and the `hatch-pet` skill.
-- `pi-agent/` - selected Pi agent config, currently the `mypi` theme.
+- `pi-agent/` - selected Pi agent config: global `AGENTS.md` (installed as
+  `~/.pi/agent/AGENTS.md`) and the `mypi` theme.
 - `opencode/` - selected opencode config: global `AGENTS.md` operating guide,
   `opencode.jsonc`, `tui.json` + `themes/mypi.json` (the Pi theme ported to
   opencode's theme format). opencode auto-loads skills from `~/.agents/skills/`
   and `~/.claude/skills/`, so no separate skill wiring is needed.
-- `kilo/` - Kilo Code config: `kilo.jsonc` wired for OpenRouter (BYOK). The
-  API key is read from the `OPENROUTER_API_KEY` env var, never committed.
+- `kilo/` - Kilo Code config: global `AGENTS.md` plus `kilo.jsonc` wired for
+  OpenRouter (BYOK). The API key is read from the `OPENROUTER_API_KEY` env var,
+  never committed.
 - `prompts/` - reusable system prompts and live prompt templates for agent
   slash-command surfaces.
 - `hooks/` - opt-in Claude hook scripts and hook JSON examples.
@@ -128,12 +130,13 @@ rsync -a ~/.codex/config.toml ~/.codex/AGENTS.md codex/
 rsync -a ~/.codex/hooks.json codex/
 rsync -a ~/.codex/rules/default.rules codex/rules/
 rsync -a ~/.codex/skills/hatch-pet codex/skills/
+rsync -a ~/.pi/agent/AGENTS.md pi-agent/
 rsync -a ~/.pi/agent/themes/mypi.json pi-agent/themes/
 rsync -a ~/.config/opencode/AGENTS.md opencode/
 rsync -a ~/.config/opencode/opencode.jsonc opencode/
 rsync -a ~/.config/opencode/tui.json opencode/
 rsync -a ~/.config/opencode/themes/mypi.json opencode/themes/
-rsync -a ~/.config/kilo/kilo.jsonc kilo/
+rsync -a ~/.config/kilo/AGENTS.md ~/.config/kilo/kilo.jsonc kilo/
 ```
 
 Do not import `auth.json`, `.claude.json`, histories, sessions, plugin caches,

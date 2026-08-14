@@ -33,12 +33,14 @@ state.
   `~/.claude/skills/graphify`.
 - Codex source: `~/.codex/AGENTS.md`, `~/.codex/config.toml`,
   `~/.codex/rules/default.rules`, and `~/.codex/skills/hatch-pet`.
+- Pi source: `~/.pi/agent/AGENTS.md` and `~/.pi/agent/themes/mypi.json`.
 - opencode source: `~/.config/opencode/AGENTS.md` and
   `~/.config/opencode/opencode.jsonc`. opencode auto-loads skills from
   `~/.agents/skills/` and `~/.claude/skills/`, so no separate skill wiring
   is needed.
-- Kilo Code source: `~/.config/kilo/kilo.jsonc`, wired for the OpenRouter
-  provider (BYOK). The API key is read from the `OPENROUTER_API_KEY` env var.
+- Kilo Code source: `~/.config/kilo/AGENTS.md` and `~/.config/kilo/kilo.jsonc`,
+  wired for the OpenRouter provider (BYOK). The API key is read from the
+  `OPENROUTER_API_KEY` env var.
 - Skills source: `git@github.com:stanfish06/skillquarium.git`.
 
 ## Office Files
