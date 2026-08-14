@@ -29,6 +29,7 @@
 
 - other useful tools to use if available:
     - `rg`: ripgrep for fast pattern search
+    - `ast-grep`: AST-based search; more precise than text grep for structural queries in complex codebases
     - `fd`: an alternative to find
     - `worktrunk`: for git worktree management
     - `opensrc`: vercel cli to fetch source code; source code is often better context than human-written docs
