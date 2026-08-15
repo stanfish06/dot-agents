@@ -1,116 +1,146 @@
 {
-  "permissions": {
-    "defaultMode": "bypassPermissions"
+  "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": true,
+  "effortLevel": "medium",
+  "enableWorkflows": true,
+  "enabledPlugins": {
+    "codex@openai-codex": true,
+    "github@claude-plugins-official": true,
+    "lua-lsp@claude-plugins-official": true,
+    "notion@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true
   },
-  "model": "opus[1m]",
+  "extraKnownMarketplaces": {
+    "openai-codex": {
+      "source": {
+        "repo": "openai/codex-plugin-cc",
+        "source": "github"
+      }
+    }
+  },
   "hooks": {
-    "UserPromptSubmit": [
+    "Notification": [
       {
         "hooks": [
           {
-            "type": "command",
-            "command": "bash ~/.claude/hooks/dot-agents/skill-check-reminder.sh"
+            "command": "bash ~/.claude/hooks/dot-agents/claude-notify.sh",
+            "type": "command"
           },
           {
-            "type": "command",
-            "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh busy claude",
-            "timeout": 10
+            "async": true,
+            "command": "bash ~/.claude/hooks/dot-agents/nvim-notify.sh claude attention",
+            "timeout": 20,
+            "type": "command"
+          },
+          {
+            "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh notify claude",
+            "timeout": 10,
+            "type": "command"
           }
-        ]
+        ],
+        "matcher": ""
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "atuin hook claude-code",
+            "type": "command"
+          }
+        ],
+        "matcher": "Bash"
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "hooks": [
+          {
+            "command": "atuin hook claude-code",
+            "type": "command"
+          }
+        ],
+        "matcher": "Bash"
       }
     ],
     "PreToolUse": [
       {
-        "matcher": "",
         "hooks": [
           {
-            "type": "command",
             "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh busy claude",
-            "timeout": 10
+            "timeout": 10,
+            "type": "command"
           }
-        ]
+        ],
+        "matcher": ""
+      },
+      {
+        "hooks": [
+          {
+            "command": "atuin hook claude-code",
+            "type": "command"
+          }
+        ],
+        "matcher": "Bash"
       }
     ],
     "SessionEnd": [
       {
-        "matcher": "",
         "hooks": [
           {
-            "type": "command",
             "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh exit claude",
-            "timeout": 10
+            "timeout": 10,
+            "type": "command"
           }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/hooks/dot-agents/claude-notify.sh"
-          },
-          {
-            "type": "command",
-            "command": "bash ~/.claude/hooks/dot-agents/nvim-notify.sh claude attention",
-            "timeout": 20,
-            "async": true
-          },
-          {
-            "type": "command",
-            "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh notify claude",
-            "timeout": 10
-          }
-        ]
+        ],
+        "matcher": ""
       }
     ],
     "Stop": [
       {
-        "matcher": "",
         "hooks": [
           {
-            "type": "command",
+            "async": true,
             "command": "bash ~/.claude/hooks/dot-agents/claude-stop-summary.sh",
             "timeout": 300,
-            "async": true
+            "type": "command"
           },
           {
-            "type": "command",
+            "async": true,
             "command": "bash ~/.claude/hooks/dot-agents/nvim-notify.sh claude stop",
             "timeout": 20,
-            "async": true
+            "type": "command"
           },
           {
-            "type": "command",
             "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh stop claude",
-            "timeout": 10
+            "timeout": 10,
+            "type": "command"
+          }
+        ],
+        "matcher": ""
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "command": "bash ~/.claude/hooks/dot-agents/skill-check-reminder.sh",
+            "type": "command"
+          },
+          {
+            "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh busy claude",
+            "timeout": 10,
+            "type": "command"
           }
         ]
       }
     ]
   },
-  "enableWorkflows": true,
-  "enabledPlugins": {
-    "codex@openai-codex": true,
-    "github@claude-plugins-official": true,
-    "wix@claude-plugins-official": true,
-    "lua-lsp@claude-plugins-official": true,
-    "pyright-lsp@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true,
-    "notion@claude-plugins-official": true
+  "model": "opus[1m]",
+  "permissions": {
+    "defaultMode": "bypassPermissions"
   },
-  "extraKnownMarketplaces": {
-    "openai-codex": {
-      "source": {
-        "source": "github",
-        "repo": "openai/codex-plugin-cc"
-      }
-    }
-  },
-  "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
-  "switchModelsOnFlag": false,
-  "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": true
+  "switchModelsOnFlag": false
 }

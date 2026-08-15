@@ -1,70 +1,101 @@
 {
   "hooks": {
-    "UserPromptSubmit": [
+    "PermissionRequest": [
       {
-        "matcher": "",
         "hooks": [
           {
-            "type": "command",
-            "command": "bash ~/.codex/hooks/dot-agents/codex-skill-check-reminder.sh",
-            "timeout": 30,
-            "statusMessage": "Reminding Codex to check skills"
-          },
-          {
-            "type": "command",
-            "command": "bash ~/.codex/hooks/dot-agents/amux-event.sh busy codex",
-            "timeout": 10
+            "command": "bash ~/.codex/hooks/dot-agents/amux-event.sh notify codex",
+            "timeout": 10,
+            "type": "command"
           }
-        ]
+        ],
+        "matcher": ""
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "atuin hook codex",
+            "type": "command"
+          }
+        ],
+        "matcher": "^Bash$"
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "hooks": [
+          {
+            "command": "atuin hook codex",
+            "type": "command"
+          }
+        ],
+        "matcher": "^Bash$"
       }
     ],
     "PreToolUse": [
       {
-        "matcher": "",
         "hooks": [
           {
-            "type": "command",
             "command": "bash ~/.codex/hooks/dot-agents/amux-event.sh busy codex",
-            "timeout": 10
+            "timeout": 10,
+            "type": "command"
           }
-        ]
-      }
-    ],
-    "PermissionRequest": [
+        ],
+        "matcher": ""
+      },
       {
-        "matcher": "",
         "hooks": [
           {
-            "type": "command",
-            "command": "bash ~/.codex/hooks/dot-agents/amux-event.sh notify codex",
-            "timeout": 10
+            "command": "atuin hook codex",
+            "type": "command"
           }
-        ]
+        ],
+        "matcher": "^Bash$"
       }
     ],
     "SessionEnd": [
       {
-        "matcher": "",
         "hooks": [
           {
-            "type": "command",
             "command": "bash ~/.codex/hooks/dot-agents/amux-event.sh exit codex",
-            "timeout": 3
+            "timeout": 3,
+            "type": "command"
           }
-        ]
+        ],
+        "matcher": ""
       }
     ],
     "Stop": [
       {
-        "matcher": "",
         "hooks": [
           {
-            "type": "command",
             "command": "bash ~/.codex/hooks/dot-agents/codex-stop-summary.sh",
+            "statusMessage": "Generating stop summary",
             "timeout": 300,
-            "statusMessage": "Generating stop summary"
+            "type": "command"
           }
-        ]
+        ],
+        "matcher": ""
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "command": "bash ~/.codex/hooks/dot-agents/codex-skill-check-reminder.sh",
+            "statusMessage": "Reminding Codex to check skills",
+            "timeout": 30,
+            "type": "command"
+          },
+          {
+            "command": "bash ~/.codex/hooks/dot-agents/amux-event.sh busy codex",
+            "timeout": 10,
+            "type": "command"
+          }
+        ],
+        "matcher": ""
       }
     ]
   }

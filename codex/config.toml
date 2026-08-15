@@ -69,28 +69,35 @@ enabled = true
 [plugins."template-creator@openai-primary-runtime"]
 enabled = true
 
-[plugins."sites@openai-bundled"]
+[plugins."visualize@openai-bundled"]
 enabled = true
 
-[plugins."visualize@openai-bundled"]
+[plugins."sites@openai-bundled"]
 enabled = true
 
 [plugins."browser@openai-bundled"]
 enabled = true
 
+[plugins."computer-use@openai-bundled"]
+enabled = true
+
 [marketplaces.openai-bundled]
-last_updated = "2026-07-24T11:13:21Z"
+last_updated = "2026-08-13T15:27:52Z"
 source_type = "local"
 source = "/Users/stan/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
 [marketplaces.openai-primary-runtime]
-last_updated = "2026-07-24T06:54:19Z"
+last_updated = "2026-08-14T08:54:26Z"
 source_type = "local"
 source = "/Users/stan/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
 
+[tui]
+status_line = ["model-with-reasoning", "current-dir", "model", "reasoning", "project-name", "git-branch", "pull-request-number", "branch-changes", "run-state", "permissions", "approval-mode", "context-remaining", "context-used", "five-hour-limit", "weekly-limit", "context-window-size", "used-tokens", "fast-mode", "task-progress"]
+status_line_use_colors = true
+
 [tui.model_availability_nux]
 "gpt-5.5" = 4
-"gpt-5.6-sol" = 2
+"gpt-5.6-sol" = 4
 
 [desktop]
 ambient-suggestions-enabled = false
@@ -99,11 +106,16 @@ conversationDetailMode = "STEPS_COMMANDS"
 appearanceTheme = "dark"
 followUpQueueMode = "queue"
 realtimeVoiceScreenContextEnabled = true
+show-context-window-usage = true
 
 [features]
 hooks = true
-js_repl = false
 memories = true
+js_repl = true
+
+[memories]
+generate_memories = true
+use_memories = true
 
 [mcp_servers.node_repl]
 args = []
@@ -114,15 +126,15 @@ startup_timeout_sec = 120
 NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
 NODE_REPL_NODE_MODULE_DIRS = "/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
 NODE_REPL_NODE_PATH = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node"
-NODE_REPL_TRUSTED_CODE_PATHS = "/Users/stan/.codex"
+NODE_REPL_TRUSTED_CODE_PATHS = "/Users/stan/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
 CODEX_HOME = "/Users/stan/.codex"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "3fdfe9a7ad39456da69c5e8fa7bbf7229ec2fe9de5f4cf2e476166bf30a08a7e,6d25aa7656feac858f3a3bdaea5bcbab0dbfd426c9de8e6931ce90c399ee8e4f"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "8e86beb821b9afc846211798e0113bd4b9e79312dfcd135eb447bdb154f64071"
 BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
 NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = "Control desktop apps on macOS through Computer Use."
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.721.31836"
+BROWSER_USE_CODEX_APP_VERSION = "26.803.61601"
 CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
 
 [mcp_servers.computer-use]
@@ -130,14 +142,3 @@ command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.
 args = ["mcp"]
 cwd = "."
 enabled = false
-
-[memories]
-generate_memories = true
-use_memories = true
-
-[hooks.state]
-
-[shell_environment_policy.set]
-BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "3fdfe9a7ad39456da69c5e8fa7bbf7229ec2fe9de5f4cf2e476166bf30a08a7e,6d25aa7656feac858f3a3bdaea5bcbab0dbfd426c9de8e6931ce90c399ee8e4f"
-NODE_REPL_TRUSTED_CODE_PATHS = "/Users/stan/.codex"
