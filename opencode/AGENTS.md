@@ -33,6 +33,7 @@
     - `fd`: an alternative to find
     - `worktrunk`: for git worktree management
     - `opensrc`: vercel cli to fetch source code; source code is often better context than human-written docs
+    - `atuin`: shell history; agent-run commands are recorded via hooks and tagged by agent — recall past commands with `atuin search '<query>'` (add `--author '$all-agent'` for agent-only, `--author '$all-user'` for human-only, or a specific agent name: claude-code, codex, copilot, opencode, pi)
 
 - regarding tests
     - tests are good and most medium-to-large tasks should have tests
