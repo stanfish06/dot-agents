@@ -1,7 +1,8 @@
 profile_id: pat
 api_id: github
 description: GitHub REST API with a personal access token in the Authorization header.
-origins: [https://api.github.com]
+origins:
+  - https://api.github.com
 auth:
   type: bearer
   credential_id: github-pat
@@ -11,8 +12,10 @@ auth:
   placements:
     - kind: header
       header: Authorization
-      template: 'Bearer {token}'
-  scopes: [repo, read:org]
+      template: Bearer {token}
+  scopes:
+    - repo
+    - read:org
 permissions:
   - method: GET
     path: /repos/*/*
@@ -44,10 +47,21 @@ redirects:
 cache:
   enabled: false
 response:
-  allowed_headers: [x-ratelimit-remaining, x-ratelimit-reset]
+  allowed_headers:
+    - x-ratelimit-remaining
+    - x-ratelimit-reset
 health_probe:
   method: GET
   path: /rate_limit
   expect_status: 200
 verification:
-  state: candidate
+  state: verified
+  verified_at: 2026-08-23T09:31:07.698Z
+  evidence:
+    contract_hash: v1:sha256:425a081d622a770aafefab760748b4b326d2de9e6fbd948c901759ada4a9b482
+    method: GET
+    path: /rate_limit
+    status: 200
+    response_hash: v1:sha256:6d43dc7a68d07d65c2ec4453f5a37f3b2ded0f23b06cc60ba6df09ab10d9cb21
+    timestamp: 2026-08-23T09:31:07.698Z
+    tool_version: 0.0.0
