@@ -29,10 +29,13 @@ missing_output="$(
 [[ -z "$missing_output" ]] || fail "missing amux produced output"
 [[ ! -e "$event_log" ]] || fail "missing amux emitted an event"
 
-cat > "$fake_bin/amux" <<'SH'
-#!/bin/bash
-printf '%s\n' "$*" >> "${AMUX_TEST_LOG:?}"
-/bin/cat > "${AMUX_TEST_STDIN_LOG:?}"
+# the fake amux runs with PATH="$fake_bin", so bake in absolute tool paths
+bash_bin="$(command -v bash)"
+cat_bin="$(command -v cat)"
+cat > "$fake_bin/amux" <<SH
+#!${bash_bin}
+printf '%s\\n' "\$*" >> "\${AMUX_TEST_LOG:?}"
+${cat_bin} > "\${AMUX_TEST_STDIN_LOG:?}"
 SH
 chmod +x "$fake_bin/amux"
 
