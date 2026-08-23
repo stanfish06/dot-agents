@@ -46,3 +46,6 @@ claude/.claude.json
 # Local graph/query artifacts
 graphify-out/
 **/graphify-out/
+
+# Docs
+docs/

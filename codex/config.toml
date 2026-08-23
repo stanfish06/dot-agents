@@ -1,5 +1,5 @@
 model = "gpt-5.6-sol"
-model_reasoning_effort = "high"
+model_reasoning_effort = "max"
 # one notify slot, two consumers: computer-use client + nvim vim.notify
 notify = ["/bin/sh", "-c", 'exec "$HOME/.codex/notify-dispatch.sh" "$@"', "codex-notify"]
 service_tier = "default"
@@ -43,6 +43,9 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/stan/Documents/Codex/2026-07-23/is-bcl-file-only-for-entire"]
+trust_level = "trusted"
+
+[projects."/home/stan/Git/dot-agents"]
 trust_level = "trusted"
 
 [plugins."github@openai-curated"]
@@ -142,3 +145,29 @@ command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.
 args = ["mcp"]
 cwd = "."
 enabled = false
+
+[hooks.state]
+
+[hooks.state."/home/stan/.codex/hooks.json:pre_tool_use:0:0"]
+trusted_hash = "sha256:e133313bb104923246c684596b0aa432952d7b87cd9b78190be811b4bea0f629"
+
+[hooks.state."/home/stan/.codex/hooks.json:pre_tool_use:1:0"]
+trusted_hash = "sha256:fc87dbee1cb8a9be4f78ba094c4fa8d5e2fd38cb800854e3717f9b6a52fe2a47"
+
+[hooks.state."/home/stan/.codex/hooks.json:permission_request:0:0"]
+trusted_hash = "sha256:3de6b86f3329b7a73d476a0dbdb7a83bcf926aa01d83163e884774cdf562a22a"
+
+[hooks.state."/home/stan/.codex/hooks.json:post_tool_use:0:0"]
+trusted_hash = "sha256:ac371f260e4b23ba1d1b7a4ad68a44a323a8470b61f38471a47aceac1b7a5a7c"
+
+[hooks.state."/home/stan/.codex/hooks.json:session_end:0:0"]
+trusted_hash = "sha256:31c76714cb2937fab7151c3be6712765bb3b9a139eab0c34f64a0cfc8a8a1f46"
+
+[hooks.state."/home/stan/.codex/hooks.json:user_prompt_submit:0:0"]
+trusted_hash = "sha256:805a129190757052d03eb77831ae71e778ca623ea7ad3d301be3d684b0ec1767"
+
+[hooks.state."/home/stan/.codex/hooks.json:user_prompt_submit:0:1"]
+trusted_hash = "sha256:9e5226ec89bdb352b267a9863a87d43cbac48c4ece9dc584982a1b8ce5ab589f"
+
+[hooks.state."/home/stan/.codex/hooks.json:stop:0:0"]
+trusted_hash = "sha256:039b108bcf52155e98abddef5fdafe827cc7f1ec9214d5a0a880b0d65ada6dc6"

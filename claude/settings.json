@@ -1,6 +1,126 @@
 {
-  "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": true,
-  "effortLevel": "medium",
+  "permissions": {
+    "defaultMode": "bypassPermissions"
+  },
+  "model": "opus[1m]",
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/dot-agents/claude-notify.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/dot-agents/nvim-notify.sh claude attention",
+            "timeout": 20,
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh notify claude",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "atuin hook claude-code"
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "atuin hook claude-code"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh busy claude",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "atuin hook claude-code"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh exit claude",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/dot-agents/claude-stop-summary.sh",
+            "timeout": 300,
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/dot-agents/nvim-notify.sh claude stop",
+            "timeout": 20,
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh stop claude",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/dot-agents/skill-check-reminder.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh busy claude",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
   "enableWorkflows": true,
   "enabledPlugins": {
     "codex@openai-codex": true,
@@ -13,134 +133,19 @@
   "extraKnownMarketplaces": {
     "openai-codex": {
       "source": {
-        "repo": "openai/codex-plugin-cc",
-        "source": "github"
+        "source": "github",
+        "repo": "openai/codex-plugin-cc"
       }
     }
   },
-  "hooks": {
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "command": "bash ~/.claude/hooks/dot-agents/claude-notify.sh",
-            "type": "command"
-          },
-          {
-            "async": true,
-            "command": "bash ~/.claude/hooks/dot-agents/nvim-notify.sh claude attention",
-            "timeout": 20,
-            "type": "command"
-          },
-          {
-            "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh notify claude",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": ""
-      }
-    ],
-    "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "command": "atuin hook claude-code",
-            "type": "command"
-          }
-        ],
-        "matcher": "Bash"
-      }
-    ],
-    "PostToolUseFailure": [
-      {
-        "hooks": [
-          {
-            "command": "atuin hook claude-code",
-            "type": "command"
-          }
-        ],
-        "matcher": "Bash"
-      }
-    ],
-    "PreToolUse": [
-      {
-        "hooks": [
-          {
-            "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh busy claude",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": ""
-      },
-      {
-        "hooks": [
-          {
-            "command": "atuin hook claude-code",
-            "type": "command"
-          }
-        ],
-        "matcher": "Bash"
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh exit claude",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": ""
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "bash ~/.claude/hooks/dot-agents/claude-stop-summary.sh",
-            "timeout": 300,
-            "type": "command"
-          },
-          {
-            "async": true,
-            "command": "bash ~/.claude/hooks/dot-agents/nvim-notify.sh claude stop",
-            "timeout": 20,
-            "type": "command"
-          },
-          {
-            "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh stop claude",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": ""
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "command": "bash ~/.claude/hooks/dot-agents/skill-check-reminder.sh",
-            "type": "command"
-          },
-          {
-            "command": "bash ~/.claude/hooks/dot-agents/amux-event.sh busy claude",
-            "timeout": 10,
-            "type": "command"
-          }
-        ]
-      }
-    ]
-  },
-  "model": "opus[1m]",
-  "permissions": {
-    "defaultMode": "bypassPermissions"
+  "effortLevel": "xhigh",
+  "modelSettings": {
+    "claude-opus-5": {
+      "effortLevel": "high"
+    }
   },
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
-  "switchModelsOnFlag": false
+  "switchModelsOnFlag": false,
+  "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": true
 }
