@@ -1,7 +1,9 @@
 profile_id: public
 api_id: openalex
-description: The public OpenAlex API. No credential; a mailto value is courtesy, not authentication.
-origins: [https://api.openalex.org]
+description: The public OpenAlex API. No credential; a mailto value is courtesy,
+  not authentication.
+origins:
+  - https://api.openalex.org
 auth:
   type: none
 permissions:
@@ -42,11 +44,22 @@ cache:
   enabled: true
   ttl_seconds: 900
 response:
-  allowed_headers: [x-ratelimit-remaining]
+  allowed_headers:
+    - x-ratelimit-remaining
 health_probe:
   method: GET
   path: /works
-  query: { per-page: '1' }
+  query:
+    per-page: "1"
   expect_status: 200
 verification:
-  state: candidate
+  state: verified
+  verified_at: 2026-08-23T09:11:26.716Z
+  evidence:
+    contract_hash: v1:sha256:afdc28b3c7bc7fc7cfbf23e18311f711bb0d12d18325cc5b2a9b91bcf2833f04
+    method: GET
+    path: /works
+    status: 200
+    response_hash: v1:sha256:7a92828e053c2e5e64a7999094b5591b0ba5190fd827ee75a504e0139ff86e1a
+    timestamp: 2026-08-23T09:11:26.716Z
+    tool_version: 0.0.0
