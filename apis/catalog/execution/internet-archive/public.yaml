@@ -1,0 +1,52 @@
+profile_id: public
+api_id: internet-archive
+description: Public Internet Archive access. No credential is required.
+origins:
+  - https://archive.org
+auth:
+  type: none
+permissions:
+  - method: GET
+    path: /wayback/available
+    decision: auto
+  - method: GET
+    path: /metadata/**
+    decision: auto
+  - method: GET
+    path: /advancedsearch.php
+    decision: auto
+  - method: POST
+    path: /**
+    decision: deny
+  - method: PUT
+    path: /**
+    decision: deny
+  - method: PATCH
+    path: /**
+    decision: deny
+  - method: DELETE
+    path: /**
+    decision: deny
+network_scope: public
+redirects:
+  max: 2
+cache:
+  enabled: true
+  ttl_seconds: 900
+health_probe:
+  method: GET
+  path: /wayback/available
+  query:
+    url: example.com
+  expect_status: 200
+verification:
+  state: verified
+  verified_at: 2026-08-23T10:31:42.675Z
+  evidence:
+    contract_hash: v1:sha256:119eb8a62b13ad8589afc59eef93d8f61c786c2f86b61dbd1a599369236d40fa
+    method: GET
+    path: /wayback/available
+    status: 200
+    response_hash: v1:sha256:2033af3f6370d471f0ecd06ce4549c848102312a9eb03a2b9aa3075652e10e4e
+    timestamp: 2026-08-23T10:31:42.675Z
+    tool_version: 0.0.0

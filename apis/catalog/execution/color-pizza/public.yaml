@@ -1,0 +1,46 @@
+profile_id: public
+api_id: color-pizza
+description: Public Color Pizza access. No credential is required.
+origins:
+  - https://api.color.pizza
+auth:
+  type: none
+permissions:
+  - method: GET
+    path: /v1/**
+    decision: auto
+  - method: POST
+    path: /**
+    decision: deny
+  - method: PUT
+    path: /**
+    decision: deny
+  - method: PATCH
+    path: /**
+    decision: deny
+  - method: DELETE
+    path: /**
+    decision: deny
+network_scope: public
+redirects:
+  max: 2
+cache:
+  enabled: true
+  ttl_seconds: 3600
+health_probe:
+  method: GET
+  path: /v1/
+  query:
+    values: ff0000
+  expect_status: 200
+verification:
+  state: verified
+  verified_at: 2026-08-23T10:31:35.905Z
+  evidence:
+    contract_hash: v1:sha256:a3559da5a7478db90fbb80717c6f03968082e00eddc56376bc088162a3ec78a5
+    method: GET
+    path: /v1/
+    status: 200
+    response_hash: v1:sha256:2de844eeac46abc1ff98bed4d74f0b0dfa0ce6fc83bc7b24a48b59a640bf842b
+    timestamp: 2026-08-23T10:31:35.905Z
+    tool_version: 0.0.0

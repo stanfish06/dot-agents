@@ -1,0 +1,36 @@
+profile_id: public
+api_id: go-module-proxy
+description: >-
+  Public Go Module Proxy access. No credential is required.
+origins:
+  - https://proxy.golang.org
+auth:
+  type: none
+permissions:
+  - method: GET
+    path: /**
+    decision: auto
+  - method: POST
+    path: /**
+    decision: deny
+  - method: PUT
+    path: /**
+    decision: deny
+  - method: PATCH
+    path: /**
+    decision: deny
+  - method: DELETE
+    path: /**
+    decision: deny
+network_scope: public
+redirects:
+  max: 2
+cache:
+  enabled: true
+  ttl_seconds: 900
+health_probe:
+  method: GET
+  path: /github.com/gorilla/mux/@latest
+  expect_status: 200
+verification:
+  state: candidate

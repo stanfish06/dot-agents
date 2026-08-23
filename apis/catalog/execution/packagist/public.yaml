@@ -1,0 +1,47 @@
+profile_id: public
+api_id: packagist
+description: Public Packagist Repository access. No credential is required.
+origins:
+  - https://repo.packagist.org
+auth:
+  type: none
+permissions:
+  - method: GET
+    path: /p2/*/*
+    decision: auto
+  - method: GET
+    path: /packages.json
+    decision: auto
+  - method: POST
+    path: /**
+    decision: deny
+  - method: PUT
+    path: /**
+    decision: deny
+  - method: PATCH
+    path: /**
+    decision: deny
+  - method: DELETE
+    path: /**
+    decision: deny
+network_scope: public
+redirects:
+  max: 2
+cache:
+  enabled: true
+  ttl_seconds: 900
+health_probe:
+  method: GET
+  path: /p2/monolog/monolog.json
+  expect_status: 200
+verification:
+  state: verified
+  verified_at: 2026-08-23T10:31:53.227Z
+  evidence:
+    contract_hash: v1:sha256:623e2b8f52e46cc8d37c3b934323e1693e9ad2a53dad88b6e078b283a0947392
+    method: GET
+    path: /p2/monolog/monolog.json
+    status: 200
+    response_hash: v1:sha256:2fd19b1635754377b0c92ec3a18446ff66895d8d007384f9162ae9d307f1aaad
+    timestamp: 2026-08-23T10:31:53.227Z
+    tool_version: 0.0.0

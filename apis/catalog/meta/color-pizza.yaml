@@ -1,0 +1,21 @@
+id: color-pizza
+name: Color Pizza
+description: >-
+  Maps hex colours to human-readable names drawn from a curated set of
+  colour-name lists.
+homepage: https://color.pizza
+documentation: https://github.com/meodai/color-names
+categories: [developer]
+tags: [colors, names, design, hex, palette]
+aliases: [colorpizza, api-color-pizza]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Resolve one or more hex values to the nearest named colours
+  - List the available colour-name lists
+profiles: [public]

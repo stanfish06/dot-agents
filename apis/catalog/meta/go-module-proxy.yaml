@@ -1,0 +1,22 @@
+id: go-module-proxy
+name: Go Module Proxy
+description: >-
+  The public Go module mirror: version lists, .info and .mod documents for
+  any importable module path.
+homepage: https://proxy.golang.org
+documentation: https://go.dev/ref/mod#goproxy-protocol
+categories: [developer, packages]
+tags: [go, golang, modules, packages, versions, proxy]
+aliases: [goproxy, proxy-golang-org]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - List every known version of a module path
+  - Resolve the latest version of a module path
+  - Fetch a version's .info timestamp or .mod file
+profiles: [public]

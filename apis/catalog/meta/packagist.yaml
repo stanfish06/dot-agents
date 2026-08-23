@@ -1,0 +1,21 @@
+id: packagist
+name: Packagist Repository
+description: >-
+  Composer package metadata for PHP, served from the Packagist v2 metadata
+  endpoints.
+homepage: https://packagist.org
+documentation: https://packagist.org/apidoc
+categories: [developer, packages]
+tags: [php, composer, packagist, packages, versions]
+aliases: [composer, repo-packagist-org]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Fetch the v2 metadata document for a vendor/package
+  - Fetch the dev-branch metadata document for a vendor/package
+profiles: [public]

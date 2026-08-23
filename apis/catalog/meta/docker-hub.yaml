@@ -1,0 +1,21 @@
+id: docker-hub
+name: Docker Hub Registry API
+description: >-
+  Public repository metadata and tag listings on Docker Hub, including per-
+  tag digests, sizes, and architectures.
+homepage: https://hub.docker.com
+documentation: https://docs.docker.com/docker-hub/api/latest/
+categories: [developer, packages]
+tags: [docker, containers, images, tags, registry]
+aliases: [dockerhub, hub-docker-com]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Read a public repository's description, stars, and pull count
+  - List a repository's tags with digests, sizes, and platforms
+profiles: [public]

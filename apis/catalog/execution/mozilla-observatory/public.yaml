@@ -1,0 +1,42 @@
+profile_id: public
+api_id: mozilla-observatory
+description: Public MDN HTTP Observatory access. No credential is required.
+origins:
+  - https://observatory-api.mdn.mozilla.net
+auth:
+  type: none
+permissions:
+  - method: POST
+    path: /api/v2/scan
+    decision: auto
+  - method: PUT
+    path: /**
+    decision: deny
+  - method: PATCH
+    path: /**
+    decision: deny
+  - method: DELETE
+    path: /**
+    decision: deny
+network_scope: public
+redirects:
+  max: 2
+cache:
+  enabled: false
+health_probe:
+  method: POST
+  path: /api/v2/scan
+  query:
+    host: mozilla.org
+  expect_status: 200
+verification:
+  state: verified
+  verified_at: 2026-08-23T10:31:50.503Z
+  evidence:
+    contract_hash: v1:sha256:13322c57946a0c285f32d0dcf67c1260e850a399d1fbcbfa5188c72ff7f86d2a
+    method: POST
+    path: /api/v2/scan
+    status: 200
+    response_hash: v1:sha256:722df4764194a026a504af2571811e1f616cb1c65c39f4466b850a7330736632
+    timestamp: 2026-08-23T10:31:50.503Z
+    tool_version: 0.0.0

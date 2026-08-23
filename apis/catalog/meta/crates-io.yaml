@@ -1,0 +1,22 @@
+id: crates-io
+name: crates.io API
+description: >-
+  Crate metadata, versions, owners, and download statistics for the Rust
+  package registry.
+homepage: https://crates.io
+documentation: https://doc.rust-lang.org/cargo/reference/registry-web-api.html
+categories: [developer, packages]
+tags: [rust, cargo, crates, packages, versions]
+aliases: [crates, cratesio]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Look up a crate's metadata, keywords, and categories
+  - List every published version of a crate
+  - Search crates by free text
+profiles: [public]

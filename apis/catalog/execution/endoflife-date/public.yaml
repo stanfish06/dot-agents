@@ -1,0 +1,44 @@
+profile_id: public
+api_id: endoflife-date
+description: Public endoflife.date access. No credential is required.
+origins:
+  - https://endoflife.date
+auth:
+  type: none
+permissions:
+  - method: GET
+    path: /api/**
+    decision: auto
+  - method: POST
+    path: /**
+    decision: deny
+  - method: PUT
+    path: /**
+    decision: deny
+  - method: PATCH
+    path: /**
+    decision: deny
+  - method: DELETE
+    path: /**
+    decision: deny
+network_scope: public
+redirects:
+  max: 2
+cache:
+  enabled: true
+  ttl_seconds: 3600
+health_probe:
+  method: GET
+  path: /api/nodejs.json
+  expect_status: 200
+verification:
+  state: verified
+  verified_at: 2026-08-23T10:31:40.930Z
+  evidence:
+    contract_hash: v1:sha256:0d4a9a6bb2770a91e6ff690e0acbc4e42ffdcbe1806b57d278bf5a7df2c52039
+    method: GET
+    path: /api/nodejs.json
+    status: 200
+    response_hash: v1:sha256:591ad03b0a7e5a25f1a5a0d4a4fcfe6a1319ba2d9e47af2885525ae21805ce77
+    timestamp: 2026-08-23T10:31:40.930Z
+    tool_version: 0.0.0

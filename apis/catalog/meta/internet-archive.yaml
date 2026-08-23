@@ -1,0 +1,22 @@
+id: internet-archive
+name: Internet Archive
+description: >-
+  Wayback Machine snapshot availability, item metadata, and full-text search
+  over archive.org collections.
+homepage: https://archive.org
+documentation: https://archive.org/developers/index-apis.html
+categories: [archive, open-data]
+tags: [wayback, archive, snapshots, metadata, search]
+aliases: [archive-org, wayback-machine, wayback]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Find the closest Wayback snapshot for a URL and timestamp
+  - Fetch an item's metadata and file list
+  - Search collections with the advancedsearch endpoint
+profiles: [public]

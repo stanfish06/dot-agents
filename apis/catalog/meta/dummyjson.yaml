@@ -1,0 +1,21 @@
+id: dummyjson
+name: DummyJSON
+description: >-
+  Fake REST data across products, carts, users, posts, comments, quotes, and
+  recipes for prototyping and tests.
+homepage: https://dummyjson.com
+documentation: https://dummyjson.com/docs
+categories: [developer, testing]
+tags: [mock, fixtures, rest, prototyping, fake-data]
+aliases: [dummy-json]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Read fake products, users, carts, posts, and recipes
+  - Search, paginate, and select fields through query parameters
+profiles: [public]

@@ -1,0 +1,21 @@
+id: kroki
+name: Kroki
+description: >-
+  Renders textual diagram descriptions (Graphviz, Mermaid, PlantUML, D2, and
+  ~20 more) to SVG, PNG, or PDF.
+homepage: https://kroki.io
+documentation: https://docs.kroki.io/kroki/setup/http-clients/
+categories: [developer, visualization]
+tags: [diagrams, graphviz, mermaid, plantuml, svg, rendering]
+aliases: [kroki-io]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Render a diagram source to SVG, PNG, or PDF by POSTing the source
+  - Render a diagram from a deflate+base64 path segment
+profiles: [public]

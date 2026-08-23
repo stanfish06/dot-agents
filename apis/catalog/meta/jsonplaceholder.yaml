@@ -1,0 +1,21 @@
+id: jsonplaceholder
+name: JSONPlaceholder
+description: >-
+  A fake REST API with stable posts, comments, albums, photos, todos, and
+  users for prototyping and tests.
+homepage: https://jsonplaceholder.typicode.com
+documentation: https://jsonplaceholder.typicode.com/guide/
+categories: [developer, testing]
+tags: [mock, fixtures, rest, prototyping, fake-data]
+aliases: [json-placeholder, typicode]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Read fixed collections of posts, comments, todos, albums, photos, and users
+  - Filter and nest resources through query parameters
+profiles: [public]

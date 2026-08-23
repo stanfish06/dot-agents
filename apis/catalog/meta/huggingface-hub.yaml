@@ -1,0 +1,22 @@
+id: huggingface-hub
+name: Hugging Face Hub API
+description: >-
+  Public model, dataset, and Space metadata on the Hugging Face Hub: tags,
+  downloads, likes, files, and config. Public reads need no token.
+homepage: https://huggingface.co
+documentation: https://huggingface.co/docs/hub/api
+categories: [ai, ml, developer]
+tags: [models, datasets, transformers, huggingface, inference, spaces]
+aliases: [huggingface, hf-hub]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Search and filter public models by task, library, author, or tag
+  - Fetch a model's card metadata, files, and revision
+  - Search and inspect public datasets and Spaces
+profiles: [public]

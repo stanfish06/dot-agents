@@ -1,0 +1,22 @@
+id: osv
+name: OSV.dev Vulnerability Database
+description: >-
+  Open Source Vulnerabilities: query known advisories by package and
+  version, or by commit hash, across every major ecosystem.
+homepage: https://osv.dev
+documentation: https://google.github.io/osv.dev/api/
+categories: [security, developer, packages]
+tags: [vulnerabilities, advisories, cve, supply-chain, osv]
+aliases: [osv-dev, api-osv-dev]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Query advisories affecting a package at a specific version
+  - Batch-query many packages in one request
+  - Fetch a single advisory by OSV or GHSA id
+profiles: [public]

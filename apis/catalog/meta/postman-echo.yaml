@@ -1,0 +1,22 @@
+id: postman-echo
+name: Postman Echo
+description: >-
+  Echoes back the request it received, and serves fixed status codes,
+  delays, and header fixtures for HTTP client testing.
+homepage: https://postman-echo.com
+documentation: https://learning.postman.com/docs/developer/echo-api/
+categories: [developer, testing]
+tags: [echo, http, testing, fixtures, debug]
+aliases: [postmanecho]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Echo a GET request's query, headers, and origin
+  - Echo a POST body
+  - Return a chosen status code or delayed response
+profiles: [public]

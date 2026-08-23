@@ -1,0 +1,23 @@
+id: software-heritage
+name: Software Heritage
+description: >-
+  The universal source-code archive: origins, snapshots, revisions,
+  directories, and content addressed by SWHID. Unauthenticated callers get a
+  lower rate limit.
+homepage: https://www.softwareheritage.org
+documentation: https://archive.softwareheritage.org/api/
+categories: [archive, developer, open-data]
+tags: [source-code, archive, swhid, git, provenance, preservation]
+aliases: [swh, softwareheritage]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Search archived origins by URL pattern
+  - Walk snapshots, revisions, and directories for an origin
+  - Resolve a SWHID to its archived object
+profiles: [public]

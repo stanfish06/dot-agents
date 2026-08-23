@@ -1,0 +1,22 @@
+id: pypi
+name: PyPI JSON API
+description: >-
+  Release metadata, classifiers, requirements, and distribution files for
+  packages on the Python Package Index.
+homepage: https://pypi.org
+documentation: https://docs.pypi.org/api/json/
+categories: [developer, packages]
+tags: [python, packages, pypi, versions, wheels]
+aliases: [pypi-org, python-package-index]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Fetch all releases and metadata for a project
+  - Fetch a single release's metadata and distribution URLs
+  - List projects through the PEP 691 simple index
+profiles: [public]

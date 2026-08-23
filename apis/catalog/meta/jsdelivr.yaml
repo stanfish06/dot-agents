@@ -1,0 +1,21 @@
+id: jsdelivr
+name: jsDelivr Data API
+description: >-
+  Package entrypoints, file listings, and CDN download statistics for npm
+  and GitHub-hosted assets on jsDelivr.
+homepage: https://www.jsdelivr.com
+documentation: https://www.jsdelivr.com/docs/data.jsdelivr.com
+categories: [developer, packages]
+tags: [cdn, npm, github, packages, statistics, files]
+aliases: [data-jsdelivr-com]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - List a package version's files and resolved entrypoints
+  - Read download statistics for a package or version
+profiles: [public]

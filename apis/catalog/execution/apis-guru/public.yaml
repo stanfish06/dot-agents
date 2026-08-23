@@ -1,0 +1,44 @@
+profile_id: public
+api_id: apis-guru
+description: Public APIs.guru Directory access. No credential is required.
+origins:
+  - https://api.apis.guru
+auth:
+  type: none
+permissions:
+  - method: GET
+    path: /v2/**
+    decision: auto
+  - method: POST
+    path: /**
+    decision: deny
+  - method: PUT
+    path: /**
+    decision: deny
+  - method: PATCH
+    path: /**
+    decision: deny
+  - method: DELETE
+    path: /**
+    decision: deny
+network_scope: public
+redirects:
+  max: 2
+cache:
+  enabled: true
+  ttl_seconds: 3600
+health_probe:
+  method: GET
+  path: /v2/metrics.json
+  expect_status: 200
+verification:
+  state: verified
+  verified_at: 2026-08-23T10:31:31.097Z
+  evidence:
+    contract_hash: v1:sha256:467d13bc72d41e0ac63c9adf2b5b42cf79c8c4d91bec74bacd3889d39f33d111
+    method: GET
+    path: /v2/metrics.json
+    status: 200
+    response_hash: v1:sha256:30431f1a42f7c30c714d9d6cf43966ebd510d233fa63e484814621494c11ab1a
+    timestamp: 2026-08-23T10:31:31.097Z
+    tool_version: 0.0.0

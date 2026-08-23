@@ -1,0 +1,44 @@
+profile_id: public
+api_id: jsdelivr
+description: Public jsDelivr Data API access. No credential is required.
+origins:
+  - https://data.jsdelivr.com
+auth:
+  type: none
+permissions:
+  - method: GET
+    path: /v1/**
+    decision: auto
+  - method: POST
+    path: /**
+    decision: deny
+  - method: PUT
+    path: /**
+    decision: deny
+  - method: PATCH
+    path: /**
+    decision: deny
+  - method: DELETE
+    path: /**
+    decision: deny
+network_scope: public
+redirects:
+  max: 2
+cache:
+  enabled: true
+  ttl_seconds: 900
+health_probe:
+  method: GET
+  path: /v1/packages/npm/react/resolved
+  expect_status: 200
+verification:
+  state: verified
+  verified_at: 2026-08-23T10:31:44.655Z
+  evidence:
+    contract_hash: v1:sha256:648b1a9c267c082921806b5fd3680c2f6f87d08a8b7d91ff05eeef4e11fb6846
+    method: GET
+    path: /v1/packages/npm/react/resolved
+    status: 200
+    response_hash: v1:sha256:c0f7d763878341782183280f1fe74d9a801d59e8822cd9c56d09c38ba8e6e838
+    timestamp: 2026-08-23T10:31:44.655Z
+    tool_version: 0.0.0

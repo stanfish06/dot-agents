@@ -1,0 +1,22 @@
+id: npm-registry
+name: npm Registry
+description: >-
+  Package metadata, versions, dist-tags, and maintainers for every package
+  published to the public npm registry.
+homepage: https://www.npmjs.com
+documentation: https://github.com/npm/registry/blob/master/docs/REGISTRY-API.md
+categories: [developer, packages]
+tags: [npm, javascript, node, packages, versions, registry]
+aliases: [npm, registry-npmjs-org]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Fetch the full packument for a package, including every published version
+  - Resolve a single version's manifest, dependencies, and dist metadata
+  - Search the registry by free text
+profiles: [public]

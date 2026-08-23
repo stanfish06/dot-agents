@@ -1,0 +1,23 @@
+id: deps-dev
+name: Open Source Insights (deps.dev)
+description: >-
+  Google's cross-ecosystem dependency graph: package versions, resolved
+  dependency trees, advisories, and project links across npm, PyPI, Go,
+  Maven, NuGet, Cargo, and RubyGems.
+homepage: https://deps.dev
+documentation: https://docs.deps.dev/api/v3/
+categories: [developer, packages, security]
+tags: [dependencies, supply-chain, sbom, advisories, versions]
+aliases: [depsdev, open-source-insights]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Look up a package and its versions in any supported ecosystem
+  - Resolve a version's full transitive dependency graph
+  - List advisories and the projects that own a package
+profiles: [public]

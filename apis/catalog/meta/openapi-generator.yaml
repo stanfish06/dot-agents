@@ -1,0 +1,22 @@
+id: openapi-generator
+name: OpenAPI Generator API
+description: >-
+  The hosted OpenAPI Generator: lists the client and server generators
+  available and their per-generator options.
+homepage: https://openapi-generator.tech
+documentation: https://github.com/OpenAPITools/openapi-generator/blob/master/docs/online.md
+categories: [developer]
+tags: [openapi, codegen, swagger, generators, sdk]
+aliases: [openapi-generator-tech]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - List available client generators
+  - List available server generators
+  - Read a generator's configuration options
+profiles: [public]

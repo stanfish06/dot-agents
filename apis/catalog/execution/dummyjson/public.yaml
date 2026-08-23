@@ -1,0 +1,44 @@
+profile_id: public
+api_id: dummyjson
+description: Public DummyJSON access. No credential is required.
+origins:
+  - https://dummyjson.com
+auth:
+  type: none
+permissions:
+  - method: GET
+    path: /**
+    decision: auto
+  - method: POST
+    path: /**
+    decision: deny
+  - method: PUT
+    path: /**
+    decision: deny
+  - method: PATCH
+    path: /**
+    decision: deny
+  - method: DELETE
+    path: /**
+    decision: deny
+network_scope: public
+redirects:
+  max: 2
+cache:
+  enabled: true
+  ttl_seconds: 3600
+health_probe:
+  method: GET
+  path: /products/1
+  expect_status: 200
+verification:
+  state: verified
+  verified_at: 2026-08-23T10:31:40.163Z
+  evidence:
+    contract_hash: v1:sha256:77e1ac49f44628f5b7e5dd313921a27eb2bc84ed229f36e635a53d8f561116e0
+    method: GET
+    path: /products/1
+    status: 200
+    response_hash: v1:sha256:7e05afdddc56e9bf036df5f6953a8e195ef3e58547086ceb39797212cfc24896
+    timestamp: 2026-08-23T10:31:40.163Z
+    tool_version: 0.0.0

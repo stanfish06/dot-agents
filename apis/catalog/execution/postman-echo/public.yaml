@@ -1,0 +1,43 @@
+profile_id: public
+api_id: postman-echo
+description: Public Postman Echo access. No credential is required.
+origins:
+  - https://postman-echo.com
+auth:
+  type: none
+permissions:
+  - method: GET
+    path: /**
+    decision: auto
+  - method: POST
+    path: /post
+    decision: auto
+  - method: PUT
+    path: /**
+    decision: deny
+  - method: PATCH
+    path: /**
+    decision: deny
+  - method: DELETE
+    path: /**
+    decision: deny
+network_scope: public
+redirects:
+  max: 2
+cache:
+  enabled: false
+health_probe:
+  method: GET
+  path: /get
+  expect_status: 200
+verification:
+  state: verified
+  verified_at: 2026-08-23T10:31:53.806Z
+  evidence:
+    contract_hash: v1:sha256:b098fc0bc5f4b445847202b96e73012bd34b4effeab554ec9ace4b12409148fa
+    method: GET
+    path: /get
+    status: 200
+    response_hash: v1:sha256:604ed2e9a9b6b94472209715b38e23cb78fe8f7255c48d3295c4d7cdd44fb557
+    timestamp: 2026-08-23T10:31:53.806Z
+    tool_version: 0.0.0

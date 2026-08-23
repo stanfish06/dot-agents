@@ -1,0 +1,20 @@
+id: mozilla-observatory
+name: MDN HTTP Observatory
+description: >-
+  Scores a public host's HTTP security headers and returns per-test detail.
+  The scan endpoint is POST-only; there is no GET retrieval.
+homepage: https://developer.mozilla.org/en-US/observatory
+documentation: https://github.com/mdn/mdn-http-observatory
+categories: [security]
+tags: [headers, csp, hsts, scanner, observatory]
+aliases: [observatory, mdn-observatory]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Scan a public hostname and return its grade, score, and per-test results
+profiles: [public]

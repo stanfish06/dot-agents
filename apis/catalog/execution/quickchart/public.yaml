@@ -1,0 +1,49 @@
+profile_id: public
+api_id: quickchart
+description: Public QuickChart access. No credential is required.
+origins:
+  - https://quickchart.io
+auth:
+  type: none
+permissions:
+  - method: GET
+    path: /healthcheck
+    decision: auto
+  - method: GET
+    path: /chart
+    decision: auto
+  - method: POST
+    path: /chart
+    decision: auto
+  - method: GET
+    path: /qr
+    decision: auto
+  - method: PUT
+    path: /**
+    decision: deny
+  - method: PATCH
+    path: /**
+    decision: deny
+  - method: DELETE
+    path: /**
+    decision: deny
+network_scope: public
+redirects:
+  max: 2
+cache:
+  enabled: false
+health_probe:
+  method: GET
+  path: /healthcheck
+  expect_status: 200
+verification:
+  state: verified
+  verified_at: 2026-08-23T10:31:54.952Z
+  evidence:
+    contract_hash: v1:sha256:58316c7ee77d3f5b196f3a5240e0490f030cab6bbefde6435f7c8d9bf62218e7
+    method: GET
+    path: /healthcheck
+    status: 200
+    response_hash: v1:sha256:09caf1bd922e5ca87309cca5d697aedfc6f14f9f8850d953b3c84fff7a69a003
+    timestamp: 2026-08-23T10:31:54.952Z
+    tool_version: 0.0.0

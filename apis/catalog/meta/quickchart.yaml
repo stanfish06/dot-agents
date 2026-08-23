@@ -1,0 +1,22 @@
+id: quickchart
+name: QuickChart
+description: >-
+  Renders Chart.js configurations, QR codes, and sparklines to PNG or SVG
+  over a URL.
+homepage: https://quickchart.io
+documentation: https://quickchart.io/documentation/
+categories: [developer, visualization]
+tags: [charts, images, qr, svg, png, rendering]
+aliases: [quick-chart]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Render a Chart.js config to a chart image
+  - Generate a QR code image
+  - Render a sparkline or word cloud
+profiles: [public]

@@ -1,0 +1,21 @@
+id: datamuse
+name: Datamuse API
+description: >-
+  Word-finding query engine: words by meaning, sound, spelling, and context,
+  plus autocomplete suggestions.
+homepage: https://www.datamuse.com
+documentation: https://www.datamuse.com/api/
+categories: [ai, ml]
+tags: [words, nlp, thesaurus, rhymes, autocomplete, lexical]
+aliases: [api-datamuse-com]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Find words by meaning, sound, spelling, or adjacent context
+  - Return autocomplete suggestions for a prefix
+profiles: [public]

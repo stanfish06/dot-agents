@@ -1,0 +1,21 @@
+id: circl-cve
+name: CIRCL Vulnerability Lookup
+description: >-
+  CIRCL's aggregated vulnerability service: CVE records enriched with CPE,
+  CVSS, and references.
+homepage: https://cve.circl.lu
+documentation: https://cve.circl.lu/api/
+categories: [security]
+tags: [cve, vulnerabilities, cvss, cpe, circl]
+aliases: [circl, cve-circl-lu]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Fetch a vulnerability record by CVE id
+  - Browse recent and vendor-scoped vulnerability listings
+profiles: [public]

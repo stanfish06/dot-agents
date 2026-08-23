@@ -1,0 +1,22 @@
+id: apis-guru
+name: APIs.guru Directory
+description: >-
+  A directory of OpenAPI and Swagger definitions for public APIs, with
+  version history and per-API spec URLs.
+homepage: https://apis.guru
+documentation: https://apis.guru/api-doc/
+categories: [developer, open-data]
+tags: [openapi, swagger, directory, specs, catalog]
+aliases: [apisguru, api-apis-guru]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - List every API in the directory with its versions and spec URLs
+  - Read directory-wide metrics
+  - Fetch a single API's OpenAPI definition
+profiles: [public]

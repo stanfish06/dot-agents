@@ -1,0 +1,23 @@
+id: libretranslate
+name: LibreTranslate
+description: >-
+  Self-hostable machine translation. The public instance at
+  libretranslate.com is heavily rate-limited and may demand a key for
+  /translate under load.
+homepage: https://libretranslate.com
+documentation: https://libretranslate.com/docs/
+categories: [ai, ml]
+tags: [translation, nlp, language, machine-translation]
+aliases: [libre-translate]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - List supported source and target languages
+  - Translate text between supported languages
+  - Detect the language of a text
+profiles: [public]

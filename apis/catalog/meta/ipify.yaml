@@ -1,0 +1,20 @@
+id: ipify
+name: ipify
+description: >-
+  Returns the public IP address the request came from, as text, JSON, or
+  JSONP.
+homepage: https://www.ipify.org
+documentation: https://www.ipify.org
+categories: [network]
+tags: [ip, address, network, echo]
+aliases: [api-ipify-org]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Return the caller's public IPv4 or IPv6 address
+profiles: [public]

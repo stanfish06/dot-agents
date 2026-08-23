@@ -1,0 +1,44 @@
+profile_id: public
+api_id: circl-cve
+description: Public CIRCL Vulnerability Lookup access. No credential is required.
+origins:
+  - https://cve.circl.lu
+auth:
+  type: none
+permissions:
+  - method: GET
+    path: /api/**
+    decision: auto
+  - method: POST
+    path: /**
+    decision: deny
+  - method: PUT
+    path: /**
+    decision: deny
+  - method: PATCH
+    path: /**
+    decision: deny
+  - method: DELETE
+    path: /**
+    decision: deny
+network_scope: public
+redirects:
+  max: 2
+cache:
+  enabled: true
+  ttl_seconds: 600
+health_probe:
+  method: GET
+  path: /api/vulnerability/CVE-2021-44228
+  expect_status: 200
+verification:
+  state: verified
+  verified_at: 2026-08-23T10:31:34.120Z
+  evidence:
+    contract_hash: v1:sha256:1169747b72c7f374f5d4289004337f6d4e18315fa3a346ce797719f4886a7766
+    method: GET
+    path: /api/vulnerability/CVE-2021-44228
+    status: 200
+    response_hash: v1:sha256:e4ca80bb7bf97a195db32f5a434062b49c5ae5f5ede711d44fd280c5baafc1d2
+    timestamp: 2026-08-23T10:31:34.120Z
+    tool_version: 0.0.0

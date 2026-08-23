@@ -1,0 +1,53 @@
+profile_id: public
+api_id: openapi-generator
+description: Public OpenAPI Generator API access. No credential is required.
+origins:
+  - https://api.openapi-generator.tech
+auth:
+  type: none
+permissions:
+  - method: GET
+    path: /api/gen/clients
+    decision: auto
+  - method: GET
+    path: /api/gen/servers
+    decision: auto
+  - method: GET
+    path: /api/gen/clients/*
+    decision: auto
+  - method: GET
+    path: /api/gen/servers/*
+    decision: auto
+  - method: POST
+    path: /**
+    decision: deny
+  - method: PUT
+    path: /**
+    decision: deny
+  - method: PATCH
+    path: /**
+    decision: deny
+  - method: DELETE
+    path: /**
+    decision: deny
+network_scope: public
+redirects:
+  max: 2
+cache:
+  enabled: true
+  ttl_seconds: 3600
+health_probe:
+  method: GET
+  path: /api/gen/clients
+  expect_status: 200
+verification:
+  state: verified
+  verified_at: 2026-08-23T10:31:51.981Z
+  evidence:
+    contract_hash: v1:sha256:e07ae097c9fa1b5f90cdb20d5bf89adbc67dca2bdda0c349947aaeae789e5adb
+    method: GET
+    path: /api/gen/clients
+    status: 200
+    response_hash: v1:sha256:f88ecfc6df191ee405ad62a7dac4ce1b72cbe7911bcb0c4caeb7c9af94c1498e
+    timestamp: 2026-08-23T10:31:51.981Z
+    tool_version: 0.0.0

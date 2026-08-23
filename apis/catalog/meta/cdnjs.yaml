@@ -1,0 +1,21 @@
+id: cdnjs
+name: cdnjs API
+description: >-
+  Library versions, file lists, and SRI hashes for everything hosted on the
+  cdnjs CDN.
+homepage: https://cdnjs.com
+documentation: https://cdnjs.com/api
+categories: [developer, packages]
+tags: [cdn, javascript, libraries, versions, sri]
+aliases: [api-cdnjs-com]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Search or list hosted libraries with selected fields
+  - Fetch a library's versions, files, and SRI hashes
+profiles: [public]

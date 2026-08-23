@@ -1,0 +1,20 @@
+id: cloudflare-trace
+name: Cloudflare Trace
+description: >-
+  Cloudflare's edge debug endpoint: caller IP, resolving colo and IATA code,
+  TLS version, HTTP protocol, and user agent as key=value lines.
+homepage: https://www.cloudflare.com
+documentation: https://developers.cloudflare.com/fundamentals/reference/http-headers/
+categories: [network]
+tags: [ip, tls, http, edge, colo, debug]
+aliases: [cdn-cgi-trace, cf-trace]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Report the caller's IP, TLS version, HTTP protocol, and the Cloudflare colo that served the request
+profiles: [public]

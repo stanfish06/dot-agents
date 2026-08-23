@@ -1,0 +1,50 @@
+profile_id: public
+api_id: datamuse
+description: Public Datamuse API access. No credential is required.
+origins:
+  - https://api.datamuse.com
+auth:
+  type: none
+permissions:
+  - method: GET
+    path: /words
+    decision: auto
+  - method: GET
+    path: /sug
+    decision: auto
+  - method: POST
+    path: /**
+    decision: deny
+  - method: PUT
+    path: /**
+    decision: deny
+  - method: PATCH
+    path: /**
+    decision: deny
+  - method: DELETE
+    path: /**
+    decision: deny
+network_scope: public
+redirects:
+  max: 2
+cache:
+  enabled: true
+  ttl_seconds: 3600
+health_probe:
+  method: GET
+  path: /words
+  query:
+    ml: api
+    max: "1"
+  expect_status: 200
+verification:
+  state: verified
+  verified_at: 2026-08-23T10:31:37.584Z
+  evidence:
+    contract_hash: v1:sha256:65098cb3e114921e9b8a92262f8c8c7cd3de3b7aae503a7d373fd64a6da60d79
+    method: GET
+    path: /words
+    status: 200
+    response_hash: v1:sha256:f74293ec862bf8a5c83318834a20ed6749f6a4c06be2228ce5240db80be065ef
+    timestamp: 2026-08-23T10:31:37.584Z
+    tool_version: 0.0.0

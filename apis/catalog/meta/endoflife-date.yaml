@@ -1,0 +1,22 @@
+id: endoflife-date
+name: endoflife.date
+description: >-
+  Release, support, and end-of-life dates for operating systems, runtimes,
+  databases, frameworks, and devices.
+homepage: https://endoflife.date
+documentation: https://endoflife.date/docs/api
+categories: [developer]
+tags: [eol, lifecycle, versions, support, releases]
+aliases: [eol, endoflife]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - List every tracked product
+  - Fetch every release cycle for a product with its support and EOL dates
+  - Fetch a single cycle's dates
+profiles: [public]

@@ -1,0 +1,56 @@
+profile_id: public
+api_id: crates-io
+description: Public crates.io API access. No credential is required.
+origins:
+  - https://crates.io
+auth:
+  type: none
+permissions:
+  - method: GET
+    path: /api/v1/summary
+    decision: auto
+  - method: GET
+    path: /api/v1/crates
+    decision: auto
+  - method: GET
+    path: /api/v1/crates/*
+    decision: auto
+  - method: GET
+    path: /api/v1/crates/*/versions
+    decision: auto
+  - method: GET
+    path: /api/v1/crates/*/owners
+    decision: auto
+  - method: POST
+    path: /**
+    decision: deny
+  - method: PUT
+    path: /**
+    decision: deny
+  - method: PATCH
+    path: /**
+    decision: deny
+  - method: DELETE
+    path: /**
+    decision: deny
+network_scope: public
+redirects:
+  max: 2
+cache:
+  enabled: true
+  ttl_seconds: 900
+health_probe:
+  method: GET
+  path: /api/v1/summary
+  expect_status: 200
+verification:
+  state: verified
+  verified_at: 2026-08-23T10:31:36.824Z
+  evidence:
+    contract_hash: v1:sha256:748f62754e91d12a25b4f9899c0203c05f72691d3c9de2f45ce6e6e6c1fedf36
+    method: GET
+    path: /api/v1/summary
+    status: 200
+    response_hash: v1:sha256:52a8491bde08844749c14e2b75c13ca4b95a4c6eec6c4337fef28ba77e3e60a8
+    timestamp: 2026-08-23T10:31:36.824Z
+    tool_version: 0.0.0

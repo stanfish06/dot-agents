@@ -1,0 +1,46 @@
+profile_id: public
+api_id: kroki
+description: Public Kroki access. No credential is required.
+origins:
+  - https://kroki.io
+auth:
+  type: none
+permissions:
+  - method: GET
+    path: /health
+    decision: auto
+  - method: POST
+    path: /*/*
+    decision: auto
+  - method: GET
+    path: /*/*/*
+    decision: auto
+  - method: PUT
+    path: /**
+    decision: deny
+  - method: PATCH
+    path: /**
+    decision: deny
+  - method: DELETE
+    path: /**
+    decision: deny
+network_scope: public
+redirects:
+  max: 2
+cache:
+  enabled: false
+health_probe:
+  method: GET
+  path: /health
+  expect_status: 200
+verification:
+  state: verified
+  verified_at: 2026-08-23T10:31:46.603Z
+  evidence:
+    contract_hash: v1:sha256:5d1fc6eec5fb17bc516f9f6834e47bf065136361471f4344cb9baaa3494d2153
+    method: GET
+    path: /health
+    status: 200
+    response_hash: v1:sha256:1c8a43051e78043da7a7e1e142225219326cecfd667196c2f2e91efa3ac6de86
+    timestamp: 2026-08-23T10:31:46.603Z
+    tool_version: 0.0.0

@@ -1,0 +1,21 @@
+id: shields-io
+name: Shields.io
+description: >-
+  Generates SVG and JSON badges, including live badges backed by package
+  registries, CI services, and version control hosts.
+homepage: https://shields.io
+documentation: https://shields.io/badges
+categories: [developer, visualization]
+tags: [badges, svg, readme, shields, status]
+aliases: [shields, img-shields-io]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Render a static label/message/color badge
+  - Render a dynamic badge backed by a supported upstream service
+profiles: [public]

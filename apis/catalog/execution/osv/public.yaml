@@ -1,0 +1,47 @@
+profile_id: public
+api_id: osv
+description: Public OSV.dev Vulnerability Database access. No credential is required.
+origins:
+  - https://api.osv.dev
+auth:
+  type: none
+permissions:
+  - method: GET
+    path: /v1/vulns/*
+    decision: auto
+  - method: POST
+    path: /v1/query
+    decision: auto
+  - method: POST
+    path: /v1/querybatch
+    decision: auto
+  - method: PUT
+    path: /**
+    decision: deny
+  - method: PATCH
+    path: /**
+    decision: deny
+  - method: DELETE
+    path: /**
+    decision: deny
+network_scope: public
+redirects:
+  max: 2
+cache:
+  enabled: true
+  ttl_seconds: 600
+health_probe:
+  method: GET
+  path: /v1/vulns/GHSA-jfh8-c2jp-5v3q
+  expect_status: 200
+verification:
+  state: verified
+  verified_at: 2026-08-23T10:31:52.653Z
+  evidence:
+    contract_hash: v1:sha256:756296017a578fe9e29c3c2eb6303a58cf01c391b8a2b4cb6b1a7c69eef15aa6
+    method: GET
+    path: /v1/vulns/GHSA-jfh8-c2jp-5v3q
+    status: 200
+    response_hash: v1:sha256:3adc964113bc20dd7b41825c69724b4455fb804b649e6857259fc55fe442bdfa
+    timestamp: 2026-08-23T10:31:52.653Z
+    tool_version: 0.0.0
