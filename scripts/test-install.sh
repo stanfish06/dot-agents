@@ -104,6 +104,14 @@ assert_contains "$cursor_output" \
   "Symlink: $test_home/.cursor/rules/skills.mdc -> $ROOT/cursor/rules/skills.mdc"
 assert_contains "$cursor_output" \
   "Symlink: $test_home/.cursor/rules/context-hygiene.mdc -> $ROOT/cursor/rules/context-hygiene.mdc"
+assert_contains "$cursor_output" \
+  "Copy: $ROOT/cursor/cli-config.json -> $test_home/.cursor/cli-config.json"
+
+cursor_config="$(<"$ROOT/cursor/cli-config.json")"
+assert_contains "$cursor_config" '"approvalMode": "unrestricted"'
+assert_not_contains "$cursor_config" "authInfo"
+assert_not_contains "$cursor_config" "authCacheKey"
+assert_not_contains "$cursor_config" "privacyCache"
 
 bash "$ROOT/scripts/test-amux-hooks.sh"
 

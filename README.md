@@ -28,9 +28,12 @@ artifacts stay out of git.
   OpenRouter (BYOK). The API key is read from the `OPENROUTER_API_KEY` env var,
   never committed.
 - `cursor/` - Cursor user rules translated from `codex/AGENTS.md` into
-  `.mdc` files under `cursor/rules/`. Installed as `~/.cursor/rules/*.mdc`.
-  Cursor has no home-directory `AGENTS.md`; this is the file-based global
-  slot. Project `AGENTS.md` / `.cursor/rules` stay in each repo.
+  `.mdc` files under `cursor/rules/`, plus a sanitized `cli-config.json`
+  (`approvalMode: unrestricted`, i.e. Run Everything). Rules are
+  symlinked to `~/.cursor/rules/*.mdc`; the CLI config is copied to
+  `~/.cursor/cli-config.json` so the CLI can rewrite caches without
+  dirtying git. Cursor has no home-directory `AGENTS.md`. Project
+  `AGENTS.md` / `.cursor/rules` stay in each repo.
 - `prompts/` - reusable system prompts and live prompt templates for agent
   slash-command surfaces.
 - `hooks/` - opt-in Claude hook scripts and hook JSON examples.
@@ -146,5 +149,6 @@ rsync -a ~/.cursor/rules/*.mdc cursor/rules/
 
 Do not import `auth.json`, `.claude.json`, histories, sessions, plugin caches,
 SQLite state, generated images, browser state, Pi auth/session state, Kilo
-credentials, Cursor `cli-config.json` / chats / project caches, or temporary
-folders.
+credentials, the live `~/.cursor/cli-config.json` (it carries auth and
+caches; edit `cursor/cli-config.json` in this repo instead), Cursor chats /
+project caches, or temporary folders.

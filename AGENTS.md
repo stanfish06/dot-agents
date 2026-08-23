@@ -41,9 +41,12 @@ state.
 - Kilo Code source: `~/.config/kilo/AGENTS.md` and `~/.config/kilo/kilo.jsonc`,
   wired for the OpenRouter provider (BYOK). The API key is read from the
   `OPENROUTER_API_KEY` env var.
-- Cursor source: `cursor/rules/*.mdc`, installed as `~/.cursor/rules/*.mdc`.
-  Cursor has no `~/.cursor/AGENTS.md`; CLI/IDE also read project-root
-  `AGENTS.md` / `CLAUDE.md` and `<project>/.cursor/rules`.
+- Cursor source: `cursor/rules/*.mdc` (installed as `~/.cursor/rules/*.mdc`)
+  and `cursor/cli-config.json` (copied to `~/.cursor/cli-config.json`).
+  `approvalMode` is `unrestricted` (Run Everything). Do not commit the live
+  CLI file; it accumulates auth and caches. Cursor has no
+  `~/.cursor/AGENTS.md`; CLI/IDE also read project-root `AGENTS.md` /
+  `CLAUDE.md` and `<project>/.cursor/rules`.
 - Skills source: `git@github.com:stanfish06/skillquarium.git`.
 
 ## Office Files

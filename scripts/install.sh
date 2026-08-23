@@ -39,7 +39,7 @@ Options:
   --skip-pi             Do not symlink Pi agent config.
   --skip-opencode       Do not symlink opencode config.
   --skip-kilo           Do not symlink Kilo Code config.
-  --skip-cursor         Do not symlink Cursor user rules.
+  --skip-cursor         Do not install Cursor user rules or CLI config.
   --skip-prompts        Do not install prompts/live-prompts/*.md.
   --extras <name>...    Install optional skill extras.
                         Names: gstack, career (alias: career-ops), all
@@ -392,6 +392,9 @@ install_cursor() {
   done
 
   [ "$found" -eq 1 ] || die "missing Cursor rules in $source_dir"
+
+  # Copy, do not symlink: the CLI rewrites this file with auth and caches.
+  install_copy "$ROOT/cursor/cli-config.json" "$HOME/.cursor/cli-config.json"
 }
 
 main() {

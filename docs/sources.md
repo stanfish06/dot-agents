@@ -91,6 +91,11 @@ Added for Cursor:
   Help lists `~/.cursor/rules` as the machine-local user-rule path. Account
   User Rules in Customize → Rules are not files and are not installed.
   Project `AGENTS.md` / `.cursor/rules` stay in each repo.
+- `cursor/cli-config.json` — durable CLI settings imported from
+  `~/.cursor/cli-config.json`, with auth, privacy, and server caches
+  stripped. `approvalMode` is `unrestricted` (Run Everything / `--yolo`).
+  Installed as a copy to `~/.cursor/cli-config.json` so the CLI can rewrite
+  runtime fields without dirtying git.
 
 Intentionally excluded:
 
@@ -100,7 +105,9 @@ Intentionally excluded:
 - `~/.config/kilo/` credentials, Kilo account/session state, and any
   `provider.*.options.apiKey` values. The OpenRouter key lives in the
   `OPENROUTER_API_KEY` env var.
-- `~/.cursor/cli-config.json`, chats, project caches, `skills-cursor`, and
-  other Cursor runtime state.
+- Live `~/.cursor/cli-config.json` auth/cache fields (`authInfo`,
+  `privacyCache`, `autoReviewAvailabilityCache`, `serverConfigCache`,
+  `modelSelectionHistory`), plus chats, project caches, `skills-cursor`,
+  and other Cursor runtime state.
 - histories, sessions, logs, shell snapshots, browser/computer-use state,
   generated images, plugin caches, SQLite databases, and temp folders.
