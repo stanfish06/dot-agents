@@ -27,6 +27,8 @@ assert_not_contains() {
 help_output="$(bash "$ROOT/scripts/install.sh" --help)"
 assert_contains "$help_output" "--extras <name>..."
 assert_contains "$help_output" "Names: gstack, career (alias: career-ops), all"
+assert_contains "$help_output" "--skip-apimanac"
+assert_contains "$help_output" "Fetch APImanac skill/SKILL.md from GitHub"
 
 list_output="$(bash "$ROOT/scripts/install.sh" --dry-run --skip-config --extras gstack career)"
 assert_contains "$list_output" \
@@ -57,7 +59,7 @@ assert_not_contains "$dispatcher_text" $'\nwait\n'
 test_home="$(mktemp -d)"
 trap 'rmdir "$test_home"' EXIT
 codex_output="$(
-  HOME="$test_home" bash "$ROOT/scripts/install.sh" \
+  HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" bash "$ROOT/scripts/install.sh" \
     --dry-run \
     --skip-skills \
     --skip-claude \
@@ -69,9 +71,15 @@ codex_output="$(
 )"
 assert_contains "$codex_output" \
   "Symlink: $test_home/.codex/notify-dispatch.sh -> $ROOT/codex/notify-dispatch.sh"
+assert_contains "$codex_output" \
+  "DRY-RUN: fetch https://raw.githubusercontent.com/stanfish06/APImanac/master/skill/SKILL.md -> $ROOT/apis/SKILL.md"
+assert_contains "$codex_output" \
+  "Symlink: $test_home/.codex/skills/apimanac/SKILL.md -> $ROOT/apis/SKILL.md"
+assert_not_contains "$codex_output" \
+  "$test_home/.claude/skills/apimanac"
 
 pi_kilo_output="$(
-  HOME="$test_home" bash "$ROOT/scripts/install.sh" \
+  HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" bash "$ROOT/scripts/install.sh" \
     --dry-run \
     --skip-skills \
     --skip-claude \
@@ -84,9 +92,13 @@ assert_contains "$pi_kilo_output" \
   "Symlink: $test_home/.pi/agent/AGENTS.md -> $ROOT/pi-agent/AGENTS.md"
 assert_contains "$pi_kilo_output" \
   "Symlink: $test_home/.config/kilo/AGENTS.md -> $ROOT/kilo/AGENTS.md"
+assert_contains "$pi_kilo_output" \
+  "Symlink: $test_home/.pi/agent/skills/apimanac/SKILL.md -> $ROOT/apis/SKILL.md"
+assert_contains "$pi_kilo_output" \
+  "Symlink: $test_home/.kilo/skills/apimanac/SKILL.md -> $ROOT/apis/SKILL.md"
 
 cursor_output="$(
-  HOME="$test_home" bash "$ROOT/scripts/install.sh" \
+  HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" bash "$ROOT/scripts/install.sh" \
     --dry-run \
     --skip-skills \
     --skip-claude \
@@ -106,6 +118,52 @@ assert_contains "$cursor_output" \
   "Symlink: $test_home/.cursor/rules/context-hygiene.mdc -> $ROOT/cursor/rules/context-hygiene.mdc"
 assert_contains "$cursor_output" \
   "Copy: $ROOT/cursor/cli-config.json -> $test_home/.cursor/cli-config.json"
+assert_contains "$cursor_output" \
+  "Symlink: $test_home/.cursor/skills/apimanac/SKILL.md -> $ROOT/apis/SKILL.md"
+
+skip_apimanac_output="$(
+  HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" bash "$ROOT/scripts/install.sh" \
+    --dry-run \
+    --skip-skills \
+    --skip-prompts \
+    --skip-apimanac
+)"
+assert_contains "$skip_apimanac_output" "Skip: APImanac"
+assert_not_contains "$skip_apimanac_output" "skills/apimanac"
+assert_not_contains "$skip_apimanac_output" "DRY-RUN: fetch"
+
+skill_backup="$(mktemp)"
+fake_skill="$(mktemp)"
+cp "$ROOT/apis/SKILL.md" "$skill_backup"
+restore_skill() {
+  cp "$skill_backup" "$ROOT/apis/SKILL.md"
+  rm -f "$skill_backup" "$fake_skill"
+  rm -rf "$test_home"
+}
+trap restore_skill EXIT
+cat > "$fake_skill" <<'EOF'
+---
+name: apimanac
+description: installer refresh fixture
+---
+# fixture
+EOF
+refresh_output="$(
+  HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" \
+  APIMANAC_SKILL_URL="file://${fake_skill}" \
+  bash "$ROOT/scripts/install.sh" \
+    --skip-skills \
+    --skip-claude \
+    --skip-codex \
+    --skip-pi \
+    --skip-opencode \
+    --skip-kilo \
+    --skip-cursor \
+    --skip-prompts
+)"
+assert_contains "$refresh_output" "Refresh: file://${fake_skill} -> $ROOT/apis/SKILL.md"
+cmp -s "$fake_skill" "$ROOT/apis/SKILL.md" || fail "apis/SKILL.md was not refreshed from APIMANAC_SKILL_URL"
+cp "$skill_backup" "$ROOT/apis/SKILL.md"
 
 cursor_config="$(<"$ROOT/cursor/cli-config.json")"
 assert_contains "$cursor_config" '"approvalMode": "unrestricted"'

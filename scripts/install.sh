@@ -13,11 +13,15 @@ SKIP_PI=0
 SKIP_OPENCODE=0
 SKIP_KILO=0
 SKIP_CURSOR=0
+SKIP_APIMANAC=0
 SKIP_PROMPTS=0
 FORCE=0
 ALLOW_DIRTY_SKILLS=0
 EXTRA_GSTACK=0
 EXTRA_CAREER=0
+
+# Upstream skill text. Override with APIMANAC_SKILL_URL to pin or test.
+APIMANAC_SKILL_URL="${APIMANAC_SKILL_URL:-https://raw.githubusercontent.com/stanfish06/APImanac/master/skill/SKILL.md}"
 
 die() {
   echo "ERROR: $*" >&2
@@ -40,6 +44,7 @@ Options:
   --skip-opencode       Do not symlink opencode config.
   --skip-kilo           Do not symlink Kilo Code config.
   --skip-cursor         Do not install Cursor user rules or CLI config.
+  --skip-apimanac       Do not fetch, write catalog_root, or link the APImanac skill.
   --skip-prompts        Do not install prompts/live-prompts/*.md.
   --extras <name>...    Install optional skill extras.
                         Names: gstack, career (alias: career-ops), all
@@ -55,6 +60,8 @@ Default behavior:
     selected with --extras.
   - Symlink selected Claude, Codex, Pi, opencode, Kilo Code, and Cursor
     config paths into their agent homes.
+  - Fetch APImanac skill/SKILL.md from GitHub into apis/SKILL.md, write
+    catalog_root, and symlink that file into each harness skills/apimanac/.
   - Install live prompts into each agent's native prompt/command surface.
   - Move any existing non-matching target to TARGET.backup-<timestamp>.
 EOF
@@ -96,6 +103,7 @@ while [ "$#" -gt 0 ]; do
     --skip-opencode) SKIP_OPENCODE=1 ;;
     --skip-kilo) SKIP_KILO=1 ;;
     --skip-cursor) SKIP_CURSOR=1 ;;
+    --skip-apimanac) SKIP_APIMANAC=1 ;;
     --skip-prompts) SKIP_PROMPTS=1 ;;
     --extras)
       shift
@@ -376,6 +384,122 @@ install_kilo() {
   install_link "$ROOT/kilo/kilo.jsonc" "$HOME/.config/kilo/kilo.jsonc"
 }
 
+refresh_apimanac_skill() {
+  local dest="$ROOT/apis/SKILL.md"
+  local url="$APIMANAC_SKILL_URL"
+  local tmp
+
+  [ -d "$(dirname "$dest")" ] || die "missing APImanac directory: $(dirname "$dest")"
+
+  if [ "$DRY_RUN" -eq 1 ]; then
+    printf 'DRY-RUN: fetch %s -> %s\n' "$url" "$dest"
+    return 0
+  fi
+
+  command -v curl >/dev/null 2>&1 ||
+    die "curl is required to refresh the APImanac skill from $url"
+
+  tmp="$(mktemp)"
+  if ! curl -fsSL -o "$tmp" "$url"; then
+    rm -f "$tmp"
+    die "failed to fetch APImanac skill from $url"
+  fi
+
+  if [ ! -s "$tmp" ]; then
+    rm -f "$tmp"
+    die "fetched APImanac skill from $url is empty"
+  fi
+
+  if ! grep -q '^name: apimanac$' "$tmp"; then
+    rm -f "$tmp"
+    die "fetched file from $url is not the APImanac skill"
+  fi
+
+  if [ -f "$dest" ] && [ ! -L "$dest" ] && cmp -s "$tmp" "$dest"; then
+    log "OK: $dest"
+    rm -f "$tmp"
+    return 0
+  fi
+
+  log "Refresh: $url -> $dest"
+  rm -f "$dest"
+  mv "$tmp" "$dest"
+}
+
+install_apimanac_skill() {
+  local dest_dir="$1"
+  local skill="$ROOT/apis/SKILL.md"
+
+  [ -f "$skill" ] || die "missing APImanac skill: $skill"
+  ensure_real_dir "$dest_dir"
+  install_link "$skill" "$dest_dir/SKILL.md"
+}
+
+install_apimanac_config() {
+  local config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/apimanac"
+  local target="$config_dir/config.yaml"
+  local catalog="$ROOT/apis"
+  local content="catalog_root: $catalog"
+
+  [ -d "$catalog/catalog" ] || die "missing APImanac catalog: $catalog/catalog"
+  command -v apimanac >/dev/null 2>&1 || log "WARN: apimanac is not on PATH"
+  # apimanac shells out to git to decide which profiles are committed; without
+  # git every profile reads as non-executable.
+  command -v git >/dev/null 2>&1 || log "WARN: git is not on PATH; apimanac will treat the catalog as uncommitted"
+
+  if [ -f "$target" ] && [ ! -L "$target" ] && [ "$(cat "$target")" = "$content" ]; then
+    log "OK: $target"
+    return 0
+  fi
+
+  if [ -e "$target" ] || [ -L "$target" ]; then
+    if [ "$FORCE" -eq 1 ]; then
+      log "Replace: $target"
+      run rm -rf "$target"
+    else
+      local backup
+      backup="$(backup_name_for "$target")"
+      log "Backup: $target -> $backup"
+      run mv "$target" "$backup"
+    fi
+  fi
+
+  ensure_parent_dir "$target"
+  log "Write: $target"
+  if [ "$DRY_RUN" -eq 1 ]; then
+    printf 'DRY-RUN: write %s <- %s\n' "$target" "$content"
+  else
+    printf '%s\n' "$content" > "$target"
+  fi
+}
+
+install_apimanac() {
+  log "==> APImanac"
+  refresh_apimanac_skill
+  install_apimanac_config
+
+  # Link the skill into each selected harness. Do not put it in
+  # ~/.agents/skills — that tree is the skillquarium submodule checkout.
+  if [ "$SKIP_CLAUDE" -eq 0 ]; then
+    install_apimanac_skill "$HOME/.claude/skills/apimanac"
+  fi
+  if [ "$SKIP_CODEX" -eq 0 ]; then
+    install_apimanac_skill "$HOME/.codex/skills/apimanac"
+  fi
+  if [ "$SKIP_PI" -eq 0 ]; then
+    install_apimanac_skill "$HOME/.pi/agent/skills/apimanac"
+  fi
+  if [ "$SKIP_OPENCODE" -eq 0 ]; then
+    install_apimanac_skill "$HOME/.config/opencode/skills/apimanac"
+  fi
+  if [ "$SKIP_KILO" -eq 0 ]; then
+    install_apimanac_skill "$HOME/.kilo/skills/apimanac"
+  fi
+  if [ "$SKIP_CURSOR" -eq 0 ]; then
+    install_apimanac_skill "$HOME/.cursor/skills/apimanac"
+  fi
+}
+
 install_cursor() {
   local source_dir="$ROOT/cursor/rules"
   local target_dir="$HOME/.cursor/rules"
@@ -443,6 +567,12 @@ main() {
     install_cursor
   else
     log "Skip: Cursor"
+  fi
+
+  if [ "$SKIP_APIMANAC" -eq 0 ]; then
+    install_apimanac
+  else
+    log "Skip: APImanac"
   fi
 }
 

@@ -34,6 +34,12 @@ artifacts stay out of git.
   `~/.cursor/cli-config.json` so the CLI can rewrite caches without
   dirtying git. Cursor has no home-directory `AGENTS.md`. Project
   `AGENTS.md` / `.cursor/rules` stay in each repo.
+- `apis/` - personal APImanac catalog (`catalog/meta`, `catalog/execution`)
+  plus `SKILL.md` from [stanfish06/APImanac](https://github.com/stanfish06/APImanac)
+  `skill/SKILL.md`. The installer writes `catalog_root` to
+  `$XDG_CONFIG_HOME/apimanac/config.yaml` and symlinks the skill into each
+  harness `skills/apimanac/` directory. Grants stay in the untracked XDG
+  grants file, not here.
 - `prompts/` - reusable system prompts and live prompt templates for agent
   slash-command surfaces.
 - `hooks/` - opt-in Claude hook scripts and hook JSON examples.
@@ -82,9 +88,12 @@ git submodule update --init --remote --checkout skills
 The installer is symlink-first for agent config. It initializes the `skills/`
 submodule, delegates skill installation to `skills/install-skills.sh`, then links
 the selected Claude, Codex, Pi, opencode, Kilo Code, and Cursor config into
-their agent homes. It also links `prompts/live-prompts/*.md` into each agent's live prompt or
-command directory. Existing non-matching files are moved aside to timestamped
-backups.
+their agent homes. It fetches `skill/SKILL.md` from
+[stanfish06/APImanac](https://github.com/stanfish06/APImanac) into
+`apis/SKILL.md`, writes the APImanac `catalog_root`, and symlinks that
+file into each harness `skills/apimanac/` directory. It also links
+`prompts/live-prompts/*.md` into each agent's live prompt or command directory.
+Existing non-matching files are moved aside to timestamped backups.
 
 The skills installer skips the optional `gstack` and `career-ops` extras by
 default. Select either or both through the parent installer:

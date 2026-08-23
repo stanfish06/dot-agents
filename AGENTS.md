@@ -48,6 +48,11 @@ state.
   `~/.cursor/AGENTS.md`; CLI/IDE also read project-root `AGENTS.md` /
   `CLAUDE.md` and `<project>/.cursor/rules`.
 - Skills source: `git@github.com:stanfish06/skillquarium.git`.
+- APImanac source: `apis/` (catalog locally; `SKILL.md` refreshed from
+  `stanfish06/APImanac` `skill/SKILL.md` on each install). Installed as
+  `$XDG_CONFIG_HOME/apimanac/config.yaml` `catalog_root` and as
+  `skills/apimanac/SKILL.md` in each harness home. Not part of the
+  `skills/` submodule.
 
 ## Office Files
 
