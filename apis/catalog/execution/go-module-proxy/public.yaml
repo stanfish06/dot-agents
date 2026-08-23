@@ -1,7 +1,9 @@
 profile_id: public
 api_id: go-module-proxy
-description: >-
-  Public Go Module Proxy access. No credential is required.
+description: Public Go Module Proxy access. No credential is required. APImanac
+  rejects a literal `@` in a path, so the protocol's `@latest` and `@v/`
+  segments must be written percent-encoded as `%40latest` and `%40v/`; the proxy
+  accepts both.
 origins:
   - https://proxy.golang.org
 auth:
@@ -30,7 +32,16 @@ cache:
   ttl_seconds: 900
 health_probe:
   method: GET
-  path: /github.com/gorilla/mux/@latest
+  path: /github.com/gorilla/mux/%40latest
   expect_status: 200
 verification:
-  state: candidate
+  state: verified
+  verified_at: 2026-08-23T10:43:02.169Z
+  evidence:
+    contract_hash: v1:sha256:982bc7f7bcad3a262c42e3a3b38cf8867a353baf82b341ba0622303949bbe042
+    method: GET
+    path: /github.com/gorilla/mux/%40latest
+    status: 200
+    response_hash: v1:sha256:104c0fb5c977a68b196744aa397c4c486c12ac2d66497a5bedbe0344782ce545
+    timestamp: 2026-08-23T10:43:02.169Z
+    tool_version: 0.0.0

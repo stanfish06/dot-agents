@@ -16,7 +16,7 @@ provenance:
   description: { source: manual, curated: true }
   categories: { source: manual, curated: true }
 capabilities:
-  - List every known version of a module path
-  - Resolve the latest version of a module path
-  - Fetch a version's .info timestamp or .mod file
+  - List every known version of a module path via /MODULE/%40v/list
+  - Resolve the latest version of a module path via /MODULE/%40latest
+  - Fetch a version's .info timestamp or .mod file under /MODULE/%40v/
 profiles: [public]
