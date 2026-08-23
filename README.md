@@ -27,6 +27,10 @@ artifacts stay out of git.
 - `kilo/` - Kilo Code config: global `AGENTS.md` plus `kilo.jsonc` wired for
   OpenRouter (BYOK). The API key is read from the `OPENROUTER_API_KEY` env var,
   never committed.
+- `cursor/` - Cursor user rules translated from `codex/AGENTS.md` into
+  `.mdc` files under `cursor/rules/`. Installed as `~/.cursor/rules/*.mdc`.
+  Cursor has no home-directory `AGENTS.md`; this is the file-based global
+  slot. Project `AGENTS.md` / `.cursor/rules` stay in each repo.
 - `prompts/` - reusable system prompts and live prompt templates for agent
   slash-command surfaces.
 - `hooks/` - opt-in Claude hook scripts and hook JSON examples.
@@ -74,8 +78,8 @@ git submodule update --init --remote --checkout skills
 
 The installer is symlink-first for agent config. It initializes the `skills/`
 submodule, delegates skill installation to `skills/install-skills.sh`, then links
-the selected Claude, Codex, Pi, opencode, and Kilo Code config into their agent
-homes. It also links `prompts/live-prompts/*.md` into each agent's live prompt or
+the selected Claude, Codex, Pi, opencode, Kilo Code, and Cursor config into
+their agent homes. It also links `prompts/live-prompts/*.md` into each agent's live prompt or
 command directory. Existing non-matching files are moved aside to timestamped
 backups.
 
@@ -137,8 +141,10 @@ rsync -a ~/.config/opencode/opencode.jsonc opencode/
 rsync -a ~/.config/opencode/tui.json opencode/
 rsync -a ~/.config/opencode/themes/mypi.json opencode/themes/
 rsync -a ~/.config/kilo/AGENTS.md ~/.config/kilo/kilo.jsonc kilo/
+rsync -a ~/.cursor/rules/*.mdc cursor/rules/
 ```
 
 Do not import `auth.json`, `.claude.json`, histories, sessions, plugin caches,
 SQLite state, generated images, browser state, Pi auth/session state, Kilo
-credentials, or temporary folders.
+credentials, Cursor `cli-config.json` / chats / project caches, or temporary
+folders.

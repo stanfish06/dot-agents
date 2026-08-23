@@ -1,0 +1,36 @@
+---
+description: Default tools, languages, coding, and test judgment
+alwaysApply: true
+---
+
+- build tools you should prioritize when starting new projects:
+    - js/ts: `bun` and `pnpm`
+    - python: `uv`
+    - dev env: `mise` and `nix` flake
+
+- language preferences:
+    - typing and validation are encouraged
+        - for python, prefer `pydantic` for standard types and objects, and specify dtype when dealing with numpy
+        - ts is preferred over js for most of the projects; prefer `zod` for runtime schema validation, and avoid `any`
+
+- coding in general
+    - avoid excessive comments/docstrings
+        - comment the crux and error handling, at the exact spot; a comment at the top of a function, class, branch, or loop is fine when the flow is not obvious from the code — not on every one
+        - keep comments direct: "use X to Y", "X for Y"; never write reasoning in comments ("use X because ...", "this API does ... so use ...") — a comment states what and how, not justification
+        - no journaling or note-taking style comments
+    - balance depth and breadth: before adding something new, check if it can be built on top of what exists; do not introduce new classes and helper functions unless necessary
+    - prefer fixing the design over patching around it
+    - run formatter and linter if available
+
+- other useful tools to use if available:
+    - `rg`: ripgrep for fast pattern search
+    - `ast-grep`: AST-based search; more precise than text grep for structural queries in complex codebases
+    - `fd`: an alternative to find
+    - `worktrunk`: for git worktree management
+    - `opensrc`: vercel cli to fetch source code; source code is often better context than human-written docs
+    - `atuin`: shell history; agent-run commands are recorded via hooks and tagged by agent — recall past commands with `atuin search '<query>'` (add `--author '$all-agent'` for agent-only, `--author '$all-user'` for human-only, or a specific agent name: claude-code, codex, copilot, cursor, opencode, pi)
+
+- regarding tests
+    - tests are good and most medium-to-large tasks should have tests
+    - when exploring or doing small draft tasks, tests can slow down the process and limit the creativity.
+    - judge when to be test-driven based on the scale of the task or ask user if tests should be added first.

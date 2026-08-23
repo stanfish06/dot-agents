@@ -12,6 +12,7 @@ SKIP_CODEX=0
 SKIP_PI=0
 SKIP_OPENCODE=0
 SKIP_KILO=0
+SKIP_CURSOR=0
 SKIP_PROMPTS=0
 FORCE=0
 ALLOW_DIRTY_SKILLS=0
@@ -32,12 +33,13 @@ Install this dot-agents checkout into the current user's agent homes.
 Options:
   --dry-run             Print actions without changing files.
   --skip-skills         Do not run skills/install-skills.sh.
-  --skip-config         Do not symlink Claude/Codex/Pi config.
+  --skip-config         Do not symlink Claude/Codex/Pi/opencode/Kilo/Cursor config.
   --skip-claude         Do not symlink Claude config.
   --skip-codex          Do not symlink Codex config.
   --skip-pi             Do not symlink Pi agent config.
   --skip-opencode       Do not symlink opencode config.
   --skip-kilo           Do not symlink Kilo Code config.
+  --skip-cursor         Do not symlink Cursor user rules.
   --skip-prompts        Do not install prompts/live-prompts/*.md.
   --extras <name>...    Install optional skill extras.
                         Names: gstack, career (alias: career-ops), all
@@ -51,8 +53,8 @@ Default behavior:
   - Run skills/install-skills.sh, which delegates skill installation to Vercel's
     skills CLI and installs graphify. gstack and career-ops are skipped unless
     selected with --extras.
-  - Symlink selected Claude, Codex, Pi, and opencode config paths into
-    their agent homes.
+  - Symlink selected Claude, Codex, Pi, opencode, Kilo Code, and Cursor
+    config paths into their agent homes.
   - Install live prompts into each agent's native prompt/command surface.
   - Move any existing non-matching target to TARGET.backup-<timestamp>.
 EOF
@@ -93,6 +95,7 @@ while [ "$#" -gt 0 ]; do
     --skip-pi) SKIP_PI=1 ;;
     --skip-opencode) SKIP_OPENCODE=1 ;;
     --skip-kilo) SKIP_KILO=1 ;;
+    --skip-cursor) SKIP_CURSOR=1 ;;
     --skip-prompts) SKIP_PROMPTS=1 ;;
     --extras)
       shift
@@ -373,6 +376,24 @@ install_kilo() {
   install_link "$ROOT/kilo/kilo.jsonc" "$HOME/.config/kilo/kilo.jsonc"
 }
 
+install_cursor() {
+  local source_dir="$ROOT/cursor/rules"
+  local target_dir="$HOME/.cursor/rules"
+  local source
+  local found=0
+
+  log "==> Cursor"
+  [ -d "$source_dir" ] || die "missing Cursor rules directory: $source_dir"
+
+  for source in "$source_dir"/*.mdc; do
+    [ -e "$source" ] || continue
+    found=1
+    install_link "$source" "$target_dir/$(basename "$source")"
+  done
+
+  [ "$found" -eq 1 ] || die "missing Cursor rules in $source_dir"
+}
+
 main() {
   if [ "$SKIP_SKILLS" -eq 0 ]; then
     install_skills
@@ -413,6 +434,12 @@ main() {
     install_kilo
   else
     log "Skip: Kilo Code"
+  fi
+
+  if [ "$SKIP_CURSOR" -eq 0 ]; then
+    install_cursor
+  else
+    log "Skip: Cursor"
   fi
 }
 

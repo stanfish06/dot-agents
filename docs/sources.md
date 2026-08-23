@@ -83,6 +83,15 @@ Imported from Kilo Code docs (https://kilocode.ai/docs):
 - `kilo/AGENTS.md` — global instructions installed as
   `~/.config/kilo/AGENTS.md`.
 
+Added for Cursor:
+
+- `cursor/rules/*.mdc` — Codex `AGENTS.md` split into always-on user rules
+  (`behaviors`, `dev`, `skills`, `context-hygiene`). Installed as
+  `~/.cursor/rules/*.mdc`. Cursor docs do not load `~/.cursor/AGENTS.md`;
+  Help lists `~/.cursor/rules` as the machine-local user-rule path. Account
+  User Rules in Customize → Rules are not files and are not installed.
+  Project `AGENTS.md` / `.cursor/rules` stay in each repo.
+
 Intentionally excluded:
 
 - `~/.claude.json`, because it is app state with account/cache/project metadata.
@@ -91,5 +100,7 @@ Intentionally excluded:
 - `~/.config/kilo/` credentials, Kilo account/session state, and any
   `provider.*.options.apiKey` values. The OpenRouter key lives in the
   `OPENROUTER_API_KEY` env var.
+- `~/.cursor/cli-config.json`, chats, project caches, `skills-cursor`, and
+  other Cursor runtime state.
 - histories, sessions, logs, shell snapshots, browser/computer-use state,
   generated images, plugin caches, SQLite databases, and temp folders.

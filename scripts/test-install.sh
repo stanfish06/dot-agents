@@ -64,6 +64,7 @@ codex_output="$(
     --skip-pi \
     --skip-opencode \
     --skip-kilo \
+    --skip-cursor \
     --skip-prompts
 )"
 assert_contains "$codex_output" \
@@ -76,12 +77,33 @@ pi_kilo_output="$(
     --skip-claude \
     --skip-codex \
     --skip-opencode \
+    --skip-cursor \
     --skip-prompts
 )"
 assert_contains "$pi_kilo_output" \
   "Symlink: $test_home/.pi/agent/AGENTS.md -> $ROOT/pi-agent/AGENTS.md"
 assert_contains "$pi_kilo_output" \
   "Symlink: $test_home/.config/kilo/AGENTS.md -> $ROOT/kilo/AGENTS.md"
+
+cursor_output="$(
+  HOME="$test_home" bash "$ROOT/scripts/install.sh" \
+    --dry-run \
+    --skip-skills \
+    --skip-claude \
+    --skip-codex \
+    --skip-pi \
+    --skip-opencode \
+    --skip-kilo \
+    --skip-prompts
+)"
+assert_contains "$cursor_output" \
+  "Symlink: $test_home/.cursor/rules/behaviors.mdc -> $ROOT/cursor/rules/behaviors.mdc"
+assert_contains "$cursor_output" \
+  "Symlink: $test_home/.cursor/rules/dev.mdc -> $ROOT/cursor/rules/dev.mdc"
+assert_contains "$cursor_output" \
+  "Symlink: $test_home/.cursor/rules/skills.mdc -> $ROOT/cursor/rules/skills.mdc"
+assert_contains "$cursor_output" \
+  "Symlink: $test_home/.cursor/rules/context-hygiene.mdc -> $ROOT/cursor/rules/context-hygiene.mdc"
 
 bash "$ROOT/scripts/test-amux-hooks.sh"
 

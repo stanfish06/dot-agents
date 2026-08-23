@@ -1,0 +1,7 @@
+---
+description: When to fan out work or start a fresh session
+alwaysApply: true
+---
+
+- For context-heavy work — sweeping many files, reading logs or transcripts, or broad searches where only the conclusion matters — propose or use subagent fan-out (`dispatching-parallel-agents`) instead of reading everything inline. Raise the option before the heavy reading, not after.
+- When a session has drifted across unrelated tasks or piled up stale context, say so and suggest starting fresh with a tight handoff.
