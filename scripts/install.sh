@@ -44,7 +44,8 @@ Options:
   --skip-opencode       Do not symlink opencode config.
   --skip-kilo           Do not symlink Kilo Code config.
   --skip-cursor         Do not install Cursor user rules or CLI config.
-  --skip-apimanac       Do not fetch, write catalog_root, or link the APImanac skill.
+  --skip-apimanac       Do not fetch, write catalog_root, link the APImanac skill,
+                        or register the APImanac MCP server.
   --skip-prompts        Do not install prompts/live-prompts/*.md.
   --extras <name>...    Install optional skill extras.
                         Names: gstack, career (alias: career-ops), all
@@ -62,6 +63,8 @@ Default behavior:
     config paths into their agent homes.
   - Fetch APImanac skill/SKILL.md from GitHub into apis/SKILL.md, write
     catalog_root, and symlink that file into each harness skills/apimanac/.
+  - Register the `apimanac mcp` stdio server: user scope for Claude,
+    ~/.cursor/mcp.json for Cursor, symlinked config for Codex/opencode/Kilo.
   - Install live prompts into each agent's native prompt/command surface.
   - Move any existing non-matching target to TARGET.backup-<timestamp>.
 EOF
@@ -473,6 +476,118 @@ install_apimanac_config() {
   fi
 }
 
+claude_apimanac_mcp_state() {
+  python3 - "${CLAUDE_CONFIG_DIR:-$HOME}/.claude.json" <<'PY'
+import json
+import sys
+
+try:
+    with open(sys.argv[1]) as handle:
+        servers = json.load(handle).get("mcpServers") or {}
+except (OSError, ValueError):
+    print("missing")
+    raise SystemExit(0)
+
+entry = servers.get("apimanac") or {}
+if not entry:
+    print("missing")
+elif entry.get("command") == "apimanac" and entry.get("args") == ["mcp"]:
+    print("match")
+else:
+    print("differs")
+PY
+}
+
+install_claude_apimanac_mcp() {
+  local state
+
+  # Claude keeps user-scope MCP servers in ~/.claude.json, which the CLI
+  # rewrites at runtime, so register through `claude mcp` instead of a symlink.
+  if ! command -v claude >/dev/null 2>&1; then
+    log "WARN: claude is not on PATH; skipping Claude MCP registration"
+    return 0
+  fi
+  if ! command -v python3 >/dev/null 2>&1; then
+    log "WARN: python3 is not on PATH; skipping Claude MCP registration"
+    return 0
+  fi
+
+  state="$(claude_apimanac_mcp_state)"
+  case "$state" in
+    match)
+      log "OK: Claude MCP apimanac (user scope)"
+      return 0
+      ;;
+    differs)
+      log "Replace: Claude MCP apimanac (user scope)"
+      run claude mcp remove apimanac -s user
+      ;;
+  esac
+
+  log "Register: Claude MCP apimanac (user scope)"
+  run claude mcp add --scope user apimanac -- apimanac mcp
+}
+
+merge_cursor_apimanac_mcp() {
+  python3 - "$1" <<'PY'
+import json
+import os
+import sys
+
+path = sys.argv[1]
+config = {}
+if os.path.exists(path):
+    try:
+        with open(path) as handle:
+            config = json.load(handle)
+    except ValueError:
+        raise SystemExit(1)
+    if not isinstance(config, dict):
+        raise SystemExit(1)
+
+servers = config.setdefault("mcpServers", {})
+if not isinstance(servers, dict):
+    raise SystemExit(1)
+
+desired = {"command": "apimanac", "args": ["mcp"]}
+if servers.get("apimanac") == desired:
+    print(f"OK: {path} (apimanac)")
+    raise SystemExit(0)
+
+servers["apimanac"] = desired
+with open(path, "w") as handle:
+    json.dump(config, handle, indent=2)
+    handle.write("\n")
+print(f"Write: {path} (apimanac)")
+PY
+}
+
+install_cursor_apimanac_mcp() {
+  local target="$HOME/.cursor/mcp.json"
+  local backup
+
+  # Cursor has no `mcp add` command, and this file holds servers this script
+  # does not own, so merge one key instead of writing the whole file.
+  if ! command -v python3 >/dev/null 2>&1; then
+    log "WARN: python3 is not on PATH; skipping Cursor MCP registration"
+    return 0
+  fi
+
+  if [ "$DRY_RUN" -eq 1 ]; then
+    printf 'DRY-RUN: merge apimanac into %s\n' "$target"
+    return 0
+  fi
+
+  ensure_parent_dir "$target"
+  if ! merge_cursor_apimanac_mcp "$target"; then
+    backup="$(backup_name_for "$target")"
+    log "Backup: $target -> $backup (unparsable JSON)"
+    mv "$target" "$backup"
+    merge_cursor_apimanac_mcp "$target" ||
+      die "failed to write $target"
+  fi
+}
+
 install_apimanac() {
   log "==> APImanac"
   refresh_apimanac_skill
@@ -497,6 +612,15 @@ install_apimanac() {
   fi
   if [ "$SKIP_CURSOR" -eq 0 ]; then
     install_apimanac_skill "$HOME/.cursor/skills/apimanac"
+  fi
+
+  # Register the stdio MCP server (`apimanac mcp`). Codex, opencode, and Kilo
+  # declare it in their symlinked config files; Pi has no native MCP support.
+  if [ "$SKIP_CLAUDE" -eq 0 ]; then
+    install_claude_apimanac_mcp
+  fi
+  if [ "$SKIP_CURSOR" -eq 0 ]; then
+    install_cursor_apimanac_mcp
   fi
 }
 

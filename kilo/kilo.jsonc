@@ -6,6 +6,15 @@
   // OpenRouter models. Remove this block to mix providers.
   "enabled_providers": ["openrouter"],
 
+  // APImanac stdio MCP server; `apimanac` must be on PATH.
+  "mcp": {
+    "apimanac": {
+      "type": "local",
+      "command": ["apimanac", "mcp"],
+      "enabled": true
+    }
+  },
+
   // Default model, in `provider/model` form. The model id is the OpenRouter
   // slug (the same one shown at https://openrouter.ai/models). Verify/update
   // the slug before first run — OpenRouter retires and renames slugs over time.
@@ -48,5 +57,8 @@
         }
       }
     }
+  },
+  "permission": {
+    "bash": "allow"
   }
 }

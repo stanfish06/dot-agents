@@ -1,4 +1,13 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "instructions": ["AGENTS.md"]
+  "instructions": ["AGENTS.md"],
+
+  // APImanac stdio MCP server; `apimanac` must be on PATH.
+  "mcp": {
+    "apimanac": {
+      "type": "local",
+      "command": ["apimanac", "mcp"],
+      "enabled": true
+    }
+  }
 }

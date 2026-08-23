@@ -39,7 +39,11 @@ artifacts stay out of git.
   `skill/SKILL.md`. The installer writes `catalog_root` to
   `$XDG_CONFIG_HOME/apimanac/config.yaml` and symlinks the skill into each
   harness `skills/apimanac/` directory. Grants stay in the untracked XDG
-  grants file, not here.
+  grants file, not here. The `apimanac mcp` stdio server is registered per
+  harness: `[mcp_servers.apimanac]` in `codex/config.toml`, an `mcp` block in
+  `opencode/opencode.jsonc` and `kilo/kilo.jsonc`, user scope via
+  `claude mcp add` for Claude, and a merged entry in `~/.cursor/mcp.json`.
+  Pi has no native MCP support.
 - `prompts/` - reusable system prompts and live prompt templates for agent
   slash-command surfaces.
 - `hooks/` - opt-in Claude hook scripts and hook JSON examples.
@@ -90,8 +94,9 @@ submodule, delegates skill installation to `skills/install-skills.sh`, then link
 the selected Claude, Codex, Pi, opencode, Kilo Code, and Cursor config into
 their agent homes. It fetches `skill/SKILL.md` from
 [stanfish06/APImanac](https://github.com/stanfish06/APImanac) into
-`apis/SKILL.md`, writes the APImanac `catalog_root`, and symlinks that
-file into each harness `skills/apimanac/` directory. It also links
+`apis/SKILL.md`, writes the APImanac `catalog_root`, symlinks that
+file into each harness `skills/apimanac/` directory, and registers the
+`apimanac mcp` server for Claude (user scope) and Cursor. It also links
 `prompts/live-prompts/*.md` into each agent's live prompt or command directory.
 Existing non-matching files are moved aside to timestamped backups.
 

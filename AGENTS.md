@@ -52,7 +52,10 @@ state.
   `stanfish06/APImanac` `skill/SKILL.md` on each install). Installed as
   `$XDG_CONFIG_HOME/apimanac/config.yaml` `catalog_root` and as
   `skills/apimanac/SKILL.md` in each harness home. Not part of the
-  `skills/` submodule.
+  `skills/` submodule. The `apimanac mcp` stdio server is declared in the
+  symlinked Codex/opencode/Kilo configs, added at user scope for Claude
+  (`~/.claude.json`, written by `claude mcp add`), and merged into
+  `~/.cursor/mcp.json`. Pi has no native MCP support.
 
 ## Office Files
 

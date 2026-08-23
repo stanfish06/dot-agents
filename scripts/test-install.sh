@@ -50,6 +50,12 @@ config_text="$(<"$ROOT/codex/config.toml")"
 expected_notify="notify = [\"/bin/sh\", \"-c\", 'exec \"\$HOME/.codex/notify-dispatch.sh\" \"\$@\"', \"codex-notify\"]"
 assert_contains "$config_text" "$expected_notify"
 assert_not_contains "$config_text" "/Users/stan/Git/dot-agents/codex/notify-dispatch.sh"
+assert_contains "$config_text" "[mcp_servers.apimanac]"
+
+opencode_config="$(<"$ROOT/opencode/opencode.jsonc")"
+assert_contains "$opencode_config" '"command": ["apimanac", "mcp"]'
+kilo_config="$(<"$ROOT/kilo/kilo.jsonc")"
+assert_contains "$kilo_config" '"command": ["apimanac", "mcp"]'
 
 dispatcher_text="$(<"$ROOT/codex/notify-dispatch.sh")"
 assert_contains "$dispatcher_text" \
@@ -120,6 +126,27 @@ assert_contains "$cursor_output" \
   "Copy: $ROOT/cursor/cli-config.json -> $test_home/.cursor/cli-config.json"
 assert_contains "$cursor_output" \
   "Symlink: $test_home/.cursor/skills/apimanac/SKILL.md -> $ROOT/apis/SKILL.md"
+assert_contains "$cursor_output" \
+  "DRY-RUN: merge apimanac into $test_home/.cursor/mcp.json"
+
+claude_mcp_output="$(
+  HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" \
+  CLAUDE_CONFIG_DIR="$test_home/.claude-config" bash "$ROOT/scripts/install.sh" \
+    --dry-run \
+    --skip-skills \
+    --skip-codex \
+    --skip-pi \
+    --skip-opencode \
+    --skip-kilo \
+    --skip-cursor \
+    --skip-prompts
+)"
+if command -v claude >/dev/null 2>&1; then
+  assert_contains "$claude_mcp_output" \
+    "DRY-RUN: claude mcp add --scope user apimanac -- apimanac mcp"
+else
+  assert_contains "$claude_mcp_output" "WARN: claude is not on PATH"
+fi
 
 skip_apimanac_output="$(
   HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" bash "$ROOT/scripts/install.sh" \
@@ -165,6 +192,43 @@ assert_contains "$refresh_output" "Refresh: file://${fake_skill} -> $ROOT/apis/S
 cmp -s "$fake_skill" "$ROOT/apis/SKILL.md" || fail "apis/SKILL.md was not refreshed from APIMANAC_SKILL_URL"
 cp "$skill_backup" "$ROOT/apis/SKILL.md"
 
+mkdir -p "$test_home/.cursor"
+cat > "$test_home/.cursor/mcp.json" <<'EOF'
+{
+  "mcpServers": {
+    "other": {
+      "command": "other-mcp"
+    }
+  }
+}
+EOF
+cursor_mcp_args=(
+  --skip-skills
+  --skip-claude
+  --skip-codex
+  --skip-pi
+  --skip-opencode
+  --skip-kilo
+  --skip-prompts
+)
+cursor_mcp_output="$(
+  HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" \
+  APIMANAC_SKILL_URL="file://${fake_skill}" \
+  bash "$ROOT/scripts/install.sh" "${cursor_mcp_args[@]}"
+)"
+assert_contains "$cursor_mcp_output" "Write: $test_home/.cursor/mcp.json (apimanac)"
+cursor_mcp="$(<"$test_home/.cursor/mcp.json")"
+assert_contains "$cursor_mcp" '"apimanac"'
+assert_contains "$cursor_mcp" '"other-mcp"'
+
+cursor_mcp_rerun="$(
+  HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" \
+  APIMANAC_SKILL_URL="file://${fake_skill}" \
+  bash "$ROOT/scripts/install.sh" "${cursor_mcp_args[@]}"
+)"
+assert_contains "$cursor_mcp_rerun" "OK: $test_home/.cursor/mcp.json (apimanac)"
+cp "$skill_backup" "$ROOT/apis/SKILL.md"
+
 cursor_config="$(<"$ROOT/cursor/cli-config.json")"
 assert_contains "$cursor_config" '"approvalMode": "unrestricted"'
 assert_not_contains "$cursor_config" "authInfo"
@@ -173,4 +237,4 @@ assert_not_contains "$cursor_config" "privacyCache"
 
 bash "$ROOT/scripts/test-amux-hooks.sh"
 
-echo "PASS: scripts/install.sh extras and Codex notifier wiring"
+echo "PASS: scripts/install.sh extras, Codex notifier wiring, APImanac MCP"
