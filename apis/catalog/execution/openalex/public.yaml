@@ -54,12 +54,12 @@ health_probe:
   expect_status: 200
 verification:
   state: verified
-  verified_at: 2026-08-23T09:11:26.716Z
+  verified_at: 2026-08-23T09:12:01.548Z
   evidence:
     contract_hash: v1:sha256:afdc28b3c7bc7fc7cfbf23e18311f711bb0d12d18325cc5b2a9b91bcf2833f04
     method: GET
     path: /works
     status: 200
-    response_hash: v1:sha256:7a92828e053c2e5e64a7999094b5591b0ba5190fd827ee75a504e0139ff86e1a
-    timestamp: 2026-08-23T09:11:26.716Z
+    response_hash: v1:sha256:420e70df6925dc0fffd416b0884d08d07c8a66c93ed7e83d6a3ddd975e35d260
+    timestamp: 2026-08-23T09:12:01.548Z
     tool_version: 0.0.0
