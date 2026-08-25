@@ -1,7 +1,6 @@
 profile_id: user-token
 api_id: ebay
-description: >-
-  eBay RESTful APIs (production) with an OAuth2 access token in the
+description: eBay RESTful APIs (production) with an OAuth2 access token in the
   Authorization header. Sell APIs require a user access token; Buy Browse and
   Commerce Taxonomy also accept an application access token. APImanac does not
   run OAuth flows — mint the token yourself (eBay developer console or the
@@ -13,9 +12,8 @@ auth:
   credential_id: ebay-oauth-token
   components:
     - name: token
-      description: >-
-        An eBay OAuth2 access token (user token for /sell, application token
-        is enough for /buy/browse and /commerce/taxonomy).
+      description: An eBay OAuth2 access token (user token for /sell, application
+        token is enough for /buy/browse and /commerce/taxonomy).
   placements:
     - kind: header
       header: Authorization
@@ -63,7 +61,17 @@ cache:
 health_probe:
   method: GET
   path: /commerce/taxonomy/v1/get_default_category_tree_id
-  query: { marketplace_id: EBAY_US }
+  query:
+    marketplace_id: EBAY_US
   expect_status: 200
 verification:
-  state: candidate
+  state: verified
+  verified_at: 2026-08-25T05:45:49.464Z
+  evidence:
+    contract_hash: v1:sha256:4950d114dd09cb163b242bb68f74591aec7fd45e62f5a6bb5d8097a32e307202
+    method: GET
+    path: /commerce/taxonomy/v1/get_default_category_tree_id
+    status: 200
+    response_hash: v1:sha256:fb9453016961a0d702e72a7854bcef659b792b67f7e07219ed6a73664ad5cc8d
+    timestamp: 2026-08-25T05:45:49.464Z
+    tool_version: 0.0.0
