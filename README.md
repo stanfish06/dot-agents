@@ -35,7 +35,8 @@ artifacts stay out of git.
   dirtying git. Cursor has no home-directory `AGENTS.md`. Project
   `AGENTS.md` / `.cursor/rules` stay in each repo.
 - `apis/` - personal APImanac catalog (`catalog/meta`, `catalog/execution`)
-  plus `SKILL.md` from [stanfish06/APImanac](https://github.com/stanfish06/APImanac)
+  for [APImanac](https://github.com/stanfish06/APImanac) plus `SKILL.md` fetched
+  from [stanfish06/APImanac](https://github.com/stanfish06/APImanac)
   `skill/SKILL.md`. The installer writes `catalog_root` to
   `$XDG_CONFIG_HOME/apimanac/config.yaml` and symlinks the skill into each
   harness `skills/apimanac/` directory. Grants stay in the untracked XDG
@@ -139,30 +140,3 @@ memory-management prompts. The deer-flow `skills/public` set is being imported
 separately into the `stanfish06/skillquarium` vault rather than here, per the
 skills-go-in-the-submodule rule.
 
-## Refresh From Home
-
-The current import was intentionally narrow. To refresh it, copy only the same
-source-of-truth files and review the diff before committing:
-
-```bash
-rsync -a ~/.claude/CLAUDE.md ~/.claude/settings.json ~/.claude/settings.local.json claude/
-rsync -a ~/.claude/skills/graphify claude/skills/
-rsync -a ~/.codex/config.toml ~/.codex/AGENTS.md codex/
-rsync -a ~/.codex/hooks.json codex/
-rsync -a ~/.codex/rules/default.rules codex/rules/
-rsync -a ~/.codex/skills/hatch-pet codex/skills/
-rsync -a ~/.pi/agent/AGENTS.md pi-agent/
-rsync -a ~/.pi/agent/themes/mypi.json pi-agent/themes/
-rsync -a ~/.config/opencode/AGENTS.md opencode/
-rsync -a ~/.config/opencode/opencode.jsonc opencode/
-rsync -a ~/.config/opencode/tui.json opencode/
-rsync -a ~/.config/opencode/themes/mypi.json opencode/themes/
-rsync -a ~/.config/kilo/AGENTS.md ~/.config/kilo/kilo.jsonc kilo/
-rsync -a ~/.cursor/rules/*.mdc cursor/rules/
-```
-
-Do not import `auth.json`, `.claude.json`, histories, sessions, plugin caches,
-SQLite state, generated images, browser state, Pi auth/session state, Kilo
-credentials, the live `~/.cursor/cli-config.json` (it carries auth and
-caches; edit `cursor/cli-config.json` in this repo instead), Cursor chats /
-project caches, or temporary folders.
