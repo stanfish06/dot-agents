@@ -1,0 +1,69 @@
+profile_id: user-token
+api_id: ebay
+description: >-
+  eBay RESTful APIs (production) with an OAuth2 access token in the
+  Authorization header. Sell APIs require a user access token; Buy Browse and
+  Commerce Taxonomy also accept an application access token. APImanac does not
+  run OAuth flows — mint the token yourself (eBay developer console or the
+  mint-token helpers) and grant it; tokens expire after 2 hours.
+origins:
+  - https://api.ebay.com
+auth:
+  type: bearer
+  credential_id: ebay-oauth-token
+  components:
+    - name: token
+      description: >-
+        An eBay OAuth2 access token (user token for /sell, application token
+        is enough for /buy/browse and /commerce/taxonomy).
+  placements:
+    - kind: header
+      header: Authorization
+      template: Bearer {token}
+  scopes:
+    - https://api.ebay.com/oauth/api_scope
+    - https://api.ebay.com/oauth/api_scope/sell.inventory
+    - https://api.ebay.com/oauth/api_scope/sell.account
+    - https://api.ebay.com/oauth/api_scope/sell.fulfillment
+    - https://api.ebay.com/oauth/api_scope/sell.marketing
+    - https://api.ebay.com/oauth/api_scope/sell.analytics.readonly
+permissions:
+  - method: GET
+    path: /sell/**
+    decision: auto
+  - method: GET
+    path: /buy/browse/v1/**
+    decision: auto
+  - method: GET
+    path: /commerce/taxonomy/v1/**
+    decision: auto
+  - method: POST
+    path: /sell/**
+    decision: confirm
+  - method: PUT
+    path: /sell/**
+    decision: confirm
+  - method: POST
+    path: /**
+    decision: deny
+  - method: PUT
+    path: /**
+    decision: deny
+  - method: PATCH
+    path: /**
+    decision: deny
+  - method: DELETE
+    path: /**
+    decision: deny
+network_scope: public
+redirects:
+  max: 2
+cache:
+  enabled: false
+health_probe:
+  method: GET
+  path: /commerce/taxonomy/v1/get_default_category_tree_id
+  query: { marketplace_id: EBAY_US }
+  expect_status: 200
+verification:
+  state: candidate

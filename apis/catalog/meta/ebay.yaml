@@ -1,0 +1,25 @@
+id: ebay
+name: eBay RESTful APIs
+description: >-
+  eBay's REST APIs for marketplace selling and buying: Sell APIs (inventory,
+  fulfillment/orders, account, marketing, analytics), Buy Browse for item
+  search, and Commerce Taxonomy for category metadata. OAuth2 bearer auth;
+  Sell endpoints need a user access token.
+homepage: https://www.ebay.com
+documentation: https://developer.ebay.com/develop/guides/sell/using-ebay-restful-apis
+categories: [e-commerce, marketplace]
+tags: [ebay, selling, inventory, orders, fulfillment, listings, item-search, taxonomy]
+aliases: [ebay-api, ebay-sell]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Read seller inventory, orders, account settings, and analytics under /sell
+  - Create and update inventory items and offers under an explicit confirm rule
+  - Search live listings via Buy Browse item_summary/search
+  - Resolve marketplace category trees via Commerce Taxonomy
+profiles: [user-token]
