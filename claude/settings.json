@@ -2,8 +2,7 @@
   "permissions": {
     "defaultMode": "bypassPermissions"
   },
-  "model": "claude-fable-5[1m]",
-  "outputStyle": "No bullshit",
+  "model": "opus[1m]",
   "hooks": {
     "Notification": [
       {
@@ -139,15 +138,17 @@
       }
     }
   },
+  "outputStyle": "No bullshit",
   "effortLevel": "xhigh",
   "modelSettings": {
     "claude-opus-5": {
       "effortLevel": "high"
     },
     "claude-fable-5": {
-      "effortLevel": "xhigh"
+      "effortLevel": "high"
     }
   },
+  "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
   "switchModelsOnFlag": false,
