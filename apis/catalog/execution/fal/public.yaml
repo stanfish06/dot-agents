@@ -1,0 +1,62 @@
+profile_id: public
+api_id: fal
+description: "fal's unauthenticated surfaces: the agent-readable model and
+  documentation text at fal.ai, and the fal CDN that serves generated media.
+  Fetch /models/<owner>/<app>/llms.txt for an endpoint's current input and
+  output schema before submitting a job on the `key` profile. No credential is
+  required, and no Authorization header is sent to these hosts."
+origins:
+  - https://fal.ai
+  - https://v3.fal.media
+  - https://fal.media
+auth:
+  type: none
+permissions:
+  - method: GET
+    path: /llms.txt
+    decision: auto
+  - method: GET
+    path: /docs/llms.txt
+    decision: auto
+  - method: GET
+    path: /docs/**
+    decision: auto
+  - method: GET
+    path: /models/**
+    decision: auto
+  - method: GET
+    path: /files/**
+    decision: auto
+  - method: POST
+    path: /**
+    decision: deny
+  - method: PUT
+    path: /**
+    decision: deny
+  - method: PATCH
+    path: /**
+    decision: deny
+  - method: DELETE
+    path: /**
+    decision: deny
+network_scope: public
+redirects:
+  max: 2
+cache:
+  enabled: true
+  ttl_seconds: 900
+health_probe:
+  method: GET
+  path: /llms.txt
+  expect_status: 200
+verification:
+  state: verified
+  verified_at: 2026-09-01T01:00:05.889Z
+  evidence:
+    contract_hash: v1:sha256:ff6c7f7236fa51c4974529d0f15e7d933d483fb27a143d95673c19dd9bb2a4e9
+    method: GET
+    path: /llms.txt
+    status: 200
+    response_hash: v1:sha256:3807010fb3254f21cf1e9b16c02ad84b7efb8c656a21486a34e0ad397ab1c1ad
+    timestamp: 2026-09-01T01:00:05.889Z
+    tool_version: 0.0.0

@@ -1,0 +1,81 @@
+profile_id: keyed
+api_id: fal
+description: "fal inference with the API key sent as an `Authorization: Key
+  <key>` header. On queue.fal.run, POST /<owner>/<app> submits a job, GET
+  /<owner>/<app>/requests/<id>/status polls it, and GET
+  /<owner>/<app>/requests/<id> returns the result. In request sub-paths the app
+  id is only the first two segments: submit to /fal-ai/flux/schnell, poll
+  /fal-ai/flux/requests/<id>/status. Pass --origin https://fal.run to run a
+  model synchronously. Every POST is billed, so submit and cancel are
+  confirm-only."
+origins:
+  - https://queue.fal.run
+  - https://fal.run
+auth:
+  type: header_key
+  credential_id: fal-key
+  components:
+    - name: key
+      description: A fal API key, copied whole from https://fal.ai/dashboard/keys at
+        the moment it is created. It is one opaque string, colon included. The
+        API scope is enough for ready-to-use models.
+  placements:
+    - kind: header
+      header: Authorization
+      template: Key {key}
+  scopes:
+    - API
+permissions:
+  - method: GET
+    path: /*/*/requests/*/status
+    decision: auto
+  - method: GET
+    path: /*/*/requests/*/response
+    decision: auto
+  - method: GET
+    path: /*/*/requests/*
+    decision: auto
+  - method: POST
+    path: /*/*
+    decision: confirm
+  - method: POST
+    path: /*/*/**
+    decision: confirm
+  - method: PUT
+    path: /*/*/requests/*/cancel
+    decision: confirm
+  - method: GET
+    path: /**
+    decision: deny
+  - method: POST
+    path: /**
+    decision: deny
+  - method: PUT
+    path: /**
+    decision: deny
+  - method: PATCH
+    path: /**
+    decision: deny
+  - method: DELETE
+    path: /**
+    decision: deny
+network_scope: public
+redirects:
+  max: 2
+cache:
+  enabled: false
+health_probe:
+  method: GET
+  path: /fal-ai/fast-sdxl/requests/00000000-0000-0000-0000-000000000000/status
+  expect_status: 200
+verification:
+  state: verified
+  verified_at: 2026-09-01T01:24:34.452Z
+  evidence:
+    contract_hash: v1:sha256:d774a2b00625164b3b3f297a180f8806580fd9f7482013f284151e8b88d3a4c8
+    method: GET
+    path: /fal-ai/fast-sdxl/requests/00000000-0000-0000-0000-000000000000/status
+    status: 200
+    response_hash: v1:sha256:f213b342b1ca84602b00c13ac8cf35017ffd89bc28a1a93b1799a97151e231cf
+    timestamp: 2026-09-01T01:24:34.452Z
+    tool_version: 0.0.0

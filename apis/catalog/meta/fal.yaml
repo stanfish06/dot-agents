@@ -1,0 +1,27 @@
+id: fal
+name: fal
+description: >-
+  fal's generative media inference platform. Submit image, video, audio, and
+  text jobs to the durable queue at queue.fal.run, poll status, and fetch
+  results; fal.run runs the same models synchronously. Model input and output
+  schemas, and the whole documentation set, are served as plain text from
+  fal.ai with no credential.
+homepage: https://fal.ai
+documentation: https://docs.fal.ai
+categories: [ai, ml, media]
+tags: [inference, image-generation, video-generation, text-to-image, gpu, queue, flux]
+aliases: [fal-ai, fal-run, queue-fal-run]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Read a model's exact input and output schema, pricing, and examples from fal.ai/models/<endpoint-id>/llms.txt without a credential
+  - Submit an inference request to the queue under an explicit confirm rule, since every submission is billed
+  - Poll request status with queue position and runner logs, and fetch the stored result
+  - Cancel a queued or in-progress request under an explicit confirm rule
+  - Download generated media from the public fal CDN
+profiles: [public, keyed]
