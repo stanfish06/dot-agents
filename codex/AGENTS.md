@@ -11,7 +11,7 @@
 ## Dev
 
 - build tools you should prioritize when starting new projects:
-    - js/ts: `bun` and `pnpm`
+    - js/ts: prefer `bun` for cli and tui, prefer `pnpm` over `npm`, prefer `deno` for scripting
     - python: `uv`
     - dev env: `mise` and `nix` flake
 
