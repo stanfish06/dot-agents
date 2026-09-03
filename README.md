@@ -15,7 +15,9 @@ artifacts stay out of git.
 - `agents/` - reusable specialist personas imported from production agent packs.
 - `claude/` - selected files from `~/.claude`: global instructions, settings, and
   the standalone `graphify` skill, plus optional slash commands under
-  `claude/commands/`.
+  `claude/commands/`. `claude/settings.local-llm.json` and the `claude-local`
+  launcher (linked to `~/.local/bin/claude-local`) point Claude Code at the
+  llama.cpp server on `stanfishdeb` over Tailscale; see "Local model" below.
 - `codex/` - selected files from `~/.codex`: global instructions, config, default
   rules, hooks, and the `hatch-pet` skill.
 - `pi-agent/` - selected Pi agent config: global `AGENTS.md` (installed as
@@ -116,6 +118,35 @@ Preview changes without touching your home directory:
 ```bash
 ./scripts/install.sh --dry-run
 ```
+
+## Local model
+
+`claude-local` runs Claude Code against the llama.cpp server on `stanfishdeb`
+(`https://stanfishdeb.tail861ef1.ts.net`, Anthropic-compatible `/v1/messages`,
+currently `qwen3-4b` with a 40960-token context). It passes
+`--settings claude/settings.local-llm.json --strict-mcp-config --bare`, so no
+hooks, plugins, MCP servers, CLAUDE.md, or auto-memory load. Bare mode exposes
+only Bash, Edit, and Read (about 900 tokens) behind a two-line system prompt,
+so the launcher appends a short instruction telling the model to act through
+those tools instead of printing commands; the whole prompt stays near 1.2k
+tokens. `CLAUDE_LOCAL_FULL=1` drops `--bare` and loads the normal profile: 24
+tools (about 12k tokens), the full system prompt, and CLAUDE.md, about 23k of
+the 40k window before the first message.
+
+```bash
+claude-local
+claude-local -p "explain this repo"
+CLAUDE_LOCAL_FULL=1 claude-local
+```
+
+Model name, URL, and context size live in `claude/settings.local-llm.json`
+(`ANTHROPIC_MODEL`, `ANTHROPIC_BASE_URL`, `CLAUDE_CODE_MAX_CONTEXT_TOKENS` under
+`env`). The server ignores the Anthropic `thinking` parameter, so Qwen3 reasons
+on every turn unless `llama-server` runs with `--reasoning-budget 0`. Claude Code
+sends no sampling parameters, so the server defaults apply (temperature 0.8,
+top-k 40); Qwen's published settings for tool use are `--temp 0.7 --top-p 0.8
+--top-k 20 --min-p 0`, and a 4B model at 0.8 will sometimes print a command as
+text instead of calling the tool.
 
 ## Imported Reference Content
 

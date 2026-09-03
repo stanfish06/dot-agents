@@ -305,6 +305,8 @@ install_claude() {
   install_link "$ROOT/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
   install_link "$ROOT/claude/settings.json" "$HOME/.claude/settings.json"
   install_link "$ROOT/claude/settings.local.json" "$HOME/.claude/settings.local.json"
+  install_link "$ROOT/claude/settings.local-llm.json" "$HOME/.claude/settings.local-llm.json"
+  install_link "$ROOT/claude/claude-local" "$HOME/.local/bin/claude-local"
   install_link "$ROOT/claude/output-styles" "$HOME/.claude/output-styles"
   install_link "$ROOT/claude/commands/agent-skills" "$HOME/.claude/commands/agent-skills"
   install_link "$ROOT/claude/skills/graphify" "$HOME/.claude/skills/graphify"

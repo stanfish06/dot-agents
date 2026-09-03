@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Claude Code against the llama.cpp server on stanfishdeb (Anthropic-compatible /v1/messages).
+# Bare mode by default; CLAUDE_LOCAL_FULL=1 keeps hooks, CLAUDE.md, plugins, and auto-memory.
+set -euo pipefail
+here="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+args=(--settings "$here/settings.local-llm.json" --strict-mcp-config)
+# Bare mode ships a 2-line system prompt and only Bash/Edit/Read; small models need to be told to use them.
+bare_prompt="You are a coding agent running in the user's terminal with tools. To create or change a file, call the Edit tool (an empty old_string creates a new file). To run a command, call the Bash tool. To look at a file, call the Read tool. Never print commands or file contents for the user to run or paste; do the work with tools, then report the result in one or two sentences."
+[ "${CLAUDE_LOCAL_FULL:-0}" = "1" ] || args+=(--bare --append-system-prompt "$bare_prompt")
+exec claude "${args[@]}" "$@"
