@@ -3,23 +3,23 @@
     "ANTHROPIC_BASE_URL": "https://stanfishdeb.tail861ef1.ts.net",
     "ANTHROPIC_API_KEY": "local-llm",
     "ANTHROPIC_AUTH_TOKEN": "local-llm",
-    "ANTHROPIC_MODEL": "qwen3-4b",
-    "ANTHROPIC_DEFAULT_FABLE_MODEL": "qwen3-4b",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "qwen3-4b",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "qwen3-4b",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "qwen3-4b",
-    "ANTHROPIC_SMALL_FAST_MODEL": "qwen3-4b",
+    "ANTHROPIC_MODEL": "qwen3-27b",
+    "ANTHROPIC_DEFAULT_FABLE_MODEL": "qwen3-27b",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "qwen3-27b",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "qwen3-27b",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "qwen3-27b",
+    "ANTHROPIC_SMALL_FAST_MODEL": "qwen3-27b",
     "CLAUDE_CODE_MAX_CONTEXT_TOKENS": "40960",
     "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "8192",
     "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
   },
-  "model": "qwen3-4b",
+  "model": "qwen3-27b",
   "modelPicker": {
     "options": [
       {
-        "model": "qwen3-4b",
-        "label": "qwen3-4b",
-        "description": "Qwen3-4B Q4_K_M on llama.cpp (stanfishdeb via Tailscale, 40k context)"
+        "model": "qwen3-27b",
+        "label": "qwen3-27b",
+        "description": "qwen3-27b Q4_K_M on llama.cpp (stanfishdeb via Tailscale, 40k context)"
       }
     ],
     "replaceBuiltInOptions": true
