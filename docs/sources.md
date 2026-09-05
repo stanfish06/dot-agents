@@ -97,6 +97,23 @@ Added for Cursor:
   Installed as a copy to `~/.cursor/cli-config.json` so the CLI can rewrite
   runtime fields without dirtying git.
 
+Added for Antigravity (agy):
+
+- `agy/settings.json` — durable CLI settings imported from
+  `~/.gemini/antigravity-cli/settings.json`, with machine-specific
+  `trustedWorkspaces` preserved at install time.
+- `agy/keybindings.json` — custom keyboard shortcuts imported from
+  `~/.gemini/antigravity-cli/keybindings.json`. Installed as a symlink to
+  `~/.gemini/antigravity-cli/keybindings.json`.
+- `agy/skills.json` — progressive skill discovery configuration pointing to
+  `~/.agents/skills`. Installed as a symlink to `~/.gemini/config/skills.json`.
+- Global instructions linked to `~/.gemini/GEMINI.md` and
+  `~/.gemini/config/rules/AGENTS.md`.
+- Specialist personas linked to `~/.gemini/config/agents/*.md`.
+- Live prompts linked to `~/.gemini/config/workflows/*.md`.
+- APImanac skill linked to `~/.gemini/config/skills/apimanac/SKILL.md` and
+  `apimanac mcp` stdio server merged into `~/.gemini/config/mcp_config.json`.
+
 Intentionally excluded:
 
 - `~/.claude.json`, because it is app state with account/cache/project metadata.
@@ -109,5 +126,9 @@ Intentionally excluded:
   `privacyCache`, `autoReviewAvailabilityCache`, `serverConfigCache`,
   `modelSelectionHistory`), plus chats, project caches, `skills-cursor`,
   and other Cursor runtime state.
+- `~/.gemini/` credentials (`gemini-credentials.json`, `oauth_creds.json`,
+  `google_accounts.json`), Antigravity installation IDs, machine-local
+  `trustedWorkspaces`, conversation summaries (`conversation_summaries.db`),
+  brain histories/transcripts, jetski state, and logs.
 - histories, sessions, logs, shell snapshots, browser/computer-use state,
   generated images, plugin caches, SQLite databases, and temp folders.

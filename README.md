@@ -16,9 +16,10 @@ artifacts stay out of git.
 - `prompts/AGENTS.md` - the one global instructions file. The installer
   symlinks it to `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`,
   `~/.pi/agent/AGENTS.md`, `~/.config/opencode/AGENTS.md`,
-  `~/.config/kilo/AGENTS.md`, and `~/.grok/AGENTS.md`, and renders it with
-  rule frontmatter to `~/.cursor/rules/agents.mdc`. Edit this file only; the
-  per-harness folders no longer carry their own copy.
+  `~/.config/kilo/AGENTS.md`, `~/.grok/AGENTS.md`, `~/.gemini/GEMINI.md`, and
+  `~/.gemini/config/rules/AGENTS.md`, and renders it with rule frontmatter to
+  `~/.cursor/rules/agents.mdc`. Edit this file only; the per-harness folders no
+  longer carry their own copy.
 - `claude/` - selected files from `~/.claude`: settings and
   the standalone `graphify` skill, plus optional slash commands under
   `claude/commands/`. `claude/settings.local-llm.json` and the `claude-local`
@@ -39,6 +40,12 @@ artifacts stay out of git.
   installer renders `prompts/AGENTS.md` to `~/.cursor/rules/agents.mdc` as a
   copy with `alwaysApply: true` frontmatter. Project `AGENTS.md` /
   `.cursor/rules` stay in each repo.
+- `agy/` - Antigravity (`agy`) CLI and runtime configuration: `settings.json`
+  (durable model preferences), `keybindings.json` (custom keyboard shortcuts),
+  and `skills.json` (discovering `~/.agents/skills`). Global instructions are
+  linked to `~/.gemini/GEMINI.md` and `~/.gemini/config/rules/AGENTS.md`,
+  specialist personas to `~/.gemini/config/agents/`, and live prompts to
+  `~/.gemini/config/workflows/`.
 - `apis/` - personal APImanac catalog (`catalog/meta`, `catalog/execution`)
   for [APImanac](https://github.com/stanfish06/APImanac) plus `SKILL.md` fetched
   from [stanfish06/APImanac](https://github.com/stanfish06/APImanac)
@@ -48,8 +55,8 @@ artifacts stay out of git.
   grants file, not here. The `apimanac mcp` stdio server is registered per
   harness: `[mcp_servers.apimanac]` in `codex/config.toml`, an `mcp` block in
   `opencode/opencode.jsonc` and `kilo/kilo.jsonc`, user scope via
-  `claude mcp add` for Claude, and a merged entry in `~/.cursor/mcp.json`.
-  Pi has no native MCP support.
+  `claude mcp add` for Claude, and a merged entry in `~/.cursor/mcp.json` and
+  `~/.gemini/config/mcp_config.json`. Pi has no native MCP support.
 - `prompts/` - the shared `AGENTS.md`, reusable system prompts, and live prompt
   templates for agent slash-command surfaces.
 - `hooks/` - opt-in Claude hook scripts and hook JSON examples.
@@ -103,12 +110,12 @@ The installer is symlink-first for agent config. It initializes the `skills/`
 submodule, delegates skill installation to `skills/install-skills.sh`, links
 `prompts/AGENTS.md` to each harness's global instructions path (Cursor gets a
 rendered `.mdc` copy), then links the selected Claude, Codex, Pi, opencode,
-Kilo Code, Grok, and Cursor config into their agent homes. It fetches `skill/SKILL.md` from
+Kilo Code, Grok, Cursor, and Antigravity config into their agent homes. It fetches `skill/SKILL.md` from
 [stanfish06/APImanac](https://github.com/stanfish06/APImanac) into
 `apis/SKILL.md`, writes the APImanac `catalog_root`, symlinks that
 file into each harness `skills/apimanac/` directory, and registers the
-`apimanac mcp` server for Claude (user scope) and Cursor. It also links
-`prompts/live-prompts/*.md` into each agent's live prompt or command directory.
+`apimanac mcp` server for Claude (user scope), Cursor, and Antigravity. It also links
+`prompts/live-prompts/*.md` into each agent's live prompt, command, or workflow directory.
 Existing non-matching files are moved aside to timestamped backups.
 
 The skills installer skips the optional `gstack` and `career-ops` extras by

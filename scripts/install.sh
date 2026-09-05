@@ -16,6 +16,7 @@ SKIP_OPENCODE=0
 SKIP_KILO=0
 SKIP_GROK=0
 SKIP_CURSOR=0
+SKIP_AGY=0
 SKIP_APIMANAC=0
 SKIP_PROMPTS=0
 SKIP_TELEMETRY=0
@@ -49,6 +50,7 @@ Options:
   --skip-kilo           Do not symlink Kilo Code config.
   --skip-grok           Do not symlink Grok config.
   --skip-cursor         Do not install Cursor user rules or CLI config.
+  --skip-agy            Do not install Antigravity (agy) config, rules, or skills.
   --skip-apimanac       Do not fetch, write catalog_root, link the APImanac skill,
                         or register the APImanac MCP server.
   --skip-prompts        Do not install prompts/live-prompts/*.md.
@@ -67,10 +69,11 @@ Default behavior:
     selected with --extras.
   - Symlink prompts/AGENTS.md to each harness's global instructions file
     (~/.claude/CLAUDE.md, ~/.codex/AGENTS.md, ~/.pi/agent/AGENTS.md,
-    ~/.config/opencode/AGENTS.md, ~/.config/kilo/AGENTS.md, ~/.grok/AGENTS.md)
+    ~/.config/opencode/AGENTS.md, ~/.config/kilo/AGENTS.md, ~/.grok/AGENTS.md,
+    ~/.gemini/GEMINI.md, ~/.gemini/config/rules/AGENTS.md)
     and render it with rule frontmatter to ~/.cursor/rules/agents.mdc.
-  - Symlink selected Claude, Codex, Pi, opencode, Kilo Code, Grok, and Cursor
-    config paths into their agent homes.
+  - Symlink selected Claude, Codex, Pi, opencode, Kilo Code, Grok, Cursor, and
+    Antigravity config paths into their agent homes.
   - Fetch APImanac skill/SKILL.md from GitHub into apis/SKILL.md, write
     catalog_root, and symlink that file into each harness skills/apimanac/.
   - Register the `apimanac mcp` stdio server: user scope for Claude,
@@ -117,6 +120,7 @@ while [ "$#" -gt 0 ]; do
     --skip-kilo) SKIP_KILO=1 ;;
     --skip-grok) SKIP_GROK=1 ;;
     --skip-cursor) SKIP_CURSOR=1 ;;
+    --skip-agy) SKIP_AGY=1 ;;
     --skip-apimanac) SKIP_APIMANAC=1 ;;
     --skip-prompts) SKIP_PROMPTS=1 ;;
     --skip-telemetry) SKIP_TELEMETRY=1 ;;
@@ -612,6 +616,72 @@ install_cursor_apimanac_mcp() {
   fi
 }
 
+merge_agy_apimanac_mcp() {
+  python3 - "$1" <<'PY'
+import json
+import os
+import sys
+
+path = sys.argv[1]
+config = {}
+if os.path.exists(path):
+    try:
+        with open(path) as handle:
+            content = handle.read().strip()
+            if content:
+                config = json.loads(content)
+    except ValueError:
+        raise SystemExit(1)
+    if not isinstance(config, dict):
+        raise SystemExit(1)
+
+servers = config.setdefault("mcpServers", {})
+if not isinstance(servers, dict):
+    raise SystemExit(1)
+
+desired = {"command": "apimanac", "args": ["mcp"]}
+existing = servers.get("apimanac")
+if (
+    isinstance(existing, dict)
+    and existing.get("command") == "apimanac"
+    and existing.get("args") == ["mcp"]
+    and not existing.get("disabled", False)
+):
+    print(f"OK: {path} (apimanac)")
+    raise SystemExit(0)
+
+servers["apimanac"] = desired
+with open(path, "w") as handle:
+    json.dump(config, handle, indent=2)
+    handle.write("\n")
+print(f"Write: {path} (apimanac)")
+PY
+}
+
+install_agy_apimanac_mcp() {
+  local target="$HOME/.gemini/config/mcp_config.json"
+  local backup
+
+  if ! command -v python3 >/dev/null 2>&1; then
+    log "WARN: python3 is not on PATH; skipping Antigravity MCP registration"
+    return 0
+  fi
+
+  if [ "$DRY_RUN" -eq 1 ]; then
+    printf 'DRY-RUN: merge apimanac into %s\n' "$target"
+    return 0
+  fi
+
+  ensure_parent_dir "$target"
+  if ! merge_agy_apimanac_mcp "$target"; then
+    backup="$(backup_name_for "$target")"
+    log "Backup: $target -> $backup (unparsable JSON)"
+    mv "$target" "$backup"
+    merge_agy_apimanac_mcp "$target" ||
+      die "failed to write $target"
+  fi
+}
+
 install_apimanac() {
   log "==> APImanac"
   refresh_apimanac_skill
@@ -637,6 +707,9 @@ install_apimanac() {
   if [ "$SKIP_CURSOR" -eq 0 ]; then
     install_apimanac_skill "$HOME/.cursor/skills/apimanac"
   fi
+  if [ "$SKIP_AGY" -eq 0 ]; then
+    install_apimanac_skill "$HOME/.gemini/config/skills/apimanac"
+  fi
 
   # Register the stdio MCP server (`apimanac mcp`). Codex, opencode, and Kilo
   # declare it in their symlinked config files; Pi has no native MCP support.
@@ -645,6 +718,9 @@ install_apimanac() {
   fi
   if [ "$SKIP_CURSOR" -eq 0 ]; then
     install_cursor_apimanac_mcp
+  fi
+  if [ "$SKIP_AGY" -eq 0 ]; then
+    install_agy_apimanac_mcp
   fi
 }
 
@@ -679,6 +755,86 @@ install_cursor() {
 
   # Copy, do not symlink: the CLI rewrites this file with auth and caches.
   install_copy "$ROOT/cursor/cli-config.json" "$HOME/.cursor/cli-config.json"
+}
+
+merge_agy_settings() {
+  python3 - "$1" "$2" <<'PY'
+import json
+import os
+import sys
+
+source_path, target_path = sys.argv[1], sys.argv[2]
+with open(source_path) as handle:
+    source = json.load(handle)
+
+target = {}
+if os.path.exists(target_path):
+    try:
+        with open(target_path) as handle:
+            content = handle.read().strip()
+            if content:
+                target = json.loads(content)
+    except ValueError:
+        raise SystemExit(1)
+    if not isinstance(target, dict):
+        raise SystemExit(1)
+
+changed = False
+for key, value in source.items():
+    if target.get(key) != value:
+        target[key] = value
+        changed = True
+
+if not changed and os.path.exists(target_path):
+    print(f"OK: {target_path} matches {source_path}")
+    raise SystemExit(0)
+
+with open(target_path, "w") as handle:
+    json.dump(target, handle, indent=2)
+    handle.write("\n")
+print(f"Merge: {source_path} -> {target_path}")
+PY
+}
+
+install_agy_settings() {
+  local source="$1"
+  local target="$2"
+  local backup
+
+  if ! command -v python3 >/dev/null 2>&1; then
+    install_copy "$source" "$target"
+    return 0
+  fi
+
+  ensure_parent_dir "$target"
+  if [ "$DRY_RUN" -eq 1 ]; then
+    printf 'DRY-RUN: merge %s into %s\n' "$source" "$target"
+    return 0
+  fi
+
+  if ! merge_agy_settings "$source" "$target"; then
+    backup="$(backup_name_for "$target")"
+    log "Backup: $target -> $backup (unparsable JSON)"
+    mv "$target" "$backup"
+    merge_agy_settings "$source" "$target" ||
+      die "failed to write $target"
+  fi
+}
+
+install_agy() {
+  log "==> Antigravity (agy)"
+  install_link "$AGENTS_SRC" "$HOME/.gemini/GEMINI.md"
+  install_link "$AGENTS_SRC" "$HOME/.gemini/config/rules/AGENTS.md"
+  install_agy_settings "$ROOT/agy/settings.json" "$HOME/.gemini/antigravity-cli/settings.json"
+  install_link "$ROOT/agy/keybindings.json" "$HOME/.gemini/antigravity-cli/keybindings.json"
+  install_link "$ROOT/agy/skills.json" "$HOME/.gemini/config/skills.json"
+  install_link "$ROOT/agents/code-reviewer.md" "$HOME/.gemini/config/agents/code-reviewer.md"
+  install_link "$ROOT/agents/security-auditor.md" "$HOME/.gemini/config/agents/security-auditor.md"
+  install_link "$ROOT/agents/test-engineer.md" "$HOME/.gemini/config/agents/test-engineer.md"
+  install_link "$ROOT/agents/web-performance-auditor.md" "$HOME/.gemini/config/agents/web-performance-auditor.md"
+  if [ "$SKIP_PROMPTS" -eq 0 ]; then
+    install_live_prompts "Antigravity" "$HOME/.gemini/config/workflows"
+  fi
 }
 
 install_telemetry() {
@@ -743,6 +899,12 @@ main() {
     install_cursor
   else
     log "Skip: Cursor"
+  fi
+
+  if [ "$SKIP_AGY" -eq 0 ]; then
+    install_agy
+  else
+    log "Skip: Antigravity (agy)"
   fi
 
   if [ "$SKIP_APIMANAC" -eq 0 ]; then

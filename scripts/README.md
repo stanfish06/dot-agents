@@ -23,6 +23,7 @@ Useful options:
 ./scripts/install.sh --skip-kilo
 ./scripts/install.sh --skip-grok
 ./scripts/install.sh --skip-cursor
+./scripts/install.sh --skip-agy
 ./scripts/install.sh --skip-apimanac
 ./scripts/install.sh --extras gstack
 ./scripts/install.sh --extras career
@@ -32,8 +33,8 @@ Useful options:
 The installer initializes the `skills/` submodule, delegates skill installation
 to `skills/install-skills.sh`, symlinks `prompts/AGENTS.md` to every harness's
 global instructions path (rendered as `~/.cursor/rules/agents.mdc` for Cursor),
-then symlinks selected Claude, Codex, Pi, opencode, Kilo Code, Grok, and Cursor
-config into their homes. It also writes the
+then symlinks selected Claude, Codex, Pi, opencode, Kilo Code, Grok, Cursor, and
+Antigravity config into their homes. It also writes the
 APImanac `catalog_root`, fetches `skill/SKILL.md` from
 `stanfish06/APImanac` into `apis/SKILL.md`, and links that file into each
 harness `skills/apimanac/` directory. Existing non-matching targets are moved to a

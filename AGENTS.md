@@ -32,7 +32,8 @@ state.
 - Global instructions: `prompts/AGENTS.md` is the only copy. `scripts/install.sh`
   symlinks it to `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`,
   `~/.pi/agent/AGENTS.md`, `~/.config/opencode/AGENTS.md`,
-  `~/.config/kilo/AGENTS.md`, and `~/.grok/AGENTS.md`, and renders it to
+  `~/.config/kilo/AGENTS.md`, `~/.grok/AGENTS.md`, `~/.gemini/GEMINI.md`, and
+  `~/.gemini/config/rules/AGENTS.md`, and renders it to
   `~/.cursor/rules/agents.mdc`. Do not add a per-harness instructions file.
 - Claude source: `~/.claude/settings*.json` and `~/.claude/skills/graphify`.
 - Codex source: `~/.codex/config.toml`, `~/.codex/rules/default.rules`, and
@@ -48,6 +49,11 @@ state.
   Everything). Do not commit the live CLI file; it accumulates auth and caches.
   Cursor has no `~/.cursor/AGENTS.md`; CLI/IDE also read project-root
   `AGENTS.md` / `CLAUDE.md` and `<project>/.cursor/rules`.
+- Antigravity (agy) source: `agy/settings.json`, `agy/keybindings.json`, and
+  `agy/skills.json`. Global instructions are linked to `~/.gemini/GEMINI.md` and
+  `~/.gemini/config/rules/AGENTS.md`, specialist personas to
+  `~/.gemini/config/agents/`, live prompts to `~/.gemini/config/workflows/`, and
+  `skills.json` discovers `~/.agents/skills/`.
 - Skills source: `git@github.com:stanfish06/skillquarium.git`.
 - APImanac source: `apis/` (catalog locally; `SKILL.md` refreshed from
   `stanfish06/APImanac` `skill/SKILL.md` on each install). Installed as
@@ -56,7 +62,7 @@ state.
   `skills/` submodule. The `apimanac mcp` stdio server is declared in the
   symlinked Codex/opencode/Kilo configs, added at user scope for Claude
   (`~/.claude.json`, written by `claude mcp add`), and merged into
-  `~/.cursor/mcp.json`. Pi has no native MCP support.
+  `~/.cursor/mcp.json` and `~/.gemini/config/mcp_config.json`. Pi has no native MCP support.
 
 ## Office Files
 

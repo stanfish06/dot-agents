@@ -28,6 +28,7 @@ help_output="$(bash "$ROOT/scripts/install.sh" --help)"
 assert_contains "$help_output" "--extras <name>..."
 assert_contains "$help_output" "Names: gstack, career (alias: career-ops), all"
 assert_contains "$help_output" "--skip-apimanac"
+assert_contains "$help_output" "--skip-agy"
 assert_contains "$help_output" "Fetch APImanac skill/SKILL.md from GitHub"
 
 list_output="$(bash "$ROOT/scripts/install.sh" --dry-run --skip-config --extras gstack career)"
@@ -95,9 +96,9 @@ pi_kilo_output="$(
     --skip-prompts
 )"
 assert_contains "$pi_kilo_output" \
-  "Symlink: $test_home/.pi/agent/AGENTS.md -> $ROOT/pi-agent/AGENTS.md"
+  "Symlink: $test_home/.pi/agent/AGENTS.md -> $ROOT/prompts/AGENTS.md"
 assert_contains "$pi_kilo_output" \
-  "Symlink: $test_home/.config/kilo/AGENTS.md -> $ROOT/kilo/AGENTS.md"
+  "Symlink: $test_home/.config/kilo/AGENTS.md -> $ROOT/prompts/AGENTS.md"
 assert_contains "$pi_kilo_output" \
   "Symlink: $test_home/.pi/agent/skills/apimanac/SKILL.md -> $ROOT/apis/SKILL.md"
 assert_contains "$pi_kilo_output" \
@@ -115,19 +116,43 @@ cursor_output="$(
     --skip-prompts
 )"
 assert_contains "$cursor_output" \
-  "Symlink: $test_home/.cursor/rules/behaviors.mdc -> $ROOT/cursor/rules/behaviors.mdc"
-assert_contains "$cursor_output" \
-  "Symlink: $test_home/.cursor/rules/dev.mdc -> $ROOT/cursor/rules/dev.mdc"
-assert_contains "$cursor_output" \
-  "Symlink: $test_home/.cursor/rules/skills.mdc -> $ROOT/cursor/rules/skills.mdc"
-assert_contains "$cursor_output" \
-  "Symlink: $test_home/.cursor/rules/context-hygiene.mdc -> $ROOT/cursor/rules/context-hygiene.mdc"
+  "agents.mdc"
 assert_contains "$cursor_output" \
   "Copy: $ROOT/cursor/cli-config.json -> $test_home/.cursor/cli-config.json"
 assert_contains "$cursor_output" \
   "Symlink: $test_home/.cursor/skills/apimanac/SKILL.md -> $ROOT/apis/SKILL.md"
 assert_contains "$cursor_output" \
   "DRY-RUN: merge apimanac into $test_home/.cursor/mcp.json"
+
+agy_output="$(
+  HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" bash "$ROOT/scripts/install.sh" \
+    --dry-run \
+    --skip-skills \
+    --skip-claude \
+    --skip-codex \
+    --skip-pi \
+    --skip-opencode \
+    --skip-kilo \
+    --skip-grok \
+    --skip-cursor \
+    --skip-prompts
+)"
+assert_contains "$agy_output" \
+  "Symlink: $test_home/.gemini/GEMINI.md -> $ROOT/prompts/AGENTS.md"
+assert_contains "$agy_output" \
+  "Symlink: $test_home/.gemini/config/rules/AGENTS.md -> $ROOT/prompts/AGENTS.md"
+assert_contains "$agy_output" \
+  "DRY-RUN: merge $ROOT/agy/settings.json into $test_home/.gemini/antigravity-cli/settings.json"
+assert_contains "$agy_output" \
+  "Symlink: $test_home/.gemini/antigravity-cli/keybindings.json -> $ROOT/agy/keybindings.json"
+assert_contains "$agy_output" \
+  "Symlink: $test_home/.gemini/config/skills.json -> $ROOT/agy/skills.json"
+assert_contains "$agy_output" \
+  "Symlink: $test_home/.gemini/config/agents/code-reviewer.md -> $ROOT/agents/code-reviewer.md"
+assert_contains "$agy_output" \
+  "Symlink: $test_home/.gemini/config/skills/apimanac/SKILL.md -> $ROOT/apis/SKILL.md"
+assert_contains "$agy_output" \
+  "DRY-RUN: merge apimanac into $test_home/.gemini/config/mcp_config.json"
 
 claude_mcp_output="$(
   HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" \
@@ -159,6 +184,17 @@ assert_contains "$skip_apimanac_output" "Skip: APImanac"
 assert_not_contains "$skip_apimanac_output" "skills/apimanac"
 assert_not_contains "$skip_apimanac_output" "DRY-RUN: fetch"
 
+skip_agy_output="$(
+  HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" bash "$ROOT/scripts/install.sh" \
+    --dry-run \
+    --skip-skills \
+    --skip-prompts \
+    --skip-agy
+)"
+assert_contains "$skip_agy_output" "Skip: Antigravity (agy)"
+assert_not_contains "$skip_agy_output" "$test_home/.gemini/config/skills/apimanac"
+assert_not_contains "$skip_agy_output" "$test_home/.gemini/config/mcp_config.json"
+
 skill_backup="$(mktemp)"
 fake_skill="$(mktemp)"
 cp "$ROOT/apis/SKILL.md" "$skill_backup"
@@ -186,6 +222,7 @@ refresh_output="$(
     --skip-opencode \
     --skip-kilo \
     --skip-cursor \
+    --skip-agy \
     --skip-prompts
 )"
 assert_contains "$refresh_output" "Refresh: file://${fake_skill} -> $ROOT/apis/SKILL.md"
@@ -209,6 +246,7 @@ cursor_mcp_args=(
   --skip-pi
   --skip-opencode
   --skip-kilo
+  --skip-agy
   --skip-prompts
 )
 cursor_mcp_output="$(
@@ -227,6 +265,43 @@ cursor_mcp_rerun="$(
   bash "$ROOT/scripts/install.sh" "${cursor_mcp_args[@]}"
 )"
 assert_contains "$cursor_mcp_rerun" "OK: $test_home/.cursor/mcp.json (apimanac)"
+
+mkdir -p "$test_home/.gemini/config"
+cat > "$test_home/.gemini/config/mcp_config.json" <<'EOF'
+{
+  "mcpServers": {
+    "other": {
+      "command": "other-mcp"
+    }
+  }
+}
+EOF
+agy_mcp_args=(
+  --skip-skills
+  --skip-claude
+  --skip-codex
+  --skip-pi
+  --skip-opencode
+  --skip-kilo
+  --skip-cursor
+  --skip-prompts
+)
+agy_mcp_output="$(
+  HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" \
+  APIMANAC_SKILL_URL="file://${fake_skill}" \
+  bash "$ROOT/scripts/install.sh" "${agy_mcp_args[@]}"
+)"
+assert_contains "$agy_mcp_output" "Write: $test_home/.gemini/config/mcp_config.json (apimanac)"
+agy_mcp="$(<"$test_home/.gemini/config/mcp_config.json")"
+assert_contains "$agy_mcp" '"apimanac"'
+assert_contains "$agy_mcp" '"other-mcp"'
+
+agy_mcp_rerun="$(
+  HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" \
+  APIMANAC_SKILL_URL="file://${fake_skill}" \
+  bash "$ROOT/scripts/install.sh" "${agy_mcp_args[@]}"
+)"
+assert_contains "$agy_mcp_rerun" "OK: $test_home/.gemini/config/mcp_config.json (apimanac)"
 cp "$skill_backup" "$ROOT/apis/SKILL.md"
 
 cursor_config="$(<"$ROOT/cursor/cli-config.json")"
