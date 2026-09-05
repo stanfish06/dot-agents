@@ -18,6 +18,7 @@ SKIP_GROK=0
 SKIP_CURSOR=0
 SKIP_APIMANAC=0
 SKIP_PROMPTS=0
+SKIP_TELEMETRY=0
 FORCE=0
 ALLOW_DIRTY_SKILLS=0
 EXTRA_GSTACK=0
@@ -51,6 +52,7 @@ Options:
   --skip-apimanac       Do not fetch, write catalog_root, link the APImanac skill,
                         or register the APImanac MCP server.
   --skip-prompts        Do not install prompts/live-prompts/*.md.
+  --skip-telemetry      Do not install the harness-telemetry CLI with uv.
   --extras <name>...    Install optional skill extras.
                         Names: gstack, career (alias: career-ops), all
   --extras=<csv>        Comma-separated form (e.g. --extras=gstack,career).
@@ -117,6 +119,7 @@ while [ "$#" -gt 0 ]; do
     --skip-cursor) SKIP_CURSOR=1 ;;
     --skip-apimanac) SKIP_APIMANAC=1 ;;
     --skip-prompts) SKIP_PROMPTS=1 ;;
+    --skip-telemetry) SKIP_TELEMETRY=1 ;;
     --extras)
       shift
       if [ "$#" -eq 0 ] || [[ "$1" == -* ]]; then
@@ -678,6 +681,16 @@ install_cursor() {
   install_copy "$ROOT/cursor/cli-config.json" "$HOME/.cursor/cli-config.json"
 }
 
+install_telemetry() {
+  log "==> harness-telemetry"
+  if ! command -v uv >/dev/null 2>&1; then
+    log "Skip: harness-telemetry (uv not on PATH)"
+    return 0
+  fi
+  # editable install so edits under harness-telemetry/ apply without reinstalling
+  run uv tool install --quiet --editable --reinstall "$ROOT/harness-telemetry"
+}
+
 main() {
   if [ "$SKIP_SKILLS" -eq 0 ]; then
     install_skills
@@ -736,6 +749,12 @@ main() {
     install_apimanac
   else
     log "Skip: APImanac"
+  fi
+
+  if [ "$SKIP_TELEMETRY" -eq 0 ]; then
+    install_telemetry
+  else
+    log "Skip: harness-telemetry"
   fi
 }
 

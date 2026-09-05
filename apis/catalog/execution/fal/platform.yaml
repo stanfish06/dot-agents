@@ -1,0 +1,84 @@
+profile_id: platform
+api_id: fal
+description: "fal Platform APIs at api.fal.ai/v1, same `Authorization: Key` header
+  as inference. Reads run auto: model search and pricing, usage, billing
+  events, analytics, request history (/models/requests/by-endpoint, /search),
+  account billing and FOCUS reports, serverless apps, log history, metrics,
+  storage settings. Pricing estimate and log-history POSTs are read-only, so
+  auto too. Payload deletion, asset, storage and serverless file writes
+  confirm. Key management, compute, and the log stream are denied."
+origins:
+  - https://api.fal.ai
+base_path: /v1
+auth:
+  type: header_key
+  credential_id: fal-key
+  components:
+    - name: key
+      description: The same fal API key as the `keyed` profile. Platform reads
+        need the ADMIN scope on the key; an API-scoped key returns 401 here.
+  placements:
+    - kind: header
+      header: Authorization
+      template: Key {key}
+  scopes:
+    - ADMIN
+permissions:
+  - method: GET
+    path: /v1/**
+    decision: auto
+  - method: POST
+    path: /v1/models/pricing/estimate
+    decision: auto
+    note: pure computation over endpoint ids and unit counts
+  - method: POST
+    path: /v1/serverless/logs/history
+    decision: auto
+    note: paginated log query; the filter travels in the body
+  - method: POST
+    path: /v1/serverless/logs/stream
+    decision: deny
+    note: server-sent events stream, outside the bounded response model
+  - method: DELETE
+    path: /v1/models/requests/*/payloads
+    decision: confirm
+  - method: PUT
+    path: /v1/storage/**
+    decision: confirm
+  - method: POST
+    path: /v1/storage/files/sign
+    decision: confirm
+    note: mints a signed URL that grants access to a private CDN file
+  - method: POST
+    path: /v1/serverless/files/**
+    decision: confirm
+  - method: DELETE
+    path: /v1/serverless/apps/*/*/queue
+    decision: confirm
+  - method: "*"
+    path: /v1/keys
+    decision: deny
+  - method: "*"
+    path: /v1/keys/**
+    decision: deny
+  - method: POST
+    path: /v1/compute/**
+    decision: deny
+    note: starting an instance is billed by the second
+  - method: DELETE
+    path: /v1/compute/**
+    decision: deny
+network_scope: public
+redirects:
+  max: 2
+cache:
+  enabled: true
+  ttl_seconds: 300
+health_probe:
+  method: GET
+  path: /v1/models
+  query:
+    limit: "1"
+  expect_status: 200
+verification:
+  state: candidate

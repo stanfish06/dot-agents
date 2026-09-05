@@ -43,6 +43,9 @@ claude/.claude.json
 **/goals_*.sqlite*
 **/memories_*.sqlite*
 
+# Python venvs
+harness-telemetry/.venv/
+
 # Local graph/query artifacts
 graphify-out/
 **/graphify-out/

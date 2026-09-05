@@ -1,0 +1,33 @@
+[project]
+name = "harness-telemetry"
+version = "0.1.0"
+description = "Ingest coding-agent session logs into DuckDB and report tool and skill usage"
+requires-python = ">=3.12"
+dependencies = [
+    "duckdb>=1.1",
+    "pydantic>=2.9",
+    "pytz>=2026.3.post1",
+    "rich>=13",
+    "typer>=0.15",
+]
+
+[project.scripts]
+harness-telemetry = "harness_telemetry.cli:app"
+
+[dependency-groups]
+dev = ["ruff", "ty"]
+
+[build-system]
+requires = ["uv_build>=0.7"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["D", "COM812", "ISC001", "FBT", "PLR0913", "PLR0912", "PLR0915", "C901", "BLE001", "S608", "CPY001", "TC001", "TC002", "TC003"]
+
+[tool.ty.environment]
+python-version = "3.12"

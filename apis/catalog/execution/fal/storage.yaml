@@ -1,0 +1,63 @@
+profile_id: storage
+api_id: fal
+description: "First half of a fal CDN upload. POST /storage/upload/initiate with
+  query storage_type=fal-cdn-v3 and JSON body {file_name, content_type} returns
+  {file_url, upload_url}, both on v3b.fal.media. Then PUT the bytes to
+  upload_url's path through `public` with origin https://v3b.fal.media and the
+  `signature` query copied verbatim. file_url is what a model's image_url or
+  video_url input takes. Initiating is free and creates nothing until the PUT
+  lands, so it runs auto. Multipart and tokens are denied."
+origins:
+  - https://rest.alpha.fal.ai
+auth:
+  type: header_key
+  credential_id: fal-key
+  components:
+    - name: key
+      description: The same fal API key as the `keyed` profile; the API scope is enough.
+  placements:
+    - kind: header
+      header: Authorization
+      template: Key {key}
+  scopes:
+    - API
+permissions:
+  - method: POST
+    path: /storage/upload/initiate
+    decision: auto
+  - method: POST
+    path: /storage/upload/initiate-multipart
+    decision: deny
+    note: multipart uploads are outside the supported body shapes
+  - method: POST
+    path: /tokens
+    decision: deny
+  - method: POST
+    path: /tokens/**
+    decision: deny
+  - method: GET
+    path: /**
+    decision: deny
+  - method: PUT
+    path: /**
+    decision: deny
+  - method: PATCH
+    path: /**
+    decision: deny
+  - method: DELETE
+    path: /**
+    decision: deny
+network_scope: public
+redirects:
+  max: 0
+cache:
+  enabled: false
+health_probe:
+  method: POST
+  path: /storage/upload/initiate
+  query:
+    storage_type: fal-cdn-v3
+  expect_status: 422
+  expect_body_contains: file_name
+verification:
+  state: candidate

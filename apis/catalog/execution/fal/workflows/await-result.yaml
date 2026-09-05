@@ -1,0 +1,28 @@
+workflow_id: await-result
+api_id: fal
+description: Poll a submitted fal request until it leaves the queue, then fetch and return its result. Every call is an auto GET on `keyed`, so the whole loop runs without confirmation.
+bindings:
+  - profile: fal/keyed
+    blob_sha256: v1:sha256:2203cae7a7f7cbf6f2277fb5c52ddc9e71a5cf2978186a0af0b3ec8ed55b75db
+params:
+  type: object
+  required: [app, request_id]
+  properties:
+    app:
+      type: string
+      description: The app id as `<owner>/<app>`, exactly two segments, e.g. `fal-ai/flux`. Sub-paths like `fal-ai/flux/schnell` are trimmed to the first two.
+    request_id:
+      type: string
+      description: The request_id returned by the queue submission.
+    interval_ms:
+      type: integer
+      description: Milliseconds between status polls.
+      default: 3000
+    timeout_ms:
+      type: integer
+      description: Give up after this many milliseconds and return the last status.
+      default: 600000
+    logs:
+      type: boolean
+      description: Ask the status endpoint to include runner logs.
+      default: false
