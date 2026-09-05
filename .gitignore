@@ -52,3 +52,5 @@ graphify-out/
 
 # Docs
 docs/
+
+__pycache__

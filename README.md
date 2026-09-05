@@ -53,6 +53,10 @@ artifacts stay out of git.
 - `prompts/` - the shared `AGENTS.md`, reusable system prompts, and live prompt
   templates for agent slash-command surfaces.
 - `hooks/` - opt-in Claude hook scripts and hook JSON examples.
+- `harness-telemetry/` - `uv` package with the `harness-telemetry` CLI. It parses
+  the session logs that Claude Code, Codex, opencode, Kilo, and Pi already write
+  to disk into one DuckDB file and reports tool calls, skill usage, prompts, and
+  tokens per harness, session, or project. See "Telemetry" below.
 - `scripts/` - reserved for install, refresh, and validation helpers.
 - `spec/` - notes and future harness experiments for spec-driven development
   (catalog of mainstream SDD tools, local templates later). See `spec/README.md`.
@@ -122,6 +126,36 @@ Preview changes without touching your home directory:
 ```bash
 ./scripts/install.sh --dry-run
 ```
+
+## Telemetry
+
+`harness-telemetry` reads the session stores each harness keeps locally and
+normalizes them into `$XDG_DATA_HOME/dot-agents/telemetry.duckdb` (override with
+`DOT_AGENTS_TELEMETRY_DB`). No hooks or exporters run inside the harnesses; the
+parsers only read files that are already there. Sources:
+
+| Harness | Store | Skill signal |
+|---|---|---|
+| Claude Code | `~/.claude/projects/**/*.jsonl` | `Skill` tool call (`invoke`) |
+| Codex | `~/.codex/sessions/**/rollout-*.jsonl` | `SKILL.md` path in a tool call (`read`) |
+| opencode | `~/.local/share/opencode/opencode.db` | `skill` tool call (`invoke`) |
+| Kilo | `~/.local/share/kilo/kilo.db` | `skill` tool call (`invoke`) |
+| Pi | `~/.pi/agent/sessions/**/*.jsonl` | `SKILL.md` path in a tool call (`read`) |
+
+`install.sh` installs the CLI with `uv tool install --editable`. Then:
+
+```bash
+harness-telemetry ingest                 # incremental; re-parses only changed files
+harness-telemetry report summary         # one row per harness
+harness-telemetry report skills -d 30    # skills used in the last 30 days
+harness-telemetry report tools -H claude -H codex
+harness-telemetry report sessions -p dot-agents
+harness-telemetry sql "select name, count(*) from events where kind='tool' group by 1"
+```
+
+Codex and Pi have no native skill tool, so a skill counts there whenever a tool
+call mentions `<name>/SKILL.md`. That measures reads, not invocations. Cursor
+is not parsed yet.
 
 ## Local model
 
