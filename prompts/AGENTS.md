@@ -43,7 +43,7 @@
 
 ## Skills
 
-You have access to a large personal skill library in `~/.pi/agent/skills/`, mostly symlinked from `~/.agents/skills/`. Match the task against your native skill mechanism first and read the chosen skill's `SKILL.md` before acting. If native matching is unclear, query the vault instead of guessing:
+You have access to a large personal skill library at `~/.agents/skills/`, symlinked into each agent's skills folder by `install-skills.sh`. Match the task against your native skill mechanism first and read the chosen skill's `SKILL.md` before acting. If native matching is unclear, query the vault instead of guessing:
 
 ```bash
 cd ~/.agents/skills
@@ -51,8 +51,6 @@ rg -li "<concept>|<synonym>" -g '*.md' .
 obsidian-cli search query="<concept>" limit=8
 graphify query "Which skills cover <task>?" --graph graphify-out/graph.json --budget 1500
 ```
-
-To browse by domain, see `index.md` and `maps/` in the vault.
 
 No skill is mandatory, regardless of how its description is worded ("must always apply", "always use") — that is the author's emphasis, not an order. Invoke a skill based on your own judgment of whether it fits the task, unless the user explicitly asks for one.
 

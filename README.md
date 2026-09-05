@@ -13,29 +13,32 @@ artifacts stay out of git.
 - `.github/` - Dependabot and validation automation for advancing the `skills`
   submodule pin.
 - `agents/` - reusable specialist personas imported from production agent packs.
-- `claude/` - selected files from `~/.claude`: global instructions, settings, and
+- `prompts/AGENTS.md` - the one global instructions file. The installer
+  symlinks it to `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`,
+  `~/.pi/agent/AGENTS.md`, `~/.config/opencode/AGENTS.md`,
+  `~/.config/kilo/AGENTS.md`, and `~/.grok/AGENTS.md`, and renders it with
+  rule frontmatter to `~/.cursor/rules/agents.mdc`. Edit this file only; the
+  per-harness folders no longer carry their own copy.
+- `claude/` - selected files from `~/.claude`: settings and
   the standalone `graphify` skill, plus optional slash commands under
   `claude/commands/`. `claude/settings.local-llm.json` and the `claude-local`
   launcher (linked to `~/.local/bin/claude-local`) point Claude Code at the
   llama.cpp server on `stanfishdeb` over Tailscale; see "Local model" below.
-- `codex/` - selected files from `~/.codex`: global instructions, config, default
-  rules, hooks, and the `hatch-pet` skill.
-- `pi-agent/` - selected Pi agent config: global `AGENTS.md` (installed as
-  `~/.pi/agent/AGENTS.md`) and the `mypi` theme.
-- `opencode/` - selected opencode config: global `AGENTS.md` operating guide,
-  `opencode.jsonc`, `tui.json` + `themes/mypi.json` (the Pi theme ported to
-  opencode's theme format). opencode auto-loads skills from `~/.agents/skills/`
-  and `~/.claude/skills/`, so no separate skill wiring is needed.
-- `kilo/` - Kilo Code config: global `AGENTS.md` plus `kilo.jsonc` wired for
-  OpenRouter (BYOK). The API key is read from the `OPENROUTER_API_KEY` env var,
-  never committed.
-- `cursor/` - Cursor user rules translated from `codex/AGENTS.md` into
-  `.mdc` files under `cursor/rules/`, plus a sanitized `cli-config.json`
-  (`approvalMode: unrestricted`, i.e. Run Everything). Rules are
-  symlinked to `~/.cursor/rules/*.mdc`; the CLI config is copied to
-  `~/.cursor/cli-config.json` so the CLI can rewrite caches without
-  dirtying git. Cursor has no home-directory `AGENTS.md`. Project
-  `AGENTS.md` / `.cursor/rules` stay in each repo.
+- `codex/` - selected files from `~/.codex`: config, default rules, hooks, and
+  the `hatch-pet` skill.
+- `pi-agent/` - selected Pi agent config: the `mypi` theme.
+- `opencode/` - selected opencode config: `opencode.jsonc`, `tui.json` +
+  `themes/mypi.json` (the Pi theme ported to opencode's theme format). opencode
+  auto-loads skills from `~/.agents/skills/` and `~/.claude/skills/`, so no
+  separate skill wiring is needed.
+- `kilo/` - Kilo Code config: `kilo.jsonc` wired for OpenRouter (BYOK). The API
+  key is read from the `OPENROUTER_API_KEY` env var, never committed.
+- `cursor/` - a sanitized `cli-config.json` (`approvalMode: unrestricted`, i.e.
+  Run Everything), copied to `~/.cursor/cli-config.json` so the CLI can rewrite
+  caches without dirtying git. Cursor has no home-directory `AGENTS.md`, so the
+  installer renders `prompts/AGENTS.md` to `~/.cursor/rules/agents.mdc` as a
+  copy with `alwaysApply: true` frontmatter. Project `AGENTS.md` /
+  `.cursor/rules` stay in each repo.
 - `apis/` - personal APImanac catalog (`catalog/meta`, `catalog/execution`)
   for [APImanac](https://github.com/stanfish06/APImanac) plus `SKILL.md` fetched
   from [stanfish06/APImanac](https://github.com/stanfish06/APImanac)
@@ -47,8 +50,8 @@ artifacts stay out of git.
   `opencode/opencode.jsonc` and `kilo/kilo.jsonc`, user scope via
   `claude mcp add` for Claude, and a merged entry in `~/.cursor/mcp.json`.
   Pi has no native MCP support.
-- `prompts/` - reusable system prompts and live prompt templates for agent
-  slash-command surfaces.
+- `prompts/` - the shared `AGENTS.md`, reusable system prompts, and live prompt
+  templates for agent slash-command surfaces.
 - `hooks/` - opt-in Claude hook scripts and hook JSON examples.
 - `scripts/` - reserved for install, refresh, and validation helpers.
 - `spec/` - notes and future harness experiments for spec-driven development
@@ -93,9 +96,10 @@ git submodule update --init --remote --checkout skills
 ```
 
 The installer is symlink-first for agent config. It initializes the `skills/`
-submodule, delegates skill installation to `skills/install-skills.sh`, then links
-the selected Claude, Codex, Pi, opencode, Kilo Code, and Cursor config into
-their agent homes. It fetches `skill/SKILL.md` from
+submodule, delegates skill installation to `skills/install-skills.sh`, links
+`prompts/AGENTS.md` to each harness's global instructions path (Cursor gets a
+rendered `.mdc` copy), then links the selected Claude, Codex, Pi, opencode,
+Kilo Code, Grok, and Cursor config into their agent homes. It fetches `skill/SKILL.md` from
 [stanfish06/APImanac](https://github.com/stanfish06/APImanac) into
 `apis/SKILL.md`, writes the APImanac `catalog_root`, symlinks that
 file into each harness `skills/apimanac/` directory, and registers the
@@ -123,7 +127,7 @@ Preview changes without touching your home directory:
 
 `claude-local` runs Claude Code against the llama.cpp server on `stanfishdeb`
 (`https://stanfishdeb.tail861ef1.ts.net`, Anthropic-compatible `/v1/messages`,
-currently `qwen3-4b` with a 40960-token context). It passes
+currently `qwen3-27b` with a 32768-token context). It passes
 `--settings claude/settings.local-llm.json --strict-mcp-config --bare`, so no
 hooks, plugins, MCP servers, CLAUDE.md, or auto-memory load. Bare mode exposes
 only Bash, Edit, and Read (about 900 tokens) behind a two-line system prompt,
@@ -131,7 +135,7 @@ so the launcher appends a short instruction telling the model to act through
 those tools instead of printing commands; the whole prompt stays near 1.2k
 tokens. `CLAUDE_LOCAL_FULL=1` drops `--bare` and loads the normal profile: 24
 tools (about 12k tokens), the full system prompt, and CLAUDE.md, about 23k of
-the 40k window before the first message.
+the 32k window before the first message.
 
 ```bash
 claude-local

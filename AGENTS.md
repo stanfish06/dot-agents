@@ -29,24 +29,25 @@ state.
 
 ## Current Sources
 
-- Claude source: `~/.claude/CLAUDE.md`, `~/.claude/settings*.json`, and
-  `~/.claude/skills/graphify`.
-- Codex source: `~/.codex/AGENTS.md`, `~/.codex/config.toml`,
-  `~/.codex/rules/default.rules`, and `~/.codex/skills/hatch-pet`.
-- Pi source: `~/.pi/agent/AGENTS.md` and `~/.pi/agent/themes/mypi.json`.
-- opencode source: `~/.config/opencode/AGENTS.md` and
-  `~/.config/opencode/opencode.jsonc`. opencode auto-loads skills from
-  `~/.agents/skills/` and `~/.claude/skills/`, so no separate skill wiring
-  is needed.
-- Kilo Code source: `~/.config/kilo/AGENTS.md` and `~/.config/kilo/kilo.jsonc`,
-  wired for the OpenRouter provider (BYOK). The API key is read from the
-  `OPENROUTER_API_KEY` env var.
-- Cursor source: `cursor/rules/*.mdc` (installed as `~/.cursor/rules/*.mdc`)
-  and `cursor/cli-config.json` (copied to `~/.cursor/cli-config.json`).
-  `approvalMode` is `unrestricted` (Run Everything). Do not commit the live
-  CLI file; it accumulates auth and caches. Cursor has no
-  `~/.cursor/AGENTS.md`; CLI/IDE also read project-root `AGENTS.md` /
-  `CLAUDE.md` and `<project>/.cursor/rules`.
+- Global instructions: `prompts/AGENTS.md` is the only copy. `scripts/install.sh`
+  symlinks it to `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`,
+  `~/.pi/agent/AGENTS.md`, `~/.config/opencode/AGENTS.md`,
+  `~/.config/kilo/AGENTS.md`, and `~/.grok/AGENTS.md`, and renders it to
+  `~/.cursor/rules/agents.mdc`. Do not add a per-harness instructions file.
+- Claude source: `~/.claude/settings*.json` and `~/.claude/skills/graphify`.
+- Codex source: `~/.codex/config.toml`, `~/.codex/rules/default.rules`, and
+  `~/.codex/skills/hatch-pet`.
+- Pi source: `~/.pi/agent/themes/mypi.json`.
+- opencode source: `~/.config/opencode/opencode.jsonc`. opencode auto-loads
+  skills from `~/.agents/skills/` and `~/.claude/skills/`, so no separate skill
+  wiring is needed.
+- Kilo Code source: `~/.config/kilo/kilo.jsonc`, wired for the OpenRouter
+  provider (BYOK). The API key is read from the `OPENROUTER_API_KEY` env var.
+- Cursor source: `cursor/cli-config.json` (copied to
+  `~/.cursor/cli-config.json`). `approvalMode` is `unrestricted` (Run
+  Everything). Do not commit the live CLI file; it accumulates auth and caches.
+  Cursor has no `~/.cursor/AGENTS.md`; CLI/IDE also read project-root
+  `AGENTS.md` / `CLAUDE.md` and `<project>/.cursor/rules`.
 - Skills source: `git@github.com:stanfish06/skillquarium.git`.
 - APImanac source: `apis/` (catalog locally; `SKILL.md` refreshed from
   `stanfish06/APImanac` `skill/SKILL.md` on each install). Installed as

@@ -1,5 +1,14 @@
 # Prompts
 
+## Global instructions
+
+`AGENTS.md` here is the single source for every harness's global instructions.
+`scripts/install.sh` symlinks it to `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`,
+`~/.pi/agent/AGENTS.md`, `~/.config/opencode/AGENTS.md`,
+`~/.config/kilo/AGENTS.md`, and `~/.grok/AGENTS.md`. Cursor only reads `.mdc`
+rules with frontmatter, so the installer writes a rendered copy to
+`~/.cursor/rules/agents.mdc`; rerun the installer after editing to refresh it.
+
 ## System prompts
 
 Load one at session start.

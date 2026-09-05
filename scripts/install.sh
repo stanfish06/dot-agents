@@ -3,6 +3,8 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TIMESTAMP="$(date -u +%Y%m%dT%H%M%SZ)"
+# Single source for every harness's global instructions file.
+AGENTS_SRC="$ROOT/prompts/AGENTS.md"
 
 DRY_RUN=0
 SKIP_SKILLS=0
@@ -12,6 +14,7 @@ SKIP_CODEX=0
 SKIP_PI=0
 SKIP_OPENCODE=0
 SKIP_KILO=0
+SKIP_GROK=0
 SKIP_CURSOR=0
 SKIP_APIMANAC=0
 SKIP_PROMPTS=0
@@ -37,12 +40,13 @@ Install this dot-agents checkout into the current user's agent homes.
 Options:
   --dry-run             Print actions without changing files.
   --skip-skills         Do not run skills/install-skills.sh.
-  --skip-config         Do not symlink Claude/Codex/Pi/opencode/Kilo/Cursor config.
+  --skip-config         Do not symlink Claude/Codex/Pi/opencode/Kilo/Grok/Cursor config.
   --skip-claude         Do not symlink Claude config.
   --skip-codex          Do not symlink Codex config.
   --skip-pi             Do not symlink Pi agent config.
   --skip-opencode       Do not symlink opencode config.
   --skip-kilo           Do not symlink Kilo Code config.
+  --skip-grok           Do not symlink Grok config.
   --skip-cursor         Do not install Cursor user rules or CLI config.
   --skip-apimanac       Do not fetch, write catalog_root, link the APImanac skill,
                         or register the APImanac MCP server.
@@ -59,7 +63,11 @@ Default behavior:
   - Run skills/install-skills.sh, which delegates skill installation to Vercel's
     skills CLI and installs graphify. gstack and career-ops are skipped unless
     selected with --extras.
-  - Symlink selected Claude, Codex, Pi, opencode, Kilo Code, and Cursor
+  - Symlink prompts/AGENTS.md to each harness's global instructions file
+    (~/.claude/CLAUDE.md, ~/.codex/AGENTS.md, ~/.pi/agent/AGENTS.md,
+    ~/.config/opencode/AGENTS.md, ~/.config/kilo/AGENTS.md, ~/.grok/AGENTS.md)
+    and render it with rule frontmatter to ~/.cursor/rules/agents.mdc.
+  - Symlink selected Claude, Codex, Pi, opencode, Kilo Code, Grok, and Cursor
     config paths into their agent homes.
   - Fetch APImanac skill/SKILL.md from GitHub into apis/SKILL.md, write
     catalog_root, and symlink that file into each harness skills/apimanac/.
@@ -105,6 +113,7 @@ while [ "$#" -gt 0 ]; do
     --skip-pi) SKIP_PI=1 ;;
     --skip-opencode) SKIP_OPENCODE=1 ;;
     --skip-kilo) SKIP_KILO=1 ;;
+    --skip-grok) SKIP_GROK=1 ;;
     --skip-cursor) SKIP_CURSOR=1 ;;
     --skip-apimanac) SKIP_APIMANAC=1 ;;
     --skip-prompts) SKIP_PROMPTS=1 ;;
@@ -179,7 +188,11 @@ install_link() {
     return 0
   fi
 
-  if [ -e "$target" ] || [ -L "$target" ]; then
+  # a dangling link carries nothing worth backing up
+  if [ -L "$target" ] && [ ! -e "$target" ]; then
+    log "Remove: $target (dangling -> $(readlink "$target"))"
+    run rm -f "$target"
+  elif [ -e "$target" ] || [ -L "$target" ]; then
     if [ "$FORCE" -eq 1 ]; then
       log "Replace: $target"
       run rm -rf "$target"
@@ -302,7 +315,7 @@ install_skills() {
 
 install_claude() {
   log "==> Claude"
-  install_link "$ROOT/claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+  install_link "$AGENTS_SRC" "$HOME/.claude/CLAUDE.md"
   install_link "$ROOT/claude/settings.json" "$HOME/.claude/settings.json"
   install_link "$ROOT/claude/settings.local.json" "$HOME/.claude/settings.local.json"
   install_link "$ROOT/claude/settings.local-llm.json" "$HOME/.claude/settings.local-llm.json"
@@ -323,7 +336,7 @@ install_claude() {
 
 install_codex() {
   log "==> Codex"
-  install_link "$ROOT/codex/AGENTS.md" "$HOME/.codex/AGENTS.md"
+  install_link "$AGENTS_SRC" "$HOME/.codex/AGENTS.md"
   install_link "$ROOT/codex/notify-dispatch.sh" "$HOME/.codex/notify-dispatch.sh"
   install_link "$ROOT/codex/config.toml" "$HOME/.codex/config.toml"
   install_link "$ROOT/codex/hooks.json" "$HOME/.codex/hooks.json"
@@ -362,7 +375,7 @@ install_codex_skill_prompts() {
 
 install_pi() {
   log "==> Pi"
-  install_link "$ROOT/pi-agent/AGENTS.md" "$HOME/.pi/agent/AGENTS.md"
+  install_link "$AGENTS_SRC" "$HOME/.pi/agent/AGENTS.md"
   install_link "$ROOT/pi-agent/themes/mypi.json" "$HOME/.pi/agent/themes/mypi.json"
   if [ "$SKIP_PROMPTS" -eq 0 ]; then
     install_live_prompts "Pi" "$HOME/.pi/agent/prompts"
@@ -371,7 +384,7 @@ install_pi() {
 
 install_opencode() {
   log "==> opencode"
-  install_link "$ROOT/opencode/AGENTS.md" "$HOME/.config/opencode/AGENTS.md"
+  install_link "$AGENTS_SRC" "$HOME/.config/opencode/AGENTS.md"
   install_link "$ROOT/opencode/opencode.jsonc" "$HOME/.config/opencode/opencode.jsonc"
   install_link "$ROOT/opencode/tui.json" "$HOME/.config/opencode/tui.json"
   install_link "$ROOT/opencode/themes/mypi.json" "$HOME/.config/opencode/themes/mypi.json"
@@ -386,8 +399,13 @@ install_opencode() {
 
 install_kilo() {
   log "==> Kilo Code"
-  install_link "$ROOT/kilo/AGENTS.md" "$HOME/.config/kilo/AGENTS.md"
+  install_link "$AGENTS_SRC" "$HOME/.config/kilo/AGENTS.md"
   install_link "$ROOT/kilo/kilo.jsonc" "$HOME/.config/kilo/kilo.jsonc"
+}
+
+install_grok() {
+  log "==> Grok"
+  install_link "$AGENTS_SRC" "$HOME/.grok/AGENTS.md"
 }
 
 refresh_apimanac_skill() {
@@ -627,22 +645,34 @@ install_apimanac() {
   fi
 }
 
-install_cursor() {
-  local source_dir="$ROOT/cursor/rules"
+install_cursor_rules() {
   local target_dir="$HOME/.cursor/rules"
-  local source
-  local found=0
+  local rendered stale
 
-  log "==> Cursor"
-  [ -d "$source_dir" ] || die "missing Cursor rules directory: $source_dir"
+  # Cursor has no home-level AGENTS.md; rules need .mdc frontmatter, so render
+  # the shared source into a copy instead of symlinking it.
+  rendered="$(mktemp)"
+  {
+    printf -- '---\ndescription: Personal operating rules shared across agent harnesses\nalwaysApply: true\n---\n\n'
+    cat "$AGENTS_SRC"
+  } > "$rendered"
+  chmod 644 "$rendered"
+  install_copy "$rendered" "$target_dir/agents.mdc"
+  rm -f "$rendered"
 
-  for source in "$source_dir"/*.mdc; do
-    [ -e "$source" ] || continue
-    found=1
-    install_link "$source" "$target_dir/$(basename "$source")"
+  # Drop links left by the old per-section rule files.
+  for stale in behaviors context-hygiene dev skills; do
+    stale="$target_dir/$stale.mdc"
+    if [ -L "$stale" ] && [[ "$(readlink "$stale")" == "$ROOT/cursor/rules/"* ]]; then
+      log "Remove: $stale (superseded by agents.mdc)"
+      run rm -f "$stale"
+    fi
   done
+}
 
-  [ "$found" -eq 1 ] || die "missing Cursor rules in $source_dir"
+install_cursor() {
+  log "==> Cursor"
+  install_cursor_rules
 
   # Copy, do not symlink: the CLI rewrites this file with auth and caches.
   install_copy "$ROOT/cursor/cli-config.json" "$HOME/.cursor/cli-config.json"
@@ -688,6 +718,12 @@ main() {
     install_kilo
   else
     log "Skip: Kilo Code"
+  fi
+
+  if [ "$SKIP_GROK" -eq 0 ]; then
+    install_grok
+  else
+    log "Skip: Grok"
   fi
 
   if [ "$SKIP_CURSOR" -eq 0 ]; then
