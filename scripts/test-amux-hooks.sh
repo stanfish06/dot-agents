@@ -61,7 +61,7 @@ grep -Fqx 'event emit busy --agent codex' "$event_log" ||
   fail "amux pane did not emit busy codex"
 [[ "$(<"$stdin_log")" == "$payload" ]] || fail "hook payload was not forwarded"
 
-"$NODE_BIN" - "$ROOT/codex/hooks.json" <<'NODE'
+"$NODE_BIN" - "$ROOT/harnesses/codex/hooks.json" <<'NODE'
 const fs = require('fs');
 const config = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
 const commands = event => (config.hooks[event] || [])
@@ -97,7 +97,7 @@ TMUX_PANE="%42" \
 PATH="$fake_bin" \
 AMUX_TEST_LOG="$event_log" \
 AMUX_TEST_STDIN_LOG="$stdin_log" \
-"$BASH_BIN" "$ROOT/codex/notify-dispatch.sh" \
+"$BASH_BIN" "$ROOT/harnesses/codex/notify-dispatch.sh" \
   '{"type":"agent-turn-complete"}'
 
 for _ in {1..100}; do

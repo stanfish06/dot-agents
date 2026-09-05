@@ -44,13 +44,13 @@ state.
   wiring is needed.
 - Kilo Code source: `~/.config/kilo/kilo.jsonc`, wired for the OpenRouter
   provider (BYOK). The API key is read from the `OPENROUTER_API_KEY` env var.
-- Cursor source: `cursor/cli-config.json` (copied to
+- Cursor source: `harnesses/cursor/cli-config.json` (copied to
   `~/.cursor/cli-config.json`). `approvalMode` is `unrestricted` (Run
   Everything). Do not commit the live CLI file; it accumulates auth and caches.
   Cursor has no `~/.cursor/AGENTS.md`; CLI/IDE also read project-root
   `AGENTS.md` / `CLAUDE.md` and `<project>/.cursor/rules`.
-- Antigravity (agy) source: `agy/settings.json`, `agy/keybindings.json`, and
-  `agy/skills.json`. Global instructions are linked to `~/.gemini/GEMINI.md` and
+- Antigravity (agy) source: `harnesses/agy/settings.json`, `harnesses/agy/keybindings.json`, and
+  `harnesses/agy/skills.json`. Global instructions are linked to `~/.gemini/GEMINI.md` and
   `~/.gemini/config/rules/AGENTS.md`, specialist personas to
   `~/.gemini/config/agents/`, live prompts to `~/.gemini/config/workflows/`, and
   `skills.json` discovers `~/.agents/skills/`.

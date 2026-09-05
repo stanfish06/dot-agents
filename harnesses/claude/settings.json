@@ -2,7 +2,7 @@
   "permissions": {
     "defaultMode": "bypassPermissions"
   },
-  "model": "opus[1m]",
+  "model": "claude-fable-5-1[1m]",
   "hooks": {
     "Notification": [
       {
@@ -142,15 +142,22 @@
   "effortLevel": "xhigh",
   "modelSettings": {
     "claude-opus-5": {
-      "effortLevel": "high"
+      "effortLevel": "xhigh"
     },
     "claude-fable-5": {
       "effortLevel": "high"
+    },
+    "claude-fable-5-1": {
+      "effortLevel": "medium"
+    },
+    "qwen3-27b": {
+      "effortLevel": "medium"
     }
   },
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
+  "autoCompactEnabled": false,
   "switchModelsOnFlag": false,
   "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": true
 }

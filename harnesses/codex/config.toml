@@ -1,5 +1,5 @@
 model = "gpt-5.6-sol"
-model_reasoning_effort = "max"
+model_reasoning_effort = "xhigh"
 # one notify slot, two consumers: computer-use client + nvim vim.notify
 notify = ["/bin/sh", "-c", 'exec "$HOME/.codex/notify-dispatch.sh" "$@"', "codex-notify"]
 service_tier = "default"
@@ -48,6 +48,24 @@ trust_level = "trusted"
 [projects."/home/stan/Git/dot-agents"]
 trust_level = "trusted"
 
+[projects."/home/stan/Documents/Codex/2026-08-26/so-x20"]
+trust_level = "trusted"
+
+[projects."/home/stan/Documents/Codex/2026-08-27/im-x20"]
+trust_level = "trusted"
+
+[projects."/home/stan/Documents/Codex/2026-08-27/realtime-voice-chat"]
+trust_level = "trusted"
+
+[projects."/home/stan/Documents/Codex/2026-08-29/so-x20"]
+trust_level = "trusted"
+
+[projects."/home/stan/Git/APImanac"]
+trust_level = "trusted"
+
+[projects."/home/stan"]
+trust_level = "trusted"
+
 [plugins."github@openai-curated"]
 enabled = true
 
@@ -84,15 +102,16 @@ enabled = true
 [plugins."computer-use@openai-bundled"]
 enabled = true
 
+[plugins."codex-app-tools@openai-bundled"]
+enabled = true
+
 [marketplaces.openai-bundled]
-last_updated = "2026-08-13T15:27:52Z"
 source_type = "local"
-source = "/Users/stan/.codex/.tmp/bundled-marketplaces/openai-bundled"
+source = "/home/stan/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
 [marketplaces.openai-primary-runtime]
-last_updated = "2026-08-14T08:54:26Z"
 source_type = "local"
-source = "/Users/stan/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
+source = "/home/stan/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
 
 [tui]
 status_line = ["model-with-reasoning", "current-dir", "model", "reasoning", "project-name", "git-branch", "pull-request-number", "branch-changes", "run-state", "permissions", "approval-mode", "context-remaining", "context-used", "five-hour-limit", "weekly-limit", "context-window-size", "used-tokens", "fast-mode", "task-progress"]
@@ -101,6 +120,7 @@ status_line_use_colors = true
 [tui.model_availability_nux]
 "gpt-5.5" = 4
 "gpt-5.6-sol" = 4
+gpt-6-astra = 1
 
 [desktop]
 ambient-suggestions-enabled = false
@@ -114,7 +134,7 @@ show-context-window-usage = true
 [features]
 hooks = true
 memories = true
-js_repl = true
+js_repl = false
 
 [memories]
 generate_memories = true
@@ -126,28 +146,26 @@ args = ["mcp"]
 
 [mcp_servers.node_repl]
 args = []
-command = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl"
+command = "/nix/store/l77h2id05g9yi17bfzn496nibkc4dcfw-codex-desktop-26.825.31414/opt/codex-desktop/resources/cua_node/bin/node_repl"
 startup_timeout_sec = 120
 
 [mcp_servers.node_repl.env]
 NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
-NODE_REPL_NODE_MODULE_DIRS = "/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
-NODE_REPL_NODE_PATH = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node"
-NODE_REPL_TRUSTED_CODE_PATHS = "/Users/stan/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
-CODEX_HOME = "/Users/stan/.codex"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "8e86beb821b9afc846211798e0113bd4b9e79312dfcd135eb447bdb154f64071"
+NODE_REPL_NODE_MODULE_DIRS = "/nix/store/l77h2id05g9yi17bfzn496nibkc4dcfw-codex-desktop-26.825.31414/opt/codex-desktop/resources/cua_node/lib/node_modules"
+NODE_REPL_NODE_PATH = "/nix/store/l77h2id05g9yi17bfzn496nibkc4dcfw-codex-desktop-26.825.31414/opt/codex-desktop/resources/cua_node/bin/node"
+NODE_REPL_TRUSTED_CODE_PATHS = "/home/stan/.codex:/nix/store/l77h2id05g9yi17bfzn496nibkc4dcfw-codex-desktop-26.825.31414/opt/codex-desktop/resources/cua_node/lib/node_modules"
+CODEX_HOME = "/home/stan/.codex"
 BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+BROWSER_USE_TINYSKY_ENABLED = "0"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
-NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = "Control desktop apps on macOS through Computer Use."
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.803.61601"
-CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
+BROWSER_USE_CODEX_APP_VERSION = "26.825.31414"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/home/stan/.codex/plugins/cache/openai-bundled/browser/26.825.31414/scripts/browser-service.mjs"}'
+CODEX_CLI_PATH = "/nix/store/l77h2id05g9yi17bfzn496nibkc4dcfw-codex-desktop-26.825.31414/opt/codex-desktop/resources/codex"
 
-[mcp_servers.computer-use]
-command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"
-args = ["mcp"]
-cwd = "."
+[mcp_servers.cua_repl]
+command = "/nix/store/l77h2id05g9yi17bfzn496nibkc4dcfw-codex-desktop-26.825.31414/opt/codex-desktop/ChatGPT"
 enabled = false
 
 [hooks.state]

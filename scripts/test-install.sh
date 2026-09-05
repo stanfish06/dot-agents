@@ -2,6 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+HARNESSES="$ROOT/harnesses"
 
 fail() {
   printf 'FAIL: %s\n' "$*" >&2
@@ -47,18 +48,18 @@ set -e
 [ "$bad_status" -ne 0 ] || fail "unknown extra unexpectedly succeeded"
 assert_contains "$bad_output" "unknown extra 'nope'"
 
-config_text="$(<"$ROOT/codex/config.toml")"
+config_text="$(<"$HARNESSES/codex/config.toml")"
 expected_notify="notify = [\"/bin/sh\", \"-c\", 'exec \"\$HOME/.codex/notify-dispatch.sh\" \"\$@\"', \"codex-notify\"]"
 assert_contains "$config_text" "$expected_notify"
 assert_not_contains "$config_text" "/Users/stan/Git/dot-agents/codex/notify-dispatch.sh"
 assert_contains "$config_text" "[mcp_servers.apimanac]"
 
-opencode_config="$(<"$ROOT/opencode/opencode.jsonc")"
+opencode_config="$(<"$HARNESSES/opencode/opencode.jsonc")"
 assert_contains "$opencode_config" '"command": ["apimanac", "mcp"]'
-kilo_config="$(<"$ROOT/kilo/kilo.jsonc")"
+kilo_config="$(<"$HARNESSES/kilo/kilo.jsonc")"
 assert_contains "$kilo_config" '"command": ["apimanac", "mcp"]'
 
-dispatcher_text="$(<"$ROOT/codex/notify-dispatch.sh")"
+dispatcher_text="$(<"$HARNESSES/codex/notify-dispatch.sh")"
 assert_contains "$dispatcher_text" \
   "nvim_notify=\"\$HOME/.codex/hooks/dot-agents/nvim-notify.sh\""
 assert_not_contains "$dispatcher_text" $'\nwait\n'
@@ -77,7 +78,7 @@ codex_output="$(
     --skip-prompts
 )"
 assert_contains "$codex_output" \
-  "Symlink: $test_home/.codex/notify-dispatch.sh -> $ROOT/codex/notify-dispatch.sh"
+  "Symlink: $test_home/.codex/notify-dispatch.sh -> $HARNESSES/codex/notify-dispatch.sh"
 assert_contains "$codex_output" \
   "DRY-RUN: fetch https://raw.githubusercontent.com/stanfish06/APImanac/master/skill/SKILL.md -> $ROOT/apis/SKILL.md"
 assert_contains "$codex_output" \
@@ -118,7 +119,7 @@ cursor_output="$(
 assert_contains "$cursor_output" \
   "agents.mdc"
 assert_contains "$cursor_output" \
-  "Copy: $ROOT/cursor/cli-config.json -> $test_home/.cursor/cli-config.json"
+  "Copy: $HARNESSES/cursor/cli-config.json -> $test_home/.cursor/cli-config.json"
 assert_contains "$cursor_output" \
   "Symlink: $test_home/.cursor/skills/apimanac/SKILL.md -> $ROOT/apis/SKILL.md"
 assert_contains "$cursor_output" \
@@ -142,11 +143,11 @@ assert_contains "$agy_output" \
 assert_contains "$agy_output" \
   "Symlink: $test_home/.gemini/config/rules/AGENTS.md -> $ROOT/prompts/AGENTS.md"
 assert_contains "$agy_output" \
-  "DRY-RUN: merge $ROOT/agy/settings.json into $test_home/.gemini/antigravity-cli/settings.json"
+  "DRY-RUN: merge $HARNESSES/agy/settings.json into $test_home/.gemini/antigravity-cli/settings.json"
 assert_contains "$agy_output" \
-  "Symlink: $test_home/.gemini/antigravity-cli/keybindings.json -> $ROOT/agy/keybindings.json"
+  "Symlink: $test_home/.gemini/antigravity-cli/keybindings.json -> $HARNESSES/agy/keybindings.json"
 assert_contains "$agy_output" \
-  "Symlink: $test_home/.gemini/config/skills.json -> $ROOT/agy/skills.json"
+  "Symlink: $test_home/.gemini/config/skills.json -> $HARNESSES/agy/skills.json"
 assert_contains "$agy_output" \
   "Symlink: $test_home/.gemini/config/agents/code-reviewer.md -> $ROOT/agents/code-reviewer.md"
 assert_contains "$agy_output" \
@@ -304,7 +305,7 @@ agy_mcp_rerun="$(
 assert_contains "$agy_mcp_rerun" "OK: $test_home/.gemini/config/mcp_config.json (apimanac)"
 cp "$skill_backup" "$ROOT/apis/SKILL.md"
 
-cursor_config="$(<"$ROOT/cursor/cli-config.json")"
+cursor_config="$(<"$HARNESSES/cursor/cli-config.json")"
 assert_contains "$cursor_config" '"approvalMode": "unrestricted"'
 assert_not_contains "$cursor_config" "authInfo"
 assert_not_contains "$cursor_config" "authCacheKey"

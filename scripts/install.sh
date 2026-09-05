@@ -5,6 +5,8 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TIMESTAMP="$(date -u +%Y%m%dT%H%M%SZ)"
 # Single source for every harness's global instructions file.
 AGENTS_SRC="$ROOT/prompts/AGENTS.md"
+# Per-harness config folders live under one directory.
+HARNESSES="$ROOT/harnesses"
 
 DRY_RUN=0
 SKIP_SKILLS=0
@@ -323,13 +325,13 @@ install_skills() {
 install_claude() {
   log "==> Claude"
   install_link "$AGENTS_SRC" "$HOME/.claude/CLAUDE.md"
-  install_link "$ROOT/claude/settings.json" "$HOME/.claude/settings.json"
-  install_link "$ROOT/claude/settings.local.json" "$HOME/.claude/settings.local.json"
-  install_link "$ROOT/claude/settings.local-llm.json" "$HOME/.claude/settings.local-llm.json"
-  install_link "$ROOT/claude/claude-local" "$HOME/.local/bin/claude-local"
-  install_link "$ROOT/claude/output-styles" "$HOME/.claude/output-styles"
-  install_link "$ROOT/claude/commands/agent-skills" "$HOME/.claude/commands/agent-skills"
-  install_link "$ROOT/claude/skills/graphify" "$HOME/.claude/skills/graphify"
+  install_link "$HARNESSES/claude/settings.json" "$HOME/.claude/settings.json"
+  install_link "$HARNESSES/claude/settings.local.json" "$HOME/.claude/settings.local.json"
+  install_link "$HARNESSES/claude/settings.local-llm.json" "$HOME/.claude/settings.local-llm.json"
+  install_link "$HARNESSES/claude/claude-local" "$HOME/.local/bin/claude-local"
+  install_link "$HARNESSES/claude/output-styles" "$HOME/.claude/output-styles"
+  install_link "$HARNESSES/claude/commands/agent-skills" "$HOME/.claude/commands/agent-skills"
+  install_link "$HARNESSES/claude/skills/graphify" "$HOME/.claude/skills/graphify"
   install_link "$ROOT/hooks" "$HOME/.claude/hooks/dot-agents"
   if [ "$SKIP_PROMPTS" -eq 0 ]; then
     install_live_prompts "Claude" "$HOME/.claude/commands"
@@ -344,11 +346,11 @@ install_claude() {
 install_codex() {
   log "==> Codex"
   install_link "$AGENTS_SRC" "$HOME/.codex/AGENTS.md"
-  install_link "$ROOT/codex/notify-dispatch.sh" "$HOME/.codex/notify-dispatch.sh"
-  install_link "$ROOT/codex/config.toml" "$HOME/.codex/config.toml"
-  install_link "$ROOT/codex/hooks.json" "$HOME/.codex/hooks.json"
-  install_link "$ROOT/codex/rules/default.rules" "$HOME/.codex/rules/default.rules"
-  install_link "$ROOT/codex/skills/hatch-pet" "$HOME/.codex/skills/hatch-pet"
+  install_link "$HARNESSES/codex/notify-dispatch.sh" "$HOME/.codex/notify-dispatch.sh"
+  install_link "$HARNESSES/codex/config.toml" "$HOME/.codex/config.toml"
+  install_link "$HARNESSES/codex/hooks.json" "$HOME/.codex/hooks.json"
+  install_link "$HARNESSES/codex/rules/default.rules" "$HOME/.codex/rules/default.rules"
+  install_link "$HARNESSES/codex/skills/hatch-pet" "$HOME/.codex/skills/hatch-pet"
   install_link "$ROOT/hooks" "$HOME/.codex/hooks/dot-agents"
   if [ "$SKIP_PROMPTS" -eq 0 ]; then
     install_codex_skill_prompts
@@ -383,7 +385,7 @@ install_codex_skill_prompts() {
 install_pi() {
   log "==> Pi"
   install_link "$AGENTS_SRC" "$HOME/.pi/agent/AGENTS.md"
-  install_link "$ROOT/pi-agent/themes/mypi.json" "$HOME/.pi/agent/themes/mypi.json"
+  install_link "$HARNESSES/pi-agent/themes/mypi.json" "$HOME/.pi/agent/themes/mypi.json"
   if [ "$SKIP_PROMPTS" -eq 0 ]; then
     install_live_prompts "Pi" "$HOME/.pi/agent/prompts"
   fi
@@ -392,9 +394,9 @@ install_pi() {
 install_opencode() {
   log "==> opencode"
   install_link "$AGENTS_SRC" "$HOME/.config/opencode/AGENTS.md"
-  install_link "$ROOT/opencode/opencode.jsonc" "$HOME/.config/opencode/opencode.jsonc"
-  install_link "$ROOT/opencode/tui.json" "$HOME/.config/opencode/tui.json"
-  install_link "$ROOT/opencode/themes/mypi.json" "$HOME/.config/opencode/themes/mypi.json"
+  install_link "$HARNESSES/opencode/opencode.jsonc" "$HOME/.config/opencode/opencode.jsonc"
+  install_link "$HARNESSES/opencode/tui.json" "$HOME/.config/opencode/tui.json"
+  install_link "$HARNESSES/opencode/themes/mypi.json" "$HOME/.config/opencode/themes/mypi.json"
   install_link "$ROOT/agents/code-reviewer.md" "$HOME/.config/opencode/agent/code-reviewer.md"
   install_link "$ROOT/agents/security-auditor.md" "$HOME/.config/opencode/agent/security-auditor.md"
   install_link "$ROOT/agents/test-engineer.md" "$HOME/.config/opencode/agent/test-engineer.md"
@@ -407,7 +409,7 @@ install_opencode() {
 install_kilo() {
   log "==> Kilo Code"
   install_link "$AGENTS_SRC" "$HOME/.config/kilo/AGENTS.md"
-  install_link "$ROOT/kilo/kilo.jsonc" "$HOME/.config/kilo/kilo.jsonc"
+  install_link "$HARNESSES/kilo/kilo.jsonc" "$HOME/.config/kilo/kilo.jsonc"
 }
 
 install_grok() {
@@ -742,7 +744,7 @@ install_cursor_rules() {
   # Drop links left by the old per-section rule files.
   for stale in behaviors context-hygiene dev skills; do
     stale="$target_dir/$stale.mdc"
-    if [ -L "$stale" ] && [[ "$(readlink "$stale")" == "$ROOT/cursor/rules/"* ]]; then
+    if [ -L "$stale" ] && [[ "$(readlink "$stale")" == "$HARNESSES/cursor/rules/"* ]]; then
       log "Remove: $stale (superseded by agents.mdc)"
       run rm -f "$stale"
     fi
@@ -754,7 +756,7 @@ install_cursor() {
   install_cursor_rules
 
   # Copy, do not symlink: the CLI rewrites this file with auth and caches.
-  install_copy "$ROOT/cursor/cli-config.json" "$HOME/.cursor/cli-config.json"
+  install_copy "$HARNESSES/cursor/cli-config.json" "$HOME/.cursor/cli-config.json"
 }
 
 merge_agy_settings() {
@@ -825,9 +827,9 @@ install_agy() {
   log "==> Antigravity (agy)"
   install_link "$AGENTS_SRC" "$HOME/.gemini/GEMINI.md"
   install_link "$AGENTS_SRC" "$HOME/.gemini/config/rules/AGENTS.md"
-  install_agy_settings "$ROOT/agy/settings.json" "$HOME/.gemini/antigravity-cli/settings.json"
-  install_link "$ROOT/agy/keybindings.json" "$HOME/.gemini/antigravity-cli/keybindings.json"
-  install_link "$ROOT/agy/skills.json" "$HOME/.gemini/config/skills.json"
+  install_agy_settings "$HARNESSES/agy/settings.json" "$HOME/.gemini/antigravity-cli/settings.json"
+  install_link "$HARNESSES/agy/keybindings.json" "$HOME/.gemini/antigravity-cli/keybindings.json"
+  install_link "$HARNESSES/agy/skills.json" "$HOME/.gemini/config/skills.json"
   install_link "$ROOT/agents/code-reviewer.md" "$HOME/.gemini/config/agents/code-reviewer.md"
   install_link "$ROOT/agents/security-auditor.md" "$HOME/.gemini/config/agents/security-auditor.md"
   install_link "$ROOT/agents/test-engineer.md" "$HOME/.gemini/config/agents/test-engineer.md"

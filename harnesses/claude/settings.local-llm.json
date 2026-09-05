@@ -9,7 +9,7 @@
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "qwen3-27b",
     "ANTHROPIC_DEFAULT_HAIKU_MODEL": "qwen3-27b",
     "ANTHROPIC_SMALL_FAST_MODEL": "qwen3-27b",
-    "CLAUDE_CODE_MAX_CONTEXT_TOKENS": "40960",
+    "CLAUDE_CODE_MAX_CONTEXT_TOKENS": "32768",
     "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "8192",
     "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
   },
@@ -19,12 +19,13 @@
       {
         "model": "qwen3-27b",
         "label": "qwen3-27b",
-        "description": "qwen3-27b Q4_K_M on llama.cpp (stanfishdeb via Tailscale, 40k context)"
+        "description": "qwen3-27b Q4_0 on llama.cpp (stanfishdeb via Tailscale, 32k context)"
       }
     ],
     "replaceBuiltInOptions": true
   },
   "alwaysThinkingEnabled": false,
+  "autoCompactEnabled": true,
   "enableArtifact": false,
   "disableWorkflows": true,
   "disableClaudeAiConnectors": true,

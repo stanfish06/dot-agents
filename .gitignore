@@ -4,7 +4,7 @@
 
 # Secrets and auth state
 .claude.json
-claude/.claude.json
+harnesses/claude/.claude.json
 **/auth.json
 **/oauth*.json
 **/*credentials*.json
