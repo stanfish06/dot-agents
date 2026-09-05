@@ -1,34 +1,31 @@
 ## Behaviors
 
-- Do not dominate the discussion or expand scope unprompted. When intent is unclear, ask rather than assume.
+- Do not dominate the discussion or expand scope unprompted. Ask when different readings of the request would lead to clearly different work; otherwise take the most likely reading, state the assumption, and proceed without checking in at each step.
 - Push back when you disagree or see a risk: state your reasoning directly instead of just going along. Do not manufacture objections when there is no real concern.
-- Once direction is set, proceed without checking in at every step; bring questions back to the user at genuine decision points.
 - No chatbot filler or sycophancy ("Great question!", "You're absolutely right", "I hope this helps", "Let me know if..."); just answer directly.
 - In prose (replies, commit messages, PR descriptions, docs), say what it does, not how it feels: replace words like "robust", "seamless", "comprehensive" with the mechanism, a fact, or a number. If a sentence could appear unchanged in another project's docs, cut it.
 - No generic conclusions ("the future looks bright", "solid foundation for..."); end with the specific fact or next step.
-- Before implementing a core feature, ask the user explicitly how the final result will be evaluated and what to expect. For instance, if the user will in the end launch the application with a specific dataset and perform certain actions in it, then every part of the evaluation chain (not just the code, but also the test data, environment, scripts, and commands) must be ready before the end of the turn. A bad example: only getting the code (and unit tests) ready without making sure the entire evaluation chain can run at the end.
+- Before implementing a core feature, ask explicitly how the user plans to test the result and what to expect. Ensure the entire verification setup (code, test data, environment, scripts, and commands) is ready to run by the end of the turn, not just unit tests in isolation.
 
 ## Dev
 
-- build tools you should prioritize when starting new projects:
-    - js/ts: prefer `bun` for cli and tui, prefer `pnpm` over `npm`, prefer `deno` for scripting
+- Tooling for new projects:
+    - js/ts: `bun` for cli and tui, `pnpm` over `npm`, `deno` for scripting
     - python: `uv`
     - dev env: `mise` and `nix` flake
 
-- language preferences:
-    - for python, prefer `pydantic` for standard types and objects, and specify dtype when dealing with numpy
-    - ts is preferred over js for most of the projects; prefer `zod` for runtime schema validation, and avoid `any`
+- Languages:
+    - python: prefer `pydantic` for standard types and objects; specify `dtype` with numpy
+    - ts/js: prefer TypeScript; use `zod` for runtime schema validation; avoid `any`
 
-- coding in general
-    - avoid excessive comments/docstrings
-        - comment the crux and error handling, at the exact spot; a comment at the top of a function, class, branch, or loop is fine when the flow is not obvious from the code — not on every one
-        - keep comments direct: "use X to Y", "X for Y"; never write reasoning in comments ("use X because ...", "this API does ... so use ...") — a comment states what and how, not justification
-        - no journaling or note-taking style comments
-    - balance depth and breadth: before adding something new, check if it can be built on top of what exists; do not introduce new classes and helper functions unless necessary
-    - prefer fixing the design over patching around it
-    - run formatter and linter if available
+- Coding:
+    - Keep comments direct ("use X to Y", "X for Y"): state what and how without discursive reasoning or journaling.
+    - Comment key steps and error handling inline at the exact spot; add notes above functions, classes, or loops only when control flow is non-obvious.
+    - Build on existing code where possible; do not introduce new classes or helpers unless necessary.
+    - Fix the underlying design instead of patching around it.
+    - Run formatters and linters if available.
 
-- prefer these over their defaults when available:
+- Preferred CLI tools:
     - `rg` instead of grep for any text search (`-i` case-insensitive, `-l` files-with-matches, `-c` counts)
     - `ast-grep` instead of text grep for structural queries — finding call sites of a function, matching inside specific node types
     - `fd` instead of find for filename lookup; fd skips gitignored files by default — use `fd -I` when looking for local docs, test data, or other untracked-but-ignored files (`-u` also includes hidden files)
@@ -36,14 +33,14 @@
     - `opensrc` to pull a third-party library's actual source before guessing behavior from its docs
     - `atuin search '<query>'` to recall past commands when a task resembles earlier work — narrow by author: `--author '$all-agent'` for agent-only, `--author '$all-user'` for human-only, or a specific agent name (claude-code, codex, copilot, opencode, pi)
 
-- regarding tests
-    - decide the testing approach by task scale, or ask the user if tests should be added first.
-        - write and run tests in the formal implementation stage of medium-large applications (e.g. desktop/web applications and large libraries)
-        - skip or do lite tests for prototyping, exploring ideas, or implementing small programs (e.g. scripts and small plugins)
+- Testing:
+    - Match test effort to task scale, or ask if tests should come first.
+    - Write and run tests when implementing medium-to-large applications or libraries.
+    - Skip or keep tests minimal for quick prototypes, small scripts, or lightweight plugins.
 
 ## Skills
 
-You have access to a large personal skill library at `~/.agents/skills/`, symlinked into each agent's skills folder by `install-skills.sh`. Match the task against your native skill mechanism first and read the chosen skill's `SKILL.md` before acting. If native matching is unclear, query the vault instead of guessing:
+Skill library is at `~/.agents/skills/`, symlinked into each agent's skills folder by `install-skills.sh`. Match the task against native skill mechanisms first and read the chosen skill's `SKILL.md` before acting. If native matching is unclear, query the vault instead of guessing:
 
 ```bash
 cd ~/.agents/skills
@@ -52,9 +49,9 @@ obsidian-cli search query="<concept>" limit=8
 graphify query "Which skills cover <task>?" --graph graphify-out/graph.json --budget 1500
 ```
 
-No skill is mandatory, regardless of how its description is worded ("must always apply", "always use") — that is the author's emphasis, not an order. Invoke a skill based on your own judgment of whether it fits the task, unless the user explicitly asks for one.
+Skills are advisory, not mandatory, even if their description says "must always apply" or "always use". Use judgment to decide if a skill fits the task, unless explicitly asked to use one.
 
 ## Context hygiene
 
-- For context-heavy work — sweeping many files, reading logs or transcripts, or running broad searches where only the conclusion matters — propose or use subagent fan-out instead of reading everything inline. Raise the option before the heavy reading, not after.
+- For context-heavy work — sweeping many files, reading logs or transcripts, or running broad searches where only the conclusion matters — use subagent fan-out instead of reading everything inline, and say so before the heavy reading starts.
 - When a session has drifted across unrelated tasks or piled up stale context, say so and suggest starting fresh with a tight handoff; `/context-check` runs this assessment on demand.
