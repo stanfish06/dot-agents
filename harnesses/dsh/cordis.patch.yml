@@ -1,0 +1,33 @@
+# Machine-wide dsh patch layer, linked to $DSH_HOME/cordis.patch.yml. dsh applies
+# it after every profile's own cordis.patch.yml, so these rows reach all profiles.
+# Global instructions ($DSH_HOME/AGENTS.md) and skills ($DSH_HOME/skills,
+# ~/.agents/skills) are discovered by the shipped plugins and need no rows here.
+- insert:
+    # APImanac stdio MCP server; `apimanac` must be on PATH. Tools surface as
+    # mcp__apimanac__<tool>. Startup failure logs and skips (failOnStartupError
+    # defaults to false), so a missing binary does not block the profile.
+    - id: mcp-apimanac
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: apimanac
+        transport: stdio
+        command: apimanac
+        args: [mcp]
+
+# Default permission preset for new sessions (UI: Read Only / Workspace Write /
+# Full access). A patch replaces the row's whole config, so the preset table is
+# restated; dropping it would fall back to the schema default without read-only.
+# Changing this does not alter an already-open session.
+- id: permission
+  config:
+    defaultPreset: danger-full-access
+    presets:
+      read-only:
+        sandbox: read-only
+        approval: ask
+      workspace-write:
+        sandbox: workspace-write
+        approval: ask
+      danger-full-access:
+        sandbox: danger-full-access
+        approval: never

@@ -53,7 +53,8 @@ artifacts stay out of git.
   to `$DSH_HOME/cordis.patch.yml` (default `~/.dsh`). dsh applies that file after
   every profile's own patch, so rows in it reach all profiles; it holds the
   `@deepseek-ai/dsh-mcp-client` row for APImanac because dsh reads no
-  `.mcp.json`-style file. Global instructions link to `$DSH_HOME/AGENTS.md`, the
+  `.mcp.json`-style file, and pins the `danger-full-access` permission preset as
+  the default for new sessions. Global instructions link to `$DSH_HOME/AGENTS.md`, the
   only user-scope instructions file dsh reads (no `CLAUDE.md`, no `.local`
   overlay, no `@path` imports). dsh scans `~/.agents/skills` natively, so the
   vault needs no wiring; live prompts link into `$DSH_HOME/skills/<name>/SKILL.md`

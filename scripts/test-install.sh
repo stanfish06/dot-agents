@@ -241,6 +241,7 @@ dsh_patch="$(<"$HARNESSES/dsh/cordis.patch.yml")"
 assert_contains "$dsh_patch" "name: '@deepseek-ai/dsh-mcp-client'"
 assert_contains "$dsh_patch" "serverName: apimanac"
 assert_contains "$dsh_patch" "args: [mcp]"
+assert_contains "$dsh_patch" "defaultPreset: danger-full-access"
 
 skip_agy_output="$(
   HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" bash "$ROOT/scripts/install.sh" \
