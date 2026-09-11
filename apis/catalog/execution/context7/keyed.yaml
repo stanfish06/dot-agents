@@ -1,12 +1,12 @@
 profile_id: keyed
 api_id: context7
 description: "Context7 API with the key as `Authorization: Bearer <key>`. GET
-  /api/v2/libs/search (libraryName, optional query) returns candidate
-  libraries with ids; GET /api/v2/context (libraryId, query, type=json|txt)
-  returns codeSnippets and infoSnippets. Reads run auto. POST /api/v1/refresh
-  and POST /api/v2/add/* change the account's library set and use plan quota,
-  so they confirm, as does PATCH /api/v2/policies. Multipart openapi-upload is
-  denied. 202 means still indexing; a 301 body carries redirectUrl."
+  /api/v2/libs/search (libraryName, optional query) returns candidate libraries
+  with ids; GET /api/v2/context (libraryId, query, type=json|txt) returns
+  codeSnippets and infoSnippets. Reads run auto. POST /api/v1/refresh and POST
+  /api/v2/add/* change the account's library set and use plan quota, so they
+  confirm, as does PATCH /api/v2/policies. Multipart openapi-upload is denied.
+  202 means still indexing; a 301 body carries redirectUrl."
 origins:
   - https://context7.com
 auth:
@@ -14,9 +14,9 @@ auth:
   credential_id: context7-key
   components:
     - name: token
-      description: A Context7 API key from https://context7.com/dashboard. Starts
-        with ctx7sk. Without it the same endpoints answer with a 200-request
-        window; with it the plan's limits apply.
+      description: A Context7 API key from https://context7.com/dashboard. Starts with
+        ctx7sk. Without it the same endpoints answer with a 200-request window;
+        with it the plan's limits apply.
   placements:
     - kind: header
       header: Authorization
@@ -77,4 +77,13 @@ health_probe:
     libraryName: react
   expect_status: 200
 verification:
-  state: candidate
+  state: verified
+  verified_at: 2026-09-11T03:48:54.715Z
+  evidence:
+    contract_hash: v1:sha256:c0beaa3b9001636499ca17c5d49af5df105dc1171dd1b3701c52d32e86c8cd18
+    method: GET
+    path: /api/v2/libs/search
+    status: 200
+    response_hash: v1:sha256:2787567566a77efbe123cd290c8ed7f6ea4f4968421e71a5408fd11ad639cfb1
+    timestamp: 2026-09-11T03:48:54.715Z
+    tool_version: 0.0.0
