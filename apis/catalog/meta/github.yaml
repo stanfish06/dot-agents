@@ -6,7 +6,7 @@ description: >-
 homepage: https://github.com
 documentation: https://docs.github.com/rest
 categories: [developer, version-control]
-tags: [git, repositories, issues, pull-requests, code-search, releases]
+tags: [git, repositories, issues, pull-requests, discussions, code-search, releases]
 aliases: [github-com, api-github-com]
 lifecycle: active
 curation: curated
@@ -18,4 +18,5 @@ capabilities:
   - Read repository, issue, pull request, and release metadata
   - Search code, commits, issues, and repositories
   - Read and write issue comments under an explicit permission rule
+  - List repository discussions and their top-level comments (undocumented endpoints; GraphQL for filtering, replies, reactions)
 profiles: [pat]

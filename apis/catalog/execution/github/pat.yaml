@@ -24,6 +24,21 @@ permissions:
     path: /repos/*/*/issues/**
     decision: auto
   - method: GET
+    path: /repos/*/*/discussions
+    decision: auto
+    note: undocumented; absent from github/rest-api-description. Paginates with
+      per_page/page; state, category, labels and sort query params are ignored
+  - method: GET
+    path: /repos/*/*/discussions/*
+    decision: auto
+    note: undocumented; single discussion by number, same shape as an issue plus
+      category and answer_html_url
+  - method: GET
+    path: /repos/*/*/discussions/*/comments
+    decision: auto
+    note: undocumented; top-level comments only. Categories, reactions, timeline,
+      single comment and search/discussions return 404
+  - method: GET
     path: /search/**
     decision: auto
   - method: GET
@@ -56,12 +71,12 @@ health_probe:
   expect_status: 200
 verification:
   state: verified
-  verified_at: 2026-08-23T09:31:07.698Z
+  verified_at: 2026-09-11T02:17:47.461Z
   evidence:
-    contract_hash: v1:sha256:425a081d622a770aafefab760748b4b326d2de9e6fbd948c901759ada4a9b482
+    contract_hash: v1:sha256:6d6b59f279afdca7ead8dc4320a0d26e7871a5238834b29fd3d78c5d201ca906
     method: GET
     path: /rate_limit
     status: 200
-    response_hash: v1:sha256:6d43dc7a68d07d65c2ec4453f5a37f3b2ded0f23b06cc60ba6df09ab10d9cb21
-    timestamp: 2026-08-23T09:31:07.698Z
+    response_hash: v1:sha256:9b786a0974834907c7ad91e67aefb6f24d767570e363bd341849d40da2741c5e
+    timestamp: 2026-09-11T02:17:47.461Z
     tool_version: 0.0.0
