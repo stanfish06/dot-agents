@@ -28,4 +28,7 @@ capabilities:
   - "Upload an input file to the fal CDN in two steps: initiate on `storage`, then PUT the bytes on `public`; the returned file_url is what image_url, video_url and audio_url inputs take"
   - Poll a submitted request to completion and return its result with the `await-result` workflow, no confirmation needed
   - Read usage, billing events, account billing and FOCUS reports, request history, per-endpoint analytics, and serverless logs from the Platform APIs on `platform`
+resources:
+  - url: https://github.com/freestylefly/awesome-gpt-image-2.git
+    description: Community prompt templates and example outputs for image generation; use before submitting a job if fit
 profiles: [public, keyed, platform, storage]
