@@ -2,7 +2,10 @@ id: github
 name: GitHub REST API
 description: >-
   The GitHub REST API for repositories, issues, pull requests, users,
-  organizations, releases, and code search.
+  organizations, releases, and code search. Also pulls GitHub Discussions:
+  list a repo's discussions, get one by number, and list its top-level
+  comments via GET /repos/{owner}/{repo}/discussions[/{number}[/comments]].
+  These discussion endpoints are undocumented by GitHub but verified working.
 homepage: https://github.com
 documentation: https://docs.github.com/rest
 categories: [developer, version-control]
