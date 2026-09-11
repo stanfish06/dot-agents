@@ -30,6 +30,7 @@ assert_contains "$help_output" "--extras <name>..."
 assert_contains "$help_output" "Names: gstack, career (alias: career-ops), all"
 assert_contains "$help_output" "--skip-apimanac"
 assert_contains "$help_output" "--skip-agy"
+assert_contains "$help_output" "--skip-dsh"
 assert_contains "$help_output" "Fetch APImanac skill/SKILL.md from GitHub"
 
 list_output="$(bash "$ROOT/scripts/install.sh" --dry-run --skip-config --extras gstack career)"
@@ -184,6 +185,62 @@ skip_apimanac_output="$(
 assert_contains "$skip_apimanac_output" "Skip: APImanac"
 assert_not_contains "$skip_apimanac_output" "skills/apimanac"
 assert_not_contains "$skip_apimanac_output" "DRY-RUN: fetch"
+
+dsh_output="$(
+  HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" bash "$ROOT/scripts/install.sh" \
+    --dry-run \
+    --skip-skills \
+    --skip-claude \
+    --skip-codex \
+    --skip-pi \
+    --skip-opencode \
+    --skip-kilo \
+    --skip-grok \
+    --skip-cursor \
+    --skip-agy
+)"
+assert_contains "$dsh_output" \
+  "Symlink: $test_home/.dsh/AGENTS.md -> $ROOT/prompts/AGENTS.md"
+assert_contains "$dsh_output" \
+  "Symlink: $test_home/.dsh/cordis.patch.yml -> $HARNESSES/dsh/cordis.patch.yml"
+assert_contains "$dsh_output" \
+  "Symlink: $test_home/.dsh/skills/check-repo-status/SKILL.md -> $ROOT/prompts/live-prompts/check-repo-status.md"
+assert_contains "$dsh_output" \
+  "Symlink: $test_home/.dsh/skills/apimanac/SKILL.md -> $ROOT/apis/SKILL.md"
+
+dsh_home_output="$(
+  HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" DSH_HOME="$test_home/dsh-home" \
+  bash "$ROOT/scripts/install.sh" \
+    --dry-run \
+    --skip-skills \
+    --skip-claude \
+    --skip-codex \
+    --skip-pi \
+    --skip-opencode \
+    --skip-kilo \
+    --skip-grok \
+    --skip-cursor \
+    --skip-agy \
+    --skip-prompts
+)"
+assert_contains "$dsh_home_output" \
+  "Symlink: $test_home/dsh-home/AGENTS.md -> $ROOT/prompts/AGENTS.md"
+assert_not_contains "$dsh_home_output" "$test_home/.dsh/"
+
+skip_dsh_output="$(
+  HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" bash "$ROOT/scripts/install.sh" \
+    --dry-run \
+    --skip-skills \
+    --skip-prompts \
+    --skip-dsh
+)"
+assert_contains "$skip_dsh_output" "Skip: DeepSeek Harness (dsh)"
+assert_not_contains "$skip_dsh_output" "$test_home/.dsh/"
+
+dsh_patch="$(<"$HARNESSES/dsh/cordis.patch.yml")"
+assert_contains "$dsh_patch" "name: '@deepseek-ai/dsh-mcp-client'"
+assert_contains "$dsh_patch" "serverName: apimanac"
+assert_contains "$dsh_patch" "args: [mcp]"
 
 skip_agy_output="$(
   HOME="$test_home" XDG_CONFIG_HOME="$test_home/.config" bash "$ROOT/scripts/install.sh" \

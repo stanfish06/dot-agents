@@ -19,6 +19,7 @@ SKIP_KILO=0
 SKIP_GROK=0
 SKIP_CURSOR=0
 SKIP_AGY=0
+SKIP_DSH=0
 SKIP_APIMANAC=0
 SKIP_PROMPTS=0
 SKIP_TELEMETRY=0
@@ -44,7 +45,7 @@ Install this dot-agents checkout into the current user's agent homes.
 Options:
   --dry-run             Print actions without changing files.
   --skip-skills         Do not run skills/install-skills.sh.
-  --skip-config         Do not symlink Claude/Codex/Pi/opencode/Kilo/Grok/Cursor config.
+  --skip-config         Do not symlink Claude/Codex/Pi/opencode/Kilo/Grok/Cursor/dsh config.
   --skip-claude         Do not symlink Claude config.
   --skip-codex          Do not symlink Codex config.
   --skip-pi             Do not symlink Pi agent config.
@@ -53,6 +54,8 @@ Options:
   --skip-grok           Do not symlink Grok config.
   --skip-cursor         Do not install Cursor user rules or CLI config.
   --skip-agy            Do not install Antigravity (agy) config, rules, or skills.
+  --skip-dsh            Do not install DeepSeek Harness (dsh) instructions, patch
+                        layer, or skills.
   --skip-apimanac       Do not fetch, write catalog_root, link the APImanac skill,
                         or register the APImanac MCP server.
   --skip-prompts        Do not install prompts/live-prompts/*.md.
@@ -72,14 +75,14 @@ Default behavior:
   - Symlink prompts/AGENTS.md to each harness's global instructions file
     (~/.claude/CLAUDE.md, ~/.codex/AGENTS.md, ~/.pi/agent/AGENTS.md,
     ~/.config/opencode/AGENTS.md, ~/.config/kilo/AGENTS.md, ~/.grok/AGENTS.md,
-    ~/.gemini/GEMINI.md, ~/.gemini/config/rules/AGENTS.md)
+    ~/.gemini/GEMINI.md, ~/.gemini/config/rules/AGENTS.md, $DSH_HOME/AGENTS.md)
     and render it with rule frontmatter to ~/.cursor/rules/agents.mdc.
-  - Symlink selected Claude, Codex, Pi, opencode, Kilo Code, Grok, Cursor, and
-    Antigravity config paths into their agent homes.
+  - Symlink selected Claude, Codex, Pi, opencode, Kilo Code, Grok, Cursor,
+    Antigravity, and dsh config paths into their agent homes.
   - Fetch APImanac skill/SKILL.md from GitHub into apis/SKILL.md, write
     catalog_root, and symlink that file into each harness skills/apimanac/.
   - Register the `apimanac mcp` stdio server: user scope for Claude,
-    ~/.cursor/mcp.json for Cursor, symlinked config for Codex/opencode/Kilo.
+    ~/.cursor/mcp.json for Cursor, symlinked config for Codex/opencode/Kilo/dsh.
   - Install live prompts into each agent's native prompt/command surface.
   - Move any existing non-matching target to TARGET.backup-<timestamp>.
 EOF
@@ -123,6 +126,7 @@ while [ "$#" -gt 0 ]; do
     --skip-grok) SKIP_GROK=1 ;;
     --skip-cursor) SKIP_CURSOR=1 ;;
     --skip-agy) SKIP_AGY=1 ;;
+    --skip-dsh) SKIP_DSH=1 ;;
     --skip-apimanac) SKIP_APIMANAC=1 ;;
     --skip-prompts) SKIP_PROMPTS=1 ;;
     --skip-telemetry) SKIP_TELEMETRY=1 ;;
@@ -415,6 +419,49 @@ install_kilo() {
 install_grok() {
   log "==> Grok"
   install_link "$AGENTS_SRC" "$HOME/.grok/AGENTS.md"
+}
+
+# dsh reads only $DSH_HOME/AGENTS.md at user scope (no CLAUDE.md, no .local
+# overlay) and scans ~/.agents/skills natively, so the vault needs no wiring.
+# $DSH_HOME/cordis.patch.yml is the machine-wide plugin layer that every profile
+# applies after its own patch; MCP servers live there because dsh reads no
+# .mcp.json-style file.
+DSH_HOME="${DSH_HOME:-$HOME/.dsh}"
+
+install_dsh() {
+  log "==> DeepSeek Harness (dsh)"
+  install_link "$AGENTS_SRC" "$DSH_HOME/AGENTS.md"
+  install_link "$HARNESSES/dsh/cordis.patch.yml" "$DSH_HOME/cordis.patch.yml"
+  if [ "$SKIP_PROMPTS" -eq 0 ]; then
+    install_dsh_skill_prompts
+  fi
+}
+
+install_dsh_skill_prompts() {
+  local prompt_dir="$ROOT/prompts/live-prompts"
+  local skills_dir="$DSH_HOME/skills"
+  local found=0
+  local source stem
+
+  if [ ! -d "$prompt_dir" ]; then
+    log "Skip: dsh live prompts (missing $prompt_dir)"
+    return 0
+  fi
+
+  # dsh has no separate prompt surface; a user-scope skill is reachable as
+  # `/<name>` in a message, and the live prompts already carry SKILL.md
+  # frontmatter (kebab-case name + description), so link each as a skill.
+  for source in "$prompt_dir"/*.md; do
+    [ -e "$source" ] || continue
+    found=1
+    stem="$(basename "$source" .md)"
+    ensure_real_dir "$skills_dir/$stem"
+    install_link "$source" "$skills_dir/$stem/SKILL.md"
+  done
+
+  if [ "$found" -eq 0 ]; then
+    log "Skip: dsh live prompts (no .md files)"
+  fi
 }
 
 refresh_apimanac_skill() {
@@ -712,9 +759,12 @@ install_apimanac() {
   if [ "$SKIP_AGY" -eq 0 ]; then
     install_apimanac_skill "$HOME/.gemini/config/skills/apimanac"
   fi
+  if [ "$SKIP_DSH" -eq 0 ]; then
+    install_apimanac_skill "$DSH_HOME/skills/apimanac"
+  fi
 
-  # Register the stdio MCP server (`apimanac mcp`). Codex, opencode, and Kilo
-  # declare it in their symlinked config files; Pi has no native MCP support.
+  # Register the stdio MCP server (`apimanac mcp`). Codex, opencode, Kilo, and
+  # dsh declare it in their symlinked config files; Pi has no native MCP support.
   if [ "$SKIP_CLAUDE" -eq 0 ]; then
     install_claude_apimanac_mcp
   fi
@@ -907,6 +957,12 @@ main() {
     install_agy
   else
     log "Skip: Antigravity (agy)"
+  fi
+
+  if [ "$SKIP_DSH" -eq 0 ]; then
+    install_dsh
+  else
+    log "Skip: DeepSeek Harness (dsh)"
   fi
 
   if [ "$SKIP_APIMANAC" -eq 0 ]; then

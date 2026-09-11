@@ -16,12 +16,12 @@ artifacts stay out of git.
 - `prompts/AGENTS.md` - the one global instructions file. The installer
   symlinks it to `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`,
   `~/.pi/agent/AGENTS.md`, `~/.config/opencode/AGENTS.md`,
-  `~/.config/kilo/AGENTS.md`, `~/.grok/AGENTS.md`, `~/.gemini/GEMINI.md`, and
-  `~/.gemini/config/rules/AGENTS.md`, and renders it with rule frontmatter to
-  `~/.cursor/rules/agents.mdc`. Edit this file only; the per-harness folders no
+  `~/.config/kilo/AGENTS.md`, `~/.grok/AGENTS.md`, `~/.gemini/GEMINI.md`,
+  `~/.gemini/config/rules/AGENTS.md`, and `$DSH_HOME/AGENTS.md`, and renders it
+  with rule frontmatter to `~/.cursor/rules/agents.mdc`. Edit this file only; the per-harness folders no
   longer carry their own copy.
 - `harnesses/` - one folder per agent harness (Claude, Codex, Pi, opencode, Kilo,
-  Cursor, Antigravity). Each holds the selected files the installer symlinks or
+  Cursor, Antigravity, dsh). Each holds the selected files the installer symlinks or
   copies into that harness's home:
 - `harnesses/claude/` - selected files from `~/.claude`: settings and
   the standalone `graphify` skill, plus optional slash commands under
@@ -49,6 +49,16 @@ artifacts stay out of git.
   linked to `~/.gemini/GEMINI.md` and `~/.gemini/config/rules/AGENTS.md`,
   specialist personas to `~/.gemini/config/agents/`, and live prompts to
   `~/.gemini/config/workflows/`.
+- `harnesses/dsh/` - DeepSeek Harness (`dsh`) config: `cordis.patch.yml`, linked
+  to `$DSH_HOME/cordis.patch.yml` (default `~/.dsh`). dsh applies that file after
+  every profile's own patch, so rows in it reach all profiles; it holds the
+  `@deepseek-ai/dsh-mcp-client` row for APImanac because dsh reads no
+  `.mcp.json`-style file. Global instructions link to `$DSH_HOME/AGENTS.md`, the
+  only user-scope instructions file dsh reads (no `CLAUDE.md`, no `.local`
+  overlay, no `@path` imports). dsh scans `~/.agents/skills` natively, so the
+  vault needs no wiring; live prompts link into `$DSH_HOME/skills/<name>/SKILL.md`
+  and run as `/<name>` in a message. dsh has no Markdown subagent definitions, so
+  `agents/` personas are not installed.
 - `apis/` - personal APImanac catalog (`catalog/meta`, `catalog/execution`)
   for [APImanac](https://github.com/stanfish06/APImanac) plus `SKILL.md` fetched
   from [stanfish06/APImanac](https://github.com/stanfish06/APImanac)
@@ -58,7 +68,8 @@ artifacts stay out of git.
   grants file, not here. The `apimanac mcp` stdio server is registered per
   harness: `[mcp_servers.apimanac]` in `harnesses/codex/config.toml`, an `mcp` block in
   `harnesses/opencode/opencode.jsonc` and `harnesses/kilo/kilo.jsonc`, user scope via
-  `claude mcp add` for Claude, and a merged entry in `~/.cursor/mcp.json` and
+  `claude mcp add` for Claude, an `insert` row in `harnesses/dsh/cordis.patch.yml`
+  for dsh, and a merged entry in `~/.cursor/mcp.json` and
   `~/.gemini/config/mcp_config.json`. Pi has no native MCP support.
 - `prompts/` - the shared `AGENTS.md`, reusable system prompts, and live prompt
   templates for agent slash-command surfaces.
