@@ -2,11 +2,6 @@
 
 Personal configuration for coding agents.
 
-This repo keeps the durable, reviewable parts of the agent setup in one place:
-global instructions, declarative settings, portable rules, personal skills, and
-future hook glue. Runtime state, auth material, histories, caches, and generated
-artifacts stay out of git.
-
 ## Layout
 
 - `skills/` - submodule for `stanfish06/skillquarium`, the reusable skill vault.
@@ -84,68 +79,14 @@ artifacts stay out of git.
   (catalog of mainstream SDD tools, local templates later). See `spec/README.md`.
 - `docs/sources.md` - notes from the reference repos and the local import.
 
-## First Checkout
-
-```bash
-git submodule update --init --recursive
-```
-
-The `skills/` submodule is intentionally separate from the agent-specific config
-folders. Agent harnesses can symlink or install skills from that vault while this
-repo also tracks harness configuration around them.
-
-## Automatic Skills Updates
-
-The `skills/` submodule tracks the `master` branch of
-`stanfish06/skillquarium`. Dependabot checks it daily and opens an update pull
-request when the recorded commit is behind. A narrowly scoped workflow verifies
-that the pull request changes only the `skills` gitlink, checks the submodule and
-installer contract, and merges it when those checks pass.
-
-After pulling this repository, update the local checkout to its newly recorded
-pin:
-
-```bash
-git pull --recurse-submodules
-```
-
-To fetch the current upstream head before Dependabot advances the remote pin:
-
-```bash
-git submodule update --init --remote --checkout skills
-```
-
 ## Install
 
 ```bash
 ./scripts/install.sh
-```
-
-The installer is symlink-first for agent config. It initializes the `skills/`
-submodule, delegates skill installation to `skills/install-skills.sh`, links
-`prompts/AGENTS.md` to each harness's global instructions path (Cursor gets a
-rendered `.mdc` copy), then links the selected Claude, Codex, Pi, opencode,
-Kilo Code, Grok, Cursor, and Antigravity config into their agent homes. It fetches `skill/SKILL.md` from
-[stanfish06/APImanac](https://github.com/stanfish06/APImanac) into
-`apis/SKILL.md`, writes the APImanac `catalog_root`, symlinks that
-file into each harness `skills/apimanac/` directory, and registers the
-`apimanac mcp` server for Claude (user scope), Cursor, and Antigravity. It also links
-`prompts/live-prompts/*.md` into each agent's live prompt, command, or workflow directory.
-Existing non-matching files are moved aside to timestamped backups.
-
-The skills installer skips the optional `gstack` and `career-ops` extras by
-default. Select either or both through the parent installer:
-
-```bash
 ./scripts/install.sh --extras gstack
 ./scripts/install.sh --extras career
 ./scripts/install.sh --extras gstack career
 ./scripts/install.sh --extras all
-```
-
-Preview changes without touching your home directory:
-
-```bash
 ./scripts/install.sh --dry-run
 ```
 
