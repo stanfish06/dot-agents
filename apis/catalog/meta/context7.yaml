@@ -1,0 +1,30 @@
+id: context7
+name: Context7
+description: >-
+  Context7 serves version-pinned, LLM-ready documentation snippets for
+  libraries, websites, llms.txt files and uploaded docs. Search a library by
+  name to get its id (the URL path on context7.com, e.g. /vercel/next.js or
+  /websites/uploadcare), then pull code and prose snippets for a natural
+  language question against that id, optionally pinned to a version with
+  /owner/repo@v1.2.3. Also refreshes a library, reads usage metrics and
+  teamspace policies, and submits new sources (git repos, OpenAPI specs,
+  llms.txt, websites, Confluence, Notion) for indexing.
+homepage: https://context7.com
+documentation: https://context7.com/docs/api-guide
+categories: [developer, documentation, ai]
+tags: [docs, documentation, code-snippets, llm-context, rag, libraries, versions, llms-txt, openapi]
+aliases: [context7-com, upstash-context7, ctx7]
+lifecycle: active
+curation: curated
+sources: [manual]
+provenance:
+  name: { source: manual, curated: true }
+  description: { source: manual, curated: true }
+  categories: { source: manual, curated: true }
+capabilities:
+  - Find a library id by name with GET /api/v2/libs/search?libraryName=<name>&query=<intent>; results carry id, state, trustScore, benchmarkScore, totalSnippets and versions
+  - Fetch documentation snippets for a question with GET /api/v2/context?libraryId=<id>&query=<question>&type=json (or type=txt for plain text); pin a version with /owner/repo@<version>
+  - Read per-library usage metrics and the teamspace policy configuration
+  - Trigger a re-index of a library or add a new git repo, OpenAPI URL, llms.txt, website, Confluence space or Notion pages under an explicit confirm rule
+  - Rate-limit state is returned in ratelimit-limit, ratelimit-remaining, ratelimit-reset and retry-after headers; 429 means wait for retry-after
+profiles: [keyed]
