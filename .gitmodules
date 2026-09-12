@@ -5,3 +5,6 @@
 [submodule "prompts/system-prompts-and-models-of-ai-tools"]
 	path = prompts/system-prompts/system-prompts-and-models-of-ai-tools
 	url = https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools.git
+[submodule "prompts/system-prompts/system_prompts_leaks"]
+	path = prompts/system-prompts/system_prompts_leaks
+	url = https://github.com/asgeirtj/system_prompts_leaks.git
