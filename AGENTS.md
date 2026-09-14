@@ -54,7 +54,14 @@ state.
   `~/.gemini/config/rules/AGENTS.md`, specialist personas to
   `~/.gemini/config/agents/`, live prompts to `~/.gemini/config/workflows/`, and
   `skills.json` discovers `~/.agents/skills/`.
-- Skills source: `git@github.com:stanfish06/skillquarium.git`.
+- Skills source: `git@github.com:stanfish06/skillquarium.git`, checked out at
+  `~/.agents` (the live vault every harness's skill symlinks point to) and
+  pinned here as the `skills/` submodule. The vault's `skillquarium` CLI
+  (`install`, `query`, `grep`, `build`, `embed`; each takes `--help`) replaced
+  `install-skills.sh`, graphify, and obsidian-cli at vault commit `2c2ee30d`.
+  `scripts/install.sh` still calls `skills/install-skills.sh`, so advancing the
+  submodule pin past that commit requires switching the installer to
+  `skills/skillquarium install`.
 - APImanac source: `apis/` (catalog locally; `SKILL.md` refreshed from
   `stanfish06/APImanac` `skill/SKILL.md` on each install). Installed as
   `$XDG_CONFIG_HOME/apimanac/config.yaml` `catalog_root` and as

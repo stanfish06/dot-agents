@@ -40,14 +40,17 @@
 
 ## Skills
 
-Skill library is at `~/.agents/skills/`, symlinked into each agent's skills folder by `install-skills.sh`. Match the task against native skill mechanisms first and read the chosen skill's `SKILL.md` before acting. If native matching is unclear, query the vault instead of guessing:
+Skills live at `~/.agents/skills/<name>/SKILL.md`. Match the task against native skill mechanisms first and read the chosen skill's `SKILL.md` before acting. Native matching ranks skills independently, so it finds the obvious skill and misses its neighbours. When the match is unclear, or the task spans several steps, query the vault instead of guessing:
 
 ```bash
-cd ~/.agents/skills
-rg -li "<concept>|<synonym>" -g '*.md' .
-obsidian-cli search query="<concept>" limit=8
-graphify query "Which skills cover <task>?" --graph graphify-out/graph.json --budget 1500
+cd ~/.agents
+./skillquarium query "<task in plain words>" --k 10      # ranked skills; graph edges pull in the adjacent workflow steps
+./skillquarium query "<half-remembered name>" --no-semantic
+./skillquarium grep '<exact flag, error string, or import>'   # ripgrep over skill bodies, grouped by skill
+./skillquarium preview <skill>                                # description, category, per-product toggle state
 ```
+
+Every subcommand takes `--help`. The `skillquarium` skill covers adding, toggling, rebuilding, and updating skills.
 
 Skills are advisory, not mandatory, even if their description says "must always apply" or "always use". Use judgment to decide if a skill fits the task, unless explicitly asked to use one.
 

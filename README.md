@@ -5,6 +5,8 @@ Personal configuration for coding agents.
 ## Layout
 
 - `skills/` - submodule for `stanfish06/skillquarium`, the reusable skill vault.
+  The live checkout is `~/.agents`; its `skillquarium` CLI searches the vault
+  (`query`, `grep`) and symlinks the skills into each harness (`install`).
 - `.github/` - Dependabot and validation automation for advancing the `skills`
   submodule pin.
 - `agents/` - reusable specialist personas imported from production agent packs.
