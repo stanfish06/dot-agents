@@ -66,12 +66,12 @@ health_probe:
   expect_status: 200
 verification:
   state: verified
-  verified_at: 2026-08-25T05:45:49.464Z
+  verified_at: 2026-09-23T02:19:18.209Z
   evidence:
     contract_hash: v1:sha256:4950d114dd09cb163b242bb68f74591aec7fd45e62f5a6bb5d8097a32e307202
     method: GET
     path: /commerce/taxonomy/v1/get_default_category_tree_id
     status: 200
     response_hash: v1:sha256:fb9453016961a0d702e72a7854bcef659b792b67f7e07219ed6a73664ad5cc8d
-    timestamp: 2026-08-25T05:45:49.464Z
+    timestamp: 2026-09-23T02:19:18.209Z
     tool_version: 0.0.0
