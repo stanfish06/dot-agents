@@ -13,6 +13,7 @@
     - js/ts: `bun` for cli and tui, `pnpm` over `npm`, `deno` for scripting
     - python: `uv`
     - dev env: `mise` and `nix` flake
+    - hooks: `lefthook` for python and js/ts project, always setup pre-commit format and lint hooks
 
 - Languages:
     - python: prefer `pydantic` for standard types and objects; specify `dtype` with numpy
