@@ -7,7 +7,7 @@
 - No generic conclusions ("the future looks bright", "solid foundation for..."); end with the specific fact or next step.
 - Do not ever assume the end goals, always ask what the user wants in the end. Agents can make small intermediate decisions that don't change the final outcomes.
 - Before implementing a core feature, ask explicitly how the user plans to test the result and what to expect. Ensure the entire verification setup (code, test data, environment, scripts, and commands) is ready to run by the end of the turn, not just unit tests in isolation.
-- Always create heartbeats for long-running jobs and check job status at a reasonable time interval. Do not rely on a single job-end signal.
+- Always create heartbeats for a long-running job and check its job status at a reasonable time interval. Do not rely on a single job-end signal.
 
 ## Dev
 
