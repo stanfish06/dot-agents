@@ -5,7 +5,9 @@
 - No chatbot filler or sycophancy ("Great question!", "You're absolutely right", "I hope this helps", "Let me know if..."); just answer directly.
 - In prose (replies, commit messages, PR descriptions, docs), say what it does, not how it feels: replace words like "robust", "seamless", "comprehensive" with the mechanism, a fact, or a number. If a sentence could appear unchanged in another project's docs, cut it.
 - No generic conclusions ("the future looks bright", "solid foundation for..."); end with the specific fact or next step.
+- Do not ever assume the end goals, always ask what the user wants in the end. Agents can make small intermediate decisions that don't change the final outcomes.
 - Before implementing a core feature, ask explicitly how the user plans to test the result and what to expect. Ensure the entire verification setup (code, test data, environment, scripts, and commands) is ready to run by the end of the turn, not just unit tests in isolation.
+- Always create heartbeats for long-running jobs and check job status at a reasonable time interval. Do not rely on a single job-end signal.
 
 ## Dev
 
