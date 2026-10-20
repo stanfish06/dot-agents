@@ -3,8 +3,10 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TIMESTAMP="$(date -u +%Y%m%dT%H%M%SZ)"
-# Single source for every harness's global instructions file.
-AGENTS_SRC="$ROOT/prompts/AGENTS.md"
+# Shared and host-local sources for every harness's global instructions file.
+AGENTS_BASE_SRC="$ROOT/prompts/AGENTS.md"
+HOST_AGENTS_SRC="$ROOT/host.md"
+AGENTS_SRC="${XDG_CONFIG_HOME:-$HOME/.config}/dot-agents/AGENTS.md"
 # Per-harness config folders live under one directory.
 HARNESSES="$ROOT/harnesses"
 
@@ -72,11 +74,10 @@ Default behavior:
   - Run skills/install-skills.sh, which delegates skill installation to Vercel's
     skills CLI and installs graphify. gstack and career-ops are skipped unless
     selected with --extras.
-  - Symlink prompts/AGENTS.md to each harness's global instructions file
-    (~/.claude/CLAUDE.md, ~/.codex/AGENTS.md, ~/.pi/agent/AGENTS.md,
-    ~/.config/opencode/AGENTS.md, ~/.config/kilo/AGENTS.md, ~/.grok/AGENTS.md,
-    ~/.gemini/GEMINI.md, ~/.gemini/config/rules/AGENTS.md, $DSH_HOME/AGENTS.md)
-    and render it with rule frontmatter to ~/.cursor/rules/agents.mdc.
+  - Append optional gitignored root host.md to prompts/AGENTS.md and write the
+    combined file to $XDG_CONFIG_HOME/dot-agents/AGENTS.md (default
+    ~/.config/dot-agents/AGENTS.md). Symlink it to each harness's global
+    instructions file and render it with rule frontmatter for Cursor.
   - Symlink selected Claude, Codex, Pi, opencode, Kilo Code, Grok, Cursor,
     Antigravity, and dsh config paths into their agent homes.
   - Fetch APImanac skill/SKILL.md from GitHub into apis/SKILL.md, write
@@ -169,6 +170,38 @@ run() {
   fi
 }
 
+render_global_instructions() {
+  cat "$AGENTS_BASE_SRC"
+  if [ -s "$HOST_AGENTS_SRC" ]; then
+    printf '\n\n## Host-specific instructions\n\n'
+    cat "$HOST_AGENTS_SRC"
+  fi
+}
+
+prepare_global_instructions() {
+  local parent tmp
+
+  if [ "$DRY_RUN" -eq 1 ]; then
+    log "DRY-RUN: generate $AGENTS_SRC from $AGENTS_BASE_SRC and optional $HOST_AGENTS_SRC"
+    return 0
+  fi
+
+  parent="$(dirname "$AGENTS_SRC")"
+  mkdir -p "$parent"
+  tmp="$(mktemp "$parent/.AGENTS.md.XXXXXX")"
+  render_global_instructions > "$tmp"
+  chmod 644 "$tmp"
+
+  if [ -f "$AGENTS_SRC" ] && cmp -s "$tmp" "$AGENTS_SRC"; then
+    log "OK: $AGENTS_SRC"
+    rm -f "$tmp"
+    return 0
+  fi
+
+  log "Generate: $AGENTS_SRC"
+  mv -f "$tmp" "$AGENTS_SRC"
+}
+
 backup_name_for() {
   local target="$1"
   local base="${target}.backup-${TIMESTAMP}"
@@ -193,7 +226,10 @@ install_link() {
   local source="$1"
   local target="$2"
 
-  [ -e "$source" ] || [ -L "$source" ] || die "missing source: $source"
+  if [ ! -e "$source" ] && [ ! -L "$source" ]; then
+    [ "$DRY_RUN" -eq 1 ] && [ "$source" = "$AGENTS_SRC" ] ||
+      die "missing source: $source"
+  fi
   ensure_parent_dir "$target"
 
   if [ -L "$target" ] && [ "$(readlink "$target")" = "$source" ]; then
@@ -780,12 +816,12 @@ install_cursor_rules() {
   local target_dir="$HOME/.cursor/rules"
   local rendered stale
 
-  # Cursor has no home-level AGENTS.md; rules need .mdc frontmatter, so render
-  # the shared source into a copy instead of symlinking it.
+  # Cursor has no home-level AGENTS.md; render the combined instructions with
+  # rule frontmatter instead of symlinking them.
   rendered="$(mktemp)"
   {
     printf -- '---\ndescription: Personal operating rules shared across agent harnesses\nalwaysApply: true\n---\n\n'
-    cat "$AGENTS_SRC"
+    render_global_instructions
   } > "$rendered"
   chmod 644 "$rendered"
   install_copy "$rendered" "$target_dir/agents.mdc"
@@ -910,6 +946,8 @@ main() {
     log "Skip: config"
     return 0
   fi
+
+  prepare_global_instructions
 
   if [ "$SKIP_CLAUDE" -eq 0 ]; then
     install_claude

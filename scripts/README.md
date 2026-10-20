@@ -32,8 +32,11 @@ Useful options:
 ```
 
 The installer initializes the `skills/` submodule, delegates skill installation
-to `skills/install-skills.sh`, symlinks `prompts/AGENTS.md` to every harness's
-global instructions path (rendered as `~/.cursor/rules/agents.mdc` for Cursor),
+to `skills/install-skills.sh`, appends optional gitignored `host.md` content to
+`prompts/AGENTS.md`, writes the combined instructions to
+`$XDG_CONFIG_HOME/dot-agents/AGENTS.md` (default `~/.config/dot-agents/AGENTS.md`),
+and symlinks that file to every harness's global instructions path (rendered as
+`~/.cursor/rules/agents.mdc` for Cursor),
 then symlinks selected Claude, Codex, Pi, opencode, Kilo Code, Grok, Cursor,
 Antigravity, and dsh config into their homes. It also writes the
 APImanac `catalog_root`, fetches `skill/SKILL.md` from

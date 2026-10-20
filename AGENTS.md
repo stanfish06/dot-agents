@@ -29,8 +29,11 @@ state.
 
 ## Current Sources
 
-- Global instructions: `prompts/AGENTS.md` is the only copy. `scripts/install.sh`
-  symlinks it to `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`,
+- Global instructions: `prompts/AGENTS.md` is the shared source; optional
+  machine-local instructions live in the gitignored root `host.md`. The
+  installer writes the combined file to
+  `$XDG_CONFIG_HOME/dot-agents/AGENTS.md` (default `~/.config/dot-agents/AGENTS.md`)
+  and symlinks it to `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`,
   `~/.pi/agent/AGENTS.md`, `~/.config/opencode/AGENTS.md`,
   `~/.config/kilo/AGENTS.md`, `~/.grok/AGENTS.md`, `~/.gemini/GEMINI.md`, and
   `~/.gemini/config/rules/AGENTS.md`, and renders it to

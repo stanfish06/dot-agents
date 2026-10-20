@@ -1,6 +1,7 @@
 .DS_Store
 *.log
 *.tmp
+/host.md
 
 # Secrets and auth state
 .claude.json

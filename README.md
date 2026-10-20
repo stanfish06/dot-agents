@@ -10,8 +10,10 @@ Personal configuration for coding agents.
 - `.github/` - Dependabot and validation automation for advancing the `skills`
   submodule pin.
 - `agents/` - reusable specialist personas imported from production agent packs.
-- `prompts/AGENTS.md` - the one global instructions file. The installer
-  symlinks it to `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`,
+- `prompts/AGENTS.md` - the shared global instructions file. The installer
+  appends the optional, gitignored root `host.md`, writes the combined file to
+  `$XDG_CONFIG_HOME/dot-agents/AGENTS.md` (default `~/.config/dot-agents/AGENTS.md`),
+  and installs it to `~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`,
   `~/.pi/agent/AGENTS.md`, `~/.config/opencode/AGENTS.md`,
   `~/.config/kilo/AGENTS.md`, `~/.grok/AGENTS.md`, `~/.gemini/GEMINI.md`,
   `~/.gemini/config/rules/AGENTS.md`, and `$DSH_HOME/AGENTS.md`, and renders it
@@ -91,6 +93,12 @@ Personal configuration for coding agents.
 ./scripts/install.sh --extras all
 ./scripts/install.sh --dry-run
 ```
+
+## Host-specific instructions
+
+Copy `host.md.example` to the repo root as `host.md` and add machine-local
+instructions there. `host.md` is gitignored. The installer appends its content
+to the shared instructions; rerun the installer after editing it.
 
 ## Telemetry
 

@@ -1,0 +1,5 @@
+# Host-specific instructions
+
+Add machine-local agent instructions here. The installer appends this file to
+the shared `prompts/AGENTS.md` instructions. Copy this file to `host.md` and
+edit that gitignored local file.
