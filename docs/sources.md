@@ -101,7 +101,9 @@ Added for Antigravity (agy):
 
 - `agy/settings.json` — durable CLI settings imported from
   `~/.gemini/antigravity-cli/settings.json`, with machine-specific
-  `trustedWorkspaces` preserved at install time.
+  `trustedWorkspaces` preserved at install time. `toolPermission` is
+  `always-proceed` (same effect as `--dangerously-skip-permissions`; other
+  values are `request-review`, `strict`, `proceed-in-sandbox`).
 - `agy/keybindings.json` — custom keyboard shortcuts imported from
   `~/.gemini/antigravity-cli/keybindings.json`. Installed as a symlink to
   `~/.gemini/antigravity-cli/keybindings.json`.
