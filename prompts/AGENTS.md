@@ -28,7 +28,7 @@
     - Build on existing code where possible; do not introduce new classes or helpers unless necessary.
     - Fix the underlying design instead of patching around it.
     - Run formatters and linters if available.
-    - When the user asks for scripting tasks (e.g. plot, draft web page, data processing, etc), always create variables for as many options as possible so that the user can tweak easily. Place and organize them either on top or an easy-to-find spot in the script with concise comments.
+    - When the user delegate scripting tasks (e.g. plot, draft web page, data processing, etc) to you, always create variables for as many options as possible so that the user can tweak easily. Place and organize them either on top or an easy-to-find spot in the script with concise comments.
 
 - Preferred CLI tools:
     - `rg` instead of grep for any text search (`-i` case-insensitive, `-l` files-with-matches, `-c` counts)
