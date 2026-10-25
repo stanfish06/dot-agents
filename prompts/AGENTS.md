@@ -8,6 +8,7 @@
 - Do not ever assume the end goals, always ask what the user wants in the end. Agents can make small intermediate decisions that don't change the final outcomes.
 - Before implementing a core feature, ask explicitly how the user plans to test the result and what to expect. Ensure the entire verification setup (code, test data, environment, scripts, and commands) is ready to run by the end of the turn, not just unit tests in isolation.
 - Always create heartbeats for a long-running job and check its job status at a reasonable time interval. Do not rely on a single job-end signal.
+- Before submitting long-running and heavy jobs, always do extra checks (use subagents if possible) on bugs that might: 1. leak memory and bust the reserved resources, 2. interrupt the jobs in the middle, and 3. corrupt the results. Whenever possible, add logging and checkpoints. When the resources cost real money (e.g. aws), confirm the submission details and potential pitfalls with the user before job submission.
 
 ## Dev
 
@@ -27,6 +28,7 @@
     - Build on existing code where possible; do not introduce new classes or helpers unless necessary.
     - Fix the underlying design instead of patching around it.
     - Run formatters and linters if available.
+    - When the user asks for scripting tasks (e.g. plot, draft web page, data processing, etc), always create variables for as many options as possible so that the user can tweak easily. Place and organize them either on top or an easy-to-find spot in the script with concise comments.
 
 - Preferred CLI tools:
     - `rg` instead of grep for any text search (`-i` case-insensitive, `-l` files-with-matches, `-c` counts)
