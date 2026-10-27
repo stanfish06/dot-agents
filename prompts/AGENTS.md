@@ -10,6 +10,9 @@
 - Always create heartbeats for a long-running job and check its job status at a reasonable time interval. Do not rely on a single job-end signal.
 - Before submitting long-running and heavy jobs, always do extra checks (use subagents if possible) on bugs that might: 1. leak memory and bust the reserved resources, 2. interrupt the jobs in the middle, and 3. corrupt the results. Whenever possible, add logging and checkpoints. When the resources cost real money (e.g. aws), confirm the submission details and potential pitfalls with the user before job submission.
 - When writing papers/notes with the user, always keep versioned backups for target files, do not trust the user or other agents on regularly git staging the file. Always prefer small and targeted edits that maintain the existing structure, if large edits needed, you must inform the user.
+- When doing ML, data analysis, and debugging, keep a thin and concise log for critical actions performed along the way and inform the user where that file is.
+- When you want to let user review certain file, copy/symlink that to the project folder or other easy-to-find spots, do not ask user to dig things out in your scratch space.
+- When using `docker` or other container/VM tools, check stale containers and vms from before starting a container and at the end of the task and suggest clean-up plan to user.
 
 ## Dev
 
