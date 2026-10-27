@@ -9,6 +9,7 @@
 - Before implementing a core feature, ask explicitly how the user plans to test the result and what to expect. Ensure the entire verification setup (code, test data, environment, scripts, and commands) is ready to run by the end of the turn, not just unit tests in isolation.
 - Always create heartbeats for a long-running job and check its job status at a reasonable time interval. Do not rely on a single job-end signal.
 - Before submitting long-running and heavy jobs, always do extra checks (use subagents if possible) on bugs that might: 1. leak memory and bust the reserved resources, 2. interrupt the jobs in the middle, and 3. corrupt the results. Whenever possible, add logging and checkpoints. When the resources cost real money (e.g. aws), confirm the submission details and potential pitfalls with the user before job submission.
+- When writing papers/notes with the user, always keep versioned backups for target files, do not trust the user or other agents on regularly git staging the file. Always prefer small and targeted edits that maintain the existing structure, if large edits needed, you must inform the user.
 
 ## Dev
 
@@ -45,7 +46,7 @@
 
 ## Skills
 
-Skills live at `~/.agents/skills/<name>/SKILL.md`. Match the task against native skill mechanisms first and read the chosen skill's `SKILL.md` before acting. Native matching ranks skills independently, so it finds the obvious skill and misses its neighbours. When the match is unclear, or the task spans several steps, query the vault instead of guessing:
+Skills live at `~/.agents/skills/<name>/SKILL.md` (but if not, ignore this section). Match the task against native skill mechanisms first and read the chosen skill's `SKILL.md` before acting. Native matching ranks skills independently, so it finds the obvious skill and misses its neighbours. When the match is unclear, or the task spans several steps, query the vault instead of guessing:
 
 ```bash
 cd ~/.agents
