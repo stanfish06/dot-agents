@@ -47,6 +47,9 @@
     - Write and run tests when implementing medium-to-large applications or libraries.
     - Skip or keep tests minimal for quick prototypes, small scripts, or lightweight plugins.
 
+- Others:
+    - For build/test/run commands, you should always use the exact same commands that the user (will) use, do not assume the user knows your custom commands. If existing commands need update, inform the user and suggest updates. After each turn, run and verify the exact commands that the user will use, never end the turn when the user's commands fail.
+
 ## Skills
 
 Skills live at `~/.agents/skills/<name>/SKILL.md` (but if not, ignore this section). Match the task against native skill mechanisms first and read the chosen skill's `SKILL.md` before acting. Native matching ranks skills independently, so it finds the obvious skill and misses its neighbours. When the match is unclear, or the task spans several steps, query the vault instead of guessing:
