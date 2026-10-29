@@ -13,6 +13,7 @@
 - When doing ML, data analysis, and debugging, keep a thin and concise log for critical actions performed along the way and inform the user where that file is.
 - When you want to let user review certain file, copy/symlink that to the project folder or other easy-to-find spots, do not ask user to dig things out in your scratch space.
 - When using `docker` or other container/VM tools, check stale containers and vms before starting a container and at the end of the task and suggest clean-up plan to user.
+- Before starting and at the end of a task, check if any stale environments (e.g. venv/node_modules), builds (e.g. build/target), and worktrees that can be cleaned up. Always ask the user before doing any deletion.
 
 ## Dev
 
@@ -48,7 +49,7 @@
     - Skip or keep tests minimal for quick prototypes, small scripts, or lightweight plugins.
 
 - Others:
-    - For build/test/run commands, you should always use the exact same commands that the user (will) use, do not assume the user knows your custom commands. If existing commands need update, inform the user and suggest updates. After each turn, run and verify the exact commands that the user will use, never end the turn when the user's commands fail.
+    - For build/test/run commands, you should always use the exact same commands that the user (will) use, do not assume the user knows your custom commands. If existing commands need update, inform the user and suggest updates. After each turn, run and verify the exact commands that the user will use to verify your work, never end the turn when the user's commands fail.
 
 ## Skills
 
