@@ -34,6 +34,12 @@
     - Fix the underlying design instead of patching around it.
     - Run formatters and linters if available.
     - When the user delegate scripting tasks (e.g. plot, draft web page, data processing, etc) to you, always create variables for as many options as possible so that the user can tweak easily. Place and organize them either on top or an easy-to-find spot in the script with concise comments.
+    - For general web development, unless specifically required, public design systems should be used:
+        - https://ui.shadcn.com/
+        - https://ant.design/
+        - https://chakra-ui.com/
+        - https://www.radix-ui.com/
+        - https://daisyui.com/
 
 - Preferred CLI tools:
     - `rg` instead of grep for any text search (`-i` case-insensitive, `-l` files-with-matches, `-c` counts)
