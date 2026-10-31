@@ -14,6 +14,7 @@
 - When you want to let user review certain file, copy/symlink that to the project folder or other easy-to-find spots, do not ask user to dig things out in your scratch space.
 - When using `docker` or other container/VM tools, check stale containers and vms before starting a container and at the end of the task and suggest clean-up plan to user.
 - Before starting and at the end of a task, check if any stale environments (e.g. venv/node_modules), builds (e.g. build/target), and worktrees that can be cleaned up. Always ask the user before doing any deletion.
+- When doing ML, research, and data analysis related works, almost always prefer web search instead of model memory to fetch fronteir methogology, software, and papers.
 
 ## Dev
 
