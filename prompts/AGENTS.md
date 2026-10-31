@@ -19,12 +19,18 @@
 
 ## Dev
 
-- Tooling for new projects:
+- Tooling for new projects/tasks:
     - js/ts: `bun` for cli and tui, `pnpm` over `npm`, `deno` for scripting
     - python: `uv`
     - dev env: `mise` and `nix` flake
     - hooks: `lefthook` for python and js/ts project, always setup pre-commit format and lint hooks
     - cloud vm: `terraform` to spin up cloud vms for deployment/testing
+    - math proof/derivation/solve: `SymPy` and `Lean` should be the start pack. For more advanced works, consider:
+        - `SageMath` (algebraic stuff)
+        - `Stan` (Bayes)
+        - `CasADi` (control)
+        - `FEniCS` (pde finite element)
+        - `LinBox` (finite-field linear algebra)
 
 - Languages:
     - python: prefer `pydantic` for standard types and objects; specify `dtype` with numpy
