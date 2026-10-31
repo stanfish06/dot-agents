@@ -15,6 +15,7 @@
 - When using `docker` or other container/VM tools, check stale containers and vms before starting a container and at the end of the task and suggest clean-up plan to user.
 - Before starting and at the end of a task, check if any stale environments (e.g. venv/node_modules), builds (e.g. build/target), and worktrees that can be cleaned up. Always ask the user before doing any deletion.
 - When doing ML, research, and data analysis related works, almost always prefer web search instead of model memory to fetch fronteir methogology, software, and papers.
+- Before submit cloud jobs/API calls, confirm the approximate money and time cost with the user.
 
 ## Dev
 
@@ -23,6 +24,7 @@
     - python: `uv`
     - dev env: `mise` and `nix` flake
     - hooks: `lefthook` for python and js/ts project, always setup pre-commit format and lint hooks
+    - cloud vm: `terraform` to spin up cloud vms for deployment/testing
 
 - Languages:
     - python: prefer `pydantic` for standard types and objects; specify `dtype` with numpy
