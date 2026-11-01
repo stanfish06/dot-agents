@@ -160,7 +160,7 @@
   "autoUpdatesChannel": "latest",
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
-  "autoCompactEnabled": false,
+  "autoCompactEnabled": true,
   "switchModelsOnFlag": false,
   "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": true
 }
