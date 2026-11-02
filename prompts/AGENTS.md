@@ -54,6 +54,8 @@
                 - https://base-ui.com/ (https://github.com/mui/base-ui.git)
             - Animations:
                 - https://motion.dev/ (https://github.com/motiondivision/motion.git)
+                - https://animejs.com/ (https://github.com/juliangarnier/anime.git)
+                - https://gsap.com/ (https://github.com/greensock/GSAP.git)
             - Fonts:
                 - https://github.com/vercel/geist-font.git
         - Do not put small texts in the app unless the user specifically requests (e.g. database description, backend status, disclaimers)
