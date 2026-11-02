@@ -44,13 +44,18 @@
     - Run formatters and linters if available.
     - When the user delegate scripting tasks (e.g. plot, draft web page, data processing, etc) to you, always create variables for as many options as possible so that the user can tweak easily. Place and organize them either on top or an easy-to-find spot in the script with concise comments.
     - For general web development
-        - Unless specifically required, public design systems should be used:
-            - https://ui.shadcn.com/
-            - https://ant.design/
-            - https://chakra-ui.com/
-            - https://www.radix-ui.com/
-            - https://daisyui.com/
-            - https://base-ui.com/
+        - Unless specifically required, public designs should be used:
+            - UI components:
+                - https://ui.shadcn.com/ (https://github.com/shadcn-ui/ui.git)
+                - https://ant.design/ (https://github.com/ant-design/ant-design.git)
+                - https://chakra-ui.com/ (https://github.com/chakra-ui/chakra-ui.git)
+                - https://www.radix-ui.com/ (https://github.com/radix-ui/primitives)
+                - https://daisyui.com/ (https://github.com/saadeghi/daisyui.git)
+                - https://base-ui.com/ (https://github.com/mui/base-ui.git)
+            - Animations:
+                - https://motion.dev/ (https://github.com/motiondivision/motion.git)
+            - Fonts:
+                - https://github.com/vercel/geist-font.git
         - Do not put small texts in the app unless the user specifically requests (e.g. database description, backend status, disclaimers)
 
 - Preferred CLI tools:
