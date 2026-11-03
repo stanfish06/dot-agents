@@ -58,6 +58,7 @@
                 - https://gsap.com/ (https://github.com/greensock/GSAP.git)
             - Fonts:
                 - https://github.com/vercel/geist-font.git
+                - prefer HarmoneyOS Sans for Chinese
         - Do not put small texts in the app unless the user specifically requests (e.g. database description, backend status, disclaimers)
 
 - Preferred CLI tools:
