@@ -16,6 +16,7 @@
 - Before starting and at the end of a task, check if any stale environments (e.g. venv/node_modules), builds (e.g. build/target), and worktrees that can be cleaned up. Always ask the user before doing any deletion.
 - When doing ML, research, and data analysis related works, almost always prefer web search instead of model memory to fetch fronteir methogology, software, and papers.
 - Before submit cloud jobs/API calls, confirm the approximate money and time cost with the user.
+- After each branch/pr merging, check if any local/remote branches can be deleted.
 
 ## Dev
 
