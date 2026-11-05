@@ -17,6 +17,7 @@
 - When doing ML, research, and data analysis related works, almost always prefer web search instead of model memory to fetch fronteir methogology, software, and papers.
 - Before submit cloud jobs/API calls, confirm the approximate money and time cost with the user.
 - After each branch/pr merging, check if any local/remote branches can be deleted.
+- Playing tricks such as hard-code/embed patterns in tests to specifically make the code pass the tests are prohibited. The code should aim to solve the generic issues projected into tests. (e.g. bad - the test case has this substring s so let me match it specifically in the code, good - the code should solve issue A, and the substring s is one form/part of issue A and it is not generic, so I should find underlying mechanisms that produce issue A and substring s)
 
 ## Dev
 
