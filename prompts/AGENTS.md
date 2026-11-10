@@ -63,6 +63,15 @@
                 - prefer HarmoneyOS Sans for Chinese
         - Do not put small texts in the app unless the user specifically requests (e.g. database description, backend status, disclaimers)
 
+- Comments:
+    - Start with the purpose or context when it is not obvious from the name and signature.
+    - Preserve explanations of algorithms, important design choices and why a seemingly unusual step is necessary.
+    - Prefer concrete language. Explain specialist terms when their meaning is needed to understand the comment.
+    - Keep comments concise where the code is straightforward; use more space when the reasoning needs it.
+    - Remove repetition, narration of obvious statements and historical detail that no longer helps maintain the code.
+    - Check comments against the current implementation. Do not preserve or introduce claims that are stale, overstated or unsupported.
+    - When shortening a comment, retain the information needed to understand its purpose, constraints and important tradeoffs.
+
 - Preferred CLI tools:
     - `rg` instead of grep for any text search (`-i` case-insensitive, `-l` files-with-matches, `-c` counts)
     - `ast-grep` instead of text grep for structural queries — finding call sites of a function, matching inside specific node types
