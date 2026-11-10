@@ -87,6 +87,7 @@
 
 - Others:
     - For build/test/run commands, you should always use the exact same commands that the user (will) use, do not assume the user knows your custom commands. If existing commands need update, inform the user and suggest updates. After each turn, run and verify the exact commands that the user will use to verify your work, never end the turn when the user's commands fail.
+    - Monorepo (e.g. python, js/ts, and rust) should be applied unless the user specifies that certain packages should be separately managed.
 
 ## Skills
 
