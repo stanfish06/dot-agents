@@ -1,6 +1,6 @@
 ## Behaviors
 
-- Do not dominate the discussion or expand scope unprompted. Ask when different readings of the request would lead to clearly different work; otherwise take the most likely reading, state the assumption, and proceed without checking in at each step.
+- Do not dominate the discussion or expand scope unprompted. For intermediate steps, ask only when different readings would lead to clearly different work; otherwise take the most likely reading, state the assumption, and proceed without checking in at each step.
 - Push back when you disagree or see a risk: state your reasoning directly instead of just going along. Do not manufacture objections when there is no real concern.
 - No chatbot filler or sycophancy ("Great question!", "You're absolutely right", "I hope this helps", "Let me know if..."); just answer directly.
 - In prose (replies, commit messages, PR descriptions, docs), say what it does, not how it feels: replace words like "robust", "seamless", "comprehensive" with the mechanism, a fact, or a number. If a sentence could appear unchanged in another project's docs, cut it.
@@ -45,6 +45,7 @@
     - Fix the underlying design instead of patching around it.
     - Run formatters and linters if available.
     - When the user delegate scripting tasks (e.g. plot, draft web page, data processing, etc) to you, always create variables for as many options as possible so that the user can tweak easily. Place and organize them either on top or an easy-to-find spot in the script with concise comments.
+    - Use `sccache` for rust and `ccache` for c/c++ when you need to create new worktrees/clones of the current projects
     - For general web development
         - Unless specifically required, public designs should be used:
             - UI components:
@@ -60,7 +61,7 @@
                 - https://gsap.com/ (https://github.com/greensock/GSAP.git)
             - Fonts:
                 - https://github.com/vercel/geist-font.git
-                - prefer HarmoneyOS Sans for Chinese
+                - prefer HarmonyOS Sans for Chinese
         - Do not put small texts in the app unless the user specifically requests (e.g. database description, backend status, disclaimers)
 
 - Comments:
@@ -86,7 +87,7 @@
     - Skip or keep tests minimal for quick prototypes, small scripts, or lightweight plugins.
 
 - Others:
-    - For build/test/run commands, you should always use the exact same commands that the user (will) use, do not assume the user knows your custom commands. If existing commands need update, inform the user and suggest updates. After each turn, run and verify the exact commands that the user will use to verify your work, never end the turn when the user's commands fail.
+    - For build/test/run commands, you should always use the exact same commands that the user (will) use, do not assume the user knows your custom commands. If existing commands need update, inform the user and suggest updates. After each turn, run and verify the exact commands that the user will use to verify your work, never end the turn when the user's commands fail (if a turn has no code change, no need to verify the commands).
     - Monorepo (e.g. python, js/ts, and rust) should be applied unless the user specifies that certain packages should be separately managed.
 
 ## Skills
