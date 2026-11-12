@@ -36,7 +36,7 @@
 
 - Languages:
     - python: prefer `pydantic` for standard types and objects; specify `dtype` with numpy
-    - ts/js: prefer TypeScript; use `zod` for runtime schema validation; avoid `any`
+    - ts/js: prefer TypeScript; use `zod` for runtime schema validation; avoid `any`; use `effect` (https://github.com/Effect-TS/effect.git) for better type and error handling.
 
 - Coding:
     - Keep comments direct ("use X to Y", "X for Y"): state what and how without discursive reasoning or journaling.
