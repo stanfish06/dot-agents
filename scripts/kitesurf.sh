@@ -1,4 +1,4 @@
-#!/usr/bin/env sh 
+#!/usr/bin/env sh
 
 # add kitesurf broser to claude
 claude mcp add --transport stdio kitesurf \
