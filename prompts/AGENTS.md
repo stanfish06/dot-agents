@@ -66,6 +66,7 @@
                 - https://github.com/vercel/geist-font.git
                 - prefer HarmonyOS Sans for Chinese
         - Do not put small texts in the app unless the user specifically requests (e.g. database description, backend status, disclaimers)
+        - Always measure app ui performance, do not allow any ui components freeze the app for more than 500ms.
 
 - Comments:
     - Start with the purpose or context when it is not obvious from the name and signature.
