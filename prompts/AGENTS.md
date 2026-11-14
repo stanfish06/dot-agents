@@ -24,7 +24,7 @@
 ## Dev
 
 - Tooling for new projects/tasks:
-    - js/ts: `bun` for cli and tui, `pnpm` over `npm`, `deno` for scripting
+    - js/ts: `bun` for cli and tui, `pnpm` over `npm`, `deno` for scripting, `oxlint`/`oxfmt` and `ultracite` for lint and format
     - python: `uv`
     - dev env: `mise` and `nix` flake
     - hooks: `lefthook` for python and js/ts project, always setup pre-commit format and lint hooks
@@ -38,7 +38,9 @@
 
 - Languages:
     - python: prefer `pydantic` for standard types and objects; specify `dtype` with numpy
-    - ts/js: prefer TypeScript; use `zod` for runtime schema validation; avoid `any`; use `effect` (https://github.com/Effect-TS/effect.git) for better type and error handling.
+    - ts/js: prefer TypeScript; use `zod` for runtime schema validation; avoid `any`;.
+        - `xstate` for state machine (https://github.com/statelyai/xstate.git)
+        - `effect` for better type and error handling (https://github.com/Effect-TS/effect.git), if `zod` was used, replace `zod` schema with `effect` schema.
 
 - Coding:
     - Keep comments direct ("use X to Y", "X for Y"): state what and how without discursive reasoning or journaling.
