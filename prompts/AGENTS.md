@@ -50,6 +50,13 @@
     - Run formatters and linters if available.
     - When the user delegate scripting tasks (e.g. plot, draft web page, data processing, etc) to you, always create variables for as many options as possible so that the user can tweak easily. Place and organize them either on top or an easy-to-find spot in the script with concise comments.
     - Use `sccache` for rust and `ccache` for c/c++ when you need to create new worktrees/clones of the current projects
+    - For making plots:
+        - For categorical variables
+            - under and include 12 categories use the gem12 palette: "#0072BD", "#D95319", "#EDB120", "#7E2F8E", "#77AC30", "#4DBEEE", "#A2142F", "#FFD60A", "#6582FD", "#FF453A", "#00A3A3", and "#CB845D".
+            - under and include 20 categories use the tab20
+            - more than 20, use glasbey (https://github.com/lmcinnes/glasbey.git)
+        - For continuous variables
+            - use viridis as default, suggest potential alternatives to the user if applicable.
     - For general web development
         - Unless specifically required, public designs should be used:
             - UI components:
