@@ -6,7 +6,7 @@ description: create a pull request
 # Skills to use if available
 
 - gh-cli
-- git-workflow-and-version
+- git-workflow-and-versioning
 - other project related skills
 
 # Goal

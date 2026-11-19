@@ -4,7 +4,7 @@ description: Review git/github changes
 ---
 # Skills to use if available
 - gh-cli
-- git-workflow-and-version
+- git-workflow-and-versioning
 - caveman
 - caveman-review
 - code-review-and-quality

@@ -1,25 +1,26 @@
 ## Behaviors
 
-- When previously-used/user-specified tooling stops working due to things such as auth expire, do not find alternative routes, do not hide the failure modes, do not over-think nor over-test, stop immediately and inform the user. Only suggest alternative fixes/routes if the user says so.
-- When you dont understand the bug report sent from the user, stop immediately and ask. You are allowed to make small intermdiate decisions for feature implmentation, but for bug report from the user, you should always assume the user has observed something explicitly, and you should be on the same page with the user before patching the fix. Note, this rule is only for bug report from the user, for bugs from other sources (e.g. other AI agents, github/linear tickets, local docs, etc), you are free to make your own assumptions.
+- When previously-used/user-specified tooling stops working due to things such as auth expiry, do not find alternative routes, do not hide the failure modes, do not keep investigating or re-testing; stop and inform the user. Only suggest alternative fixes/routes if the user says so.
+- When you don't understand the bug report sent from the user, stop immediately and ask. You are allowed to make small intermediate decisions for feature implementation, but for bug report from the user, you should always assume the user has observed something explicitly, and you should be on the same page with the user before patching the fix. Note, this rule is only for bug report from the user, for bugs from other sources (e.g. other AI agents, github/linear tickets, local docs, etc), you are free to make your own assumptions.
 - Do not dominate the discussion or expand scope unprompted. For intermediate steps, ask only when different readings would lead to clearly different work; otherwise take the most likely reading, state the assumption, and proceed without checking in at each step.
 - Push back when you disagree or see a risk: state your reasoning directly instead of just going along. Do not manufacture objections when there is no real concern.
 - No chatbot filler or sycophancy ("Great question!", "You're absolutely right", "I hope this helps", "Let me know if..."); just answer directly.
 - In prose (replies, commit messages, PR descriptions, docs), say what it does, not how it feels: replace words like "robust", "seamless", "comprehensive" with the mechanism, a fact, or a number. If a sentence could appear unchanged in another project's docs, cut it.
 - No generic conclusions ("the future looks bright", "solid foundation for..."); end with the specific fact or next step.
-- Do not ever assume the end goals, always ask what the user wants in the end. Agents can make small intermediate decisions that don't change the final outcomes.
+- Ask what the user wants as the end result instead of assuming it. Small intermediate decisions that don't change that result are yours to make.
 - Before implementing a core feature, ask explicitly how the user plans to test the result and what to expect. Ensure the entire verification setup (code, test data, environment, scripts, and commands) is ready to run by the end of the turn, not just unit tests in isolation.
 - Always create heartbeats for a long-running job and check its job status at a reasonable time interval. Do not rely on a single job-end signal.
 - Before submitting long-running and heavy jobs, always do extra checks (use subagents if possible) on bugs that might: 1. leak memory and bust the reserved resources, 2. interrupt the jobs in the middle, and 3. corrupt the results. Whenever possible, add logging and checkpoints. When the resources cost real money (e.g. aws), confirm the submission details and potential pitfalls with the user before job submission.
-- When writing papers/notes with the user, always keep versioned backups for target files, do not trust the user or other agents on regularly git staging the file. Always prefer small and targeted edits that maintain the existing structure, if large edits needed, you must inform the user.
+- When writing papers/notes with the user, always keep versioned backups for target files, do not trust the user or other agents to regularly git-stage the file. Always prefer small and targeted edits that maintain the existing structure, if large edits are needed, you must inform the user.
 - When doing ML, data analysis, and debugging, keep a thin and concise log for critical actions performed along the way and inform the user where that file is.
-- When you want to let user review certain file, copy/symlink that to the project folder or other easy-to-find spots, do not ask user to dig things out in your scratch space.
+- When you want to let the user review a file, copy/symlink that to the project folder or other easy-to-find spots, do not ask user to dig things out in your scratch space.
 - When using `docker` or other container/VM tools, check stale containers and vms before starting a container and at the end of the task and suggest clean-up plan to user.
 - Before starting and at the end of a task, check if any stale environments (e.g. venv/node_modules), builds (e.g. build/target), and worktrees that can be cleaned up. Always ask the user before doing any deletion.
-- When doing ML, research, and data analysis related works, almost always prefer web search instead of model memory to fetch fronteir methogology, software, and papers.
-- Before submit cloud jobs/API calls, confirm the approximate money and time cost with the user.
+- When doing ML, research, and data analysis related work, almost always prefer web search instead of model memory to fetch frontier methodology, software, and papers.
+- Before submitting cloud jobs/API calls, confirm the approximate money and time cost with the user.
 - After each branch/pr merging, check if any local/remote branches can be deleted.
-- Playing tricks such as hard-code/embed nongeneric patterns in tests to specifically make the code pass the tests are prohibited. The code should aim to solve the target issues projected into tests. (e.g. don't match the test's literal substring if this substring is not generalizable; fix the mechanism that produces it)
+- Playing tricks such as hard-coding/embedding non-generic patterns in tests to specifically make the code pass the tests is prohibited. The code should aim to solve the target issues projected into tests. (e.g. don't match the test's literal substring if this substring is not generalizable; fix the mechanism that produces it)
+- Do not demo-maxxing, when building each feature, think of both the demo and final product, design choices that overfit the demo version should not be used. (e.g. we are building an alert system for data in a time series database, it is not good to only implement a min-max detector for a specific variable in the demo database, but it is good to implement a lambda function detector that can cover more cases).
 
 ## Dev
 
@@ -38,9 +39,9 @@
 
 - Languages:
     - python: prefer `pydantic` for standard types and objects; specify `dtype` with numpy
-    - ts/js: prefer TypeScript; use `zod` for runtime schema validation; avoid `any`;.
+    - ts/js: prefer TypeScript; use `effect` Schema for runtime schema validation; avoid `any`.
         - `xstate` for state machine (https://github.com/statelyai/xstate.git)
-        - `effect` for better type and error handling (https://github.com/Effect-TS/effect.git), if `zod` was used, replace `zod` schema with `effect` schema.
+        - `effect` for type, error handling, and schemas (https://github.com/Effect-TS/effect.git); replace existing `zod` schemas with `effect` Schema.
 
 - Coding:
     - Keep comments direct ("use X to Y", "X for Y"): state what and how without discursive reasoning or journaling.
@@ -48,7 +49,7 @@
     - Build on existing code where possible; do not introduce new classes or helpers unless necessary.
     - Fix the underlying design instead of patching around it.
     - Run formatters and linters if available.
-    - When the user delegate scripting tasks (e.g. plot, draft web page, data processing, etc) to you, always create variables for as many options as possible so that the user can tweak easily. Place and organize them either on top or an easy-to-find spot in the script with concise comments.
+    - When the user delegates scripting tasks (e.g. plot, draft web page, data processing, etc) to you, always create variables for as many options as possible so that the user can tweak easily. Place and organize them either on top or an easy-to-find spot in the script with concise comments.
     - Use `sccache` for rust and `ccache` for c/c++ when you need to create new worktrees/clones of the current projects
     - For making plots:
         - For categorical variables
@@ -75,7 +76,7 @@
                 - https://github.com/vercel/geist-font.git
                 - prefer HarmonyOS Sans for Chinese
         - Do not put small texts in the app unless the user specifically requests (e.g. database description, backend status, disclaimers)
-        - Always measure app ui performance, do not allow any ui components freeze the app for more than 500ms.
+        - Always measure app ui performance, do not allow any ui components to freeze the app for more than 500ms.
 
 - Comments:
     - Start with the purpose or context when it is not obvious from the name and signature.
@@ -101,9 +102,10 @@
 
 - Others:
     - For build/test/run commands, you should always use the exact same commands that the user (will) use, do not assume the user knows your custom commands. If existing commands need update, inform the user and suggest updates. After each turn, run and verify the exact commands that the user will use to verify your work, never end the turn when the user's commands fail (if a turn has no code change, no need to verify the commands).
+    - For web dev, unit tests are not enough, always setup e2e tests for core use scenarios and flows with tools such as `playwright`.
     - Monorepo (e.g. python, js/ts, and rust) should be applied unless the user specifies that certain packages should be separately managed.
-    - Use aws-amulator to test aws jobs before submitting (https://github.com/aws/aws-emulator.git)
-    - Before deleting a git branch, double check that non of the existing prs based on that branch. Before and After deleting each remote branch, check that open prs stay open. If some prs get auto-closed due to an accidental branch deletion, immediately re-open that and base them on top of another appropriate branch.
+    - Use aws-emulator to test aws jobs before submitting (https://github.com/aws/aws-emulator.git)
+    - Before deleting a git branch, double-check that none of the existing PRs are based on that branch. Before and after deleting each remote branch, check that open PRs stay open. If some PRs get auto-closed due to an accidental branch deletion, immediately reopen them and base them on top of another appropriate branch.
 
 ## Skills
 

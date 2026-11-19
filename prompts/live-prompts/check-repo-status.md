@@ -6,7 +6,7 @@ description: Check repo status and build brief startup context
 # Skills to use if available
 
 - gh-cli
-- git-workflow-and-version
+- git-workflow-and-versioning
 - other project related skills
 
 # Goal

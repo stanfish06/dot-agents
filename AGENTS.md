@@ -38,7 +38,10 @@ state.
   `~/.config/kilo/AGENTS.md`, `~/.grok/AGENTS.md`, `~/.gemini/GEMINI.md`, and
   `~/.gemini/config/rules/AGENTS.md`, and renders it to
   `~/.cursor/rules/agents.mdc`. Do not add a per-harness instructions file.
-- Claude source: `~/.claude/settings*.json` and `~/.claude/skills/graphify`.
+- Claude source: `harnesses/claude/` (settings, `output-styles/`,
+  `commands/agent-skills/`, `skills/graphify/`), plus `agents/*.md`, `hooks/`,
+  and `prompts/live-prompts/*.md`, which `scripts/install.sh` links into
+  `~/.claude/`.
 - Codex source: `~/.codex/config.toml`, `~/.codex/rules/default.rules`, and
   `~/.codex/skills/hatch-pet`.
 - Pi source: `~/.pi/agent/themes/mypi.json`.
