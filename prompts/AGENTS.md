@@ -106,6 +106,7 @@
     - Monorepo (e.g. python, js/ts, and rust) should be applied unless the user specifies that certain packages should be separately managed.
     - Use aws-emulator to test aws jobs before submitting (https://github.com/aws/aws-emulator.git)
     - Before deleting a git branch, double-check that none of the existing PRs are based on that branch. Before and after deleting each remote branch, check that open PRs stay open. If some PRs get auto-closed due to an accidental branch deletion, immediately reopen them and base them on top of another appropriate branch.
+    - Do not automatically link other open source projects' issues/prs when creating issues/prs in the user's own project as it will appear in other projects' threads, which annoy people. You must confirm it with the user.
 
 ## Skills
 
