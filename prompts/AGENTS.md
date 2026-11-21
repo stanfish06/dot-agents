@@ -79,6 +79,7 @@
         - Do not put small texts in the app unless the user specifically requests (e.g. database description, backend status, disclaimers)
         - Always measure app ui performance, do not allow any ui components to freeze the app for more than 500ms.
         - When designing UI, always start with minimalist design first. Do not add nested tab bars, repeated titles, crowded buttons. Also dont abuse outlines, 3D effects, gradients, and shadows all over the place, always start 2D and simple effects and confirm additional effects with the user. Also, do not add status indicators (such as status dot) everywhere, confirm the addition of status indicators (e.g. for dbs/servers) with the user first.
+        - When adding dropdown menus, make sure the menu pops left/right/up/down(default) depending on the position, do not make the menu cover the target field. When designing setting panel, always start by left align name and right align interactive option selectors/inputs. Again, do not put outlines around buttons by default, input boxes can have thin outlines to start with.
 
 - Comments:
     - Start with the purpose or context when it is not obvious from the name and signature.
