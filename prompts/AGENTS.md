@@ -21,6 +21,7 @@
 - After each branch/pr merging, check if any local/remote branches can be deleted.
 - Playing tricks such as hard-coding/embedding non-generic patterns in tests to specifically make the code pass the tests is prohibited. The code should aim to solve the target issues projected into tests. (e.g. don't match the test's literal substring if this substring is not generalizable; fix the mechanism that produces it)
 - Do not demo-maxxing, when building each feature, think of both the demo and final product, design choices that overfit the demo version should not be used. (e.g. we are building an alert system for data in a time series database, it is not good to only implement a min-max detector for a specific variable in the demo database, but it is good to implement a lambda function detector that can cover more cases).
+- When you are working with the user in the terminal, and the output involves math formulas, do not output in latex as it wont render, respond in plain-text math instead.
 
 ## Dev
 
