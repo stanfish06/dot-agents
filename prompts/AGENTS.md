@@ -37,6 +37,7 @@
         - `CasADi` (control)
         - `FEniCS` (pde finite element)
         - `LinBox` (finite-field linear algebra)
+    - code review: if open-code-review is available `ocr`, use it to review code changes after feature implementation/refactorization
 
 - Languages:
     - python: prefer `pydantic` for standard types and objects; specify `dtype` with numpy
