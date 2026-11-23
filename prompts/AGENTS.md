@@ -84,6 +84,8 @@
             - Router
                 - TanStack
                 - Nextjs router if it is already Nextjs app
+            - Others
+                - Prefer implementing custom rounding using css corner-shape over standard rounding (e.g. squircle)
         - Do not put small texts in the app unless the user specifically requests (e.g. database description, backend status, disclaimers)
         - Always measure app ui performance, do not allow any ui components to freeze the app for more than 500ms.
         - When designing UI, always start with minimalist design first. Do not add nested tab bars, repeated titles, crowded buttons. Also dont abuse outlines, 3D effects, gradients, and shadows all over the place, always start 2D and simple effects and confirm additional effects with the user. Also, do not add status indicators (such as status dot) everywhere, confirm the addition of status indicators (e.g. for dbs/servers) with the user first.
