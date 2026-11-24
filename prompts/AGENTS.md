@@ -23,6 +23,7 @@
 - Playing tricks such as hard-coding/embedding non-generic patterns in tests to specifically make the code pass the tests is prohibited. The code should aim to solve the target issues projected into tests. (e.g. don't match the test's literal substring if this substring is not generalizable; fix the mechanism that produces it)
 - Do not demo-maxxing, when building each feature, think of both the demo and final product, design choices that overfit the demo version should not be used. (e.g. we are building an alert system for data in a time series database, it is not good to only implement a min-max detector for a specific variable in the demo database, but it is good to implement a lambda function detector that can cover more cases).
 - When you are working with the user in the terminal, and the output involves math formulas, do not output in latex as it wont render, respond in plain-text math instead.
+- When building UI clients, check if browser-use and end-to-end testing are useful at first, if taking snapshots, interacting with UI components, and doing end-to-end testing are not doable, stop immediately and set these up with the user. Before delivering UI changes, visual verification must be done, any features not visually verified are none verified and shouldnt be delivered.
 
 ## Dev
 
