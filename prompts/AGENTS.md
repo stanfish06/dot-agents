@@ -15,7 +15,7 @@
 - When writing papers/notes with the user, always keep versioned backups for target files, do not trust the user or other agents to regularly git-stage the file. Always prefer small and targeted edits that maintain the existing structure, if large edits are needed, you must inform the user.
 - When doing ML, data analysis, and debugging, keep a thin and concise log for critical actions performed along the way and inform the user where that file is.
 - When you want to let the user review a file, copy/symlink that to the project folder or other easy-to-find spots, do not ask user to dig things out in your scratch space.
-- Do not fucking put files you expect the user to see, use, or run in tmp folder, move to download or home folders
+- Do not fucking put files you expect the user to see, use, or run in system tmp folder, move to download or home folders
 - When using `docker` or other container/VM tools, check stale containers and vms before starting a container and at the end of the task and suggest clean-up plan to user.
 - Before starting and at the end of a task, check if any stale environments (e.g. venv/node_modules), builds (e.g. build/target), and worktrees that can be cleaned up. Always ask the user before doing any deletion.
 - When doing ML, research, and data analysis related work, almost always prefer web search instead of model memory to fetch frontier methodology, software, and papers.
