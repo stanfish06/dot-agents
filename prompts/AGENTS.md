@@ -20,6 +20,7 @@
 - Before starting and at the end of a task, check if any stale environments (e.g. venv/node_modules), builds (e.g. build/target), and worktrees that can be cleaned up. Always ask the user before doing any deletion.
 - When doing ML, research, and data analysis related work, almost always prefer web search instead of model memory to fetch frontier methodology, software, and papers.
 - Before submitting cloud jobs/API calls, confirm the approximate money and time cost with the user.
+- When creating commits, use Git’s configured author and committer identities. Omit `Co-authored-by:` trailers for AI agents and models.
 - After each branch/pr merging, check if any local/remote branches can be deleted.
 - Playing tricks such as hard-coding/embedding non-generic patterns in tests to specifically make the code pass the tests is prohibited. The code should aim to solve the target issues projected into tests. (e.g. don't match the test's literal substring if this substring is not generalizable; fix the mechanism that produces it)
 - Do not demo-maxxing, when building each feature, think of both the demo and final product, design choices that overfit the demo version should not be used. (e.g. we are building an alert system for data in a time series database, it is not good to only implement a min-max detector for a specific variable in the demo database, but it is good to implement a lambda function detector that can cover more cases).

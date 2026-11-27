@@ -5,6 +5,9 @@
   "permissions": {
     "defaultMode": "bypassPermissions"
   },
+  "attribution": {
+    "commit": ""
+  },
   "model": "opus",
   "hooks": {
     "Notification": [
